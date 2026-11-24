@@ -5,8 +5,8 @@
   var host = document.getElementById('model');
   if (!host || !PF) return;
   var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&]still/.test(location.search);
-  /* The vertical (phone) drawing is for phones and touch tablets. A desktop window that is merely narrow (a 1080p screen at 125-150% scaling with a wide side taskbar is about 1100-1250 CSS px) keeps the real diagram. */
-  var mq = window.matchMedia('(max-width: 819px), (pointer: coarse) and (max-width: 1199px)');
+  /* The vertical (phone) drawing is for phones and touch tablets. A desktop window that is merely narrow (a 1080p screen at 125-150% scaling with a wide side taskbar is about 1100-1250 CSS px) keeps the real diagram (below about 1040px its text would shrink under 8px, so the vertical drawing is used). */
+  var mq = window.matchMedia('(max-width: 1039px), (pointer: coarse) and (max-width: 1199px)');
   var MOBILE = mq.matches || /[?&]phone/.test(location.search);
   var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
   var rand = function (a, b) { return a + Math.random() * (b - a); };
@@ -127,8 +127,8 @@
     html('a', { 'class': 'btn alt', href: (PF.links && PF.links.resume) || '#', target: '_blank', rel: 'noopener', text: 'Resume ↗' }, acts);
 
     /* layout: on desktop the drawing takes the exact shape of the window */
-    var SP = 78, HW = 36, HH = 25, GAP = 18, ROW = 72, H;
-    var blockH = F.map(function (f) { return MOBILE ? (f.ind.length > 3 ? 268 : 196) : 0; });
+    var SP = 78, HW = 36, HH = 25, GAP = 18, ROW = 88, H; /* ROW: the second row of projects on a phone sits low enough to clear the Nerd-mode method tags under the first row */
+    var blockH = F.map(function (f) { return MOBILE ? (f.ind.length > 3 ? 286 : 196) : 0; });
     if (MOBILE) { H = 300; blockH.forEach(function (b) { H += b; }); H += 40; }
     else { var cw = canvas.clientWidth || window.innerWidth, ch = canvas.clientHeight || (window.innerHeight - 120); H = clamp(Math.round(W * ch / cw), 540, 1100); }
     build.H = H;
