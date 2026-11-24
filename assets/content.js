@@ -56,7 +56,7 @@ window.PF = (function () {
       desc: 'Apps that put rigorous methods in other people\'s hands.',
       ind: [
         { id: 'sempathy', n: ['SEMpathy', 'SEM app'], title: 'SEMpathy', status: 'Built and used', app: 'sempathy',
-          role: 'Built for teaching, then used in real projects. Students tested it.',
+          role: 'Built for teaching, then used in real projects. Students tested it. Accepted by the Journal of Open Source Software.',
           plain: 'Most psychology data is a 5-point scale or a yes/no, but friendly point-and-click programs fit it as if it were continuous. I built SEMpathy so students can run CFA the right way for ordinal data, then move on to mediation, moderation and invariance. When latent moderation across groups got too slow to run one model at a time, I added a way to run them side by side.',
           nerd: 'R Shiny. lavaan with WLSMV by default for ordinal and binary items. Latent moderation through modsem, run in parallel across groups and paths. APA Word report and replication script.', tag: 'lavaan', url: null },
         { id: 'cleome', n: ['Cleome', 'network app'], title: 'Cleome', status: 'Four versions', app: 'cleome',
@@ -91,8 +91,8 @@ window.PF = (function () {
       ind: [
         { id: 'srm', n: ['SRM-I', 'class demos'], title: 'Statistics and Research Methods I', status: 'Teaching assistant',
           role: 'I built the class activity and ran it.',
-          plain: 'The students are the dataset. They fill in a short survey, then we use their own answers to run t-tests, and then moderation and mediation, live, so each method answers a question about the room they are sitting in.',
-          nerd: 'Run live in jamovi. One dataset carried from descriptives to t-tests to moderation and mediation.', tag: 'jamovi', url: null },
+          plain: 'The students are the dataset. They fill in a short survey, then we use their own answers to practise descriptive statistics and frequency tables, live, so the numbers describe the room they are sitting in.',
+          nerd: 'Run live in jamovi. One survey dataset used for descriptive statistics and frequency tables.', tag: 'jamovi', url: null },
         { id: 'modDemo', n: ['Simulated', 'data'], title: 'Simulated moderation dataset', status: 'Teaching material',
           role: 'Built so that students can check their answer.',
           plain: 'A dataset where I already know the answer. It looks like real survey data, with 5-point items plus gender and self-reliance, but every row is invented. I planted two moderation effects on purpose, and students try to find them.',
