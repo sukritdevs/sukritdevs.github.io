@@ -31,22 +31,22 @@ window.PF = (function () {
     { name: 'Original research', key: 'research', lav: 'research', col: '#7B8DFF',
       desc: 'Questions about help-seeking, parenting, emotion regulation and substance use, asked in Indian samples.',
       ind: [
-        { id: 'thesis', n: ['Thesis', 'help-seeking'], title: 'Help-seeking thesis', status: 'Honours thesis, 2026',
+        { id: 'thesis', n: ['Thesis', 'help-seeking'], title: 'Help-seeking thesis', status: 'Honours thesis, 2026', clip: 'thesis',
           role: 'My capstone thesis at Ashoka University.',
-          plain: 'Why do some young people reach out for mental health help and others do not, even when they want to? I tested a model that separates what people believe about seeking help, what they intend, and what they do. At the end of the survey, participants could choose to see their distress score or get contact details for free support, so the last step was real.',
-          nerd: 'Web survey with a planned-missingness design. Implicit stigma from a single-category IAT scored with a racing diffusion model. SEM with WLSMV for ordinal items, and latent moderation for the intention-to-behaviour link.', tag: 'IBM-HS', url: null },
+          plain: 'Why do some young people reach out for mental health help and others do not, even when they want to? My thesis was an attempt to test the integrated behavioural model of mental health help-seeking (IBM-HS; Hammer et al., 2024), which separates what people believe about seeking help, what they intend, and what they do. At the end of the survey, participants could choose to see their distress score or get contact details for free support, so the last step was real.',
+          nerd: 'Web survey with a planned-missingness design. Implicit stigma from a single-category IAT scored with a racing diffusion model. SEM with WLSMV for ordinal items, and latent moderation for the intention-to-behaviour link.', tag: 'IBM-HS', url: 'https://dx.doi.org/10.1037/cou0000754', urlLabel: 'The model paper (Hammer et al., 2024)' },
         { id: 'substanceNet', n: ['Substance', 'use network'], title: 'Substance use network', status: 'In progress',
           role: 'I led the analysis, helped collect the data and drafted most of the paper.',
           plain: 'Substance use rarely travels alone. I map how drug-use problems, low mood and anxiety connect, symptom by symptom, and which symptoms bridge them. The questionnaires are in Hindi, and the adults come from community and treatment-seeking settings.',
-          nerd: 'Regularized partial-correlation networks, bridge centrality, bootstrapped stability, and a directed-graph layer on top.', tag: 'bootnet', url: null },
+          nerd: 'Regularized partial-correlation networks, bridge centrality, bootstrapped stability, and a directed-graph layer on top.', tag: 'undirected networks', url: null },
         { id: 'negParenting', n: ['Negative', 'parenting'], title: 'Parenting and emotion regulation', status: 'In progress',
           role: 'I run the analysis.',
           plain: 'How do emotions and parenting fit together in how teenagers are doing? I am analysing an adolescent sample to find out.',
           nerd: 'Structural equation modelling with latent variables, including latent moderation.', tag: 'lavaan', url: null },
-        { id: 'dersNet', n: ['DERS', 'network'], title: 'DERS network', status: 'Manuscript in revision',
+        { id: 'dersNet', n: ['DERS', 'network'], title: 'DERS network', status: 'Manuscript in preparation',
           role: 'I ran most of the analysis and wrote a good part of the paper. This is the project that made me build Cleome.',
           plain: 'Anxiety and low mood both come with trouble managing emotions. Which of those difficulties link to which symptoms? I map it in two symptom networks, using a tool I built.',
-          nerd: 'Undirected and directed symptom networks pairing DERS items with GAD and with PHQ items, estimated and bootstrapped in Cleome.', tag: 'networks', url: null },
+          nerd: 'Undirected and directed symptom networks pairing DERS items with GAD and with PHQ items, estimated and bootstrapped in Cleome.', tag: 'directed networks', url: null },
         { id: 'parentalKnowledge', n: ['Parental', 'knowledge'], title: 'Parental knowledge and risk-taking', status: 'In progress',
           plain: 'How does what parents know about their teenager\'s life relate to the teenager\'s own risk-taking? I am testing it in an adolescent sample.',
           nerd: 'Latent moderated mediation in SEM (modsem). It is heavy to compute, which is why I built a parallel runner into SEMpathy.', tag: 'modsem', url: null }
@@ -70,29 +70,33 @@ window.PF = (function () {
       ] },
 
     { name: 'Scale development', key: 'scales', lav: 'scales', col: '#FF7AB6',
-      desc: 'Adapting and validating questionnaires so they work for the people who answer them.',
+      desc: 'Adapting, translating and shortening questionnaires so they work for the people who answer them.',
       ind: [
-        { id: 'fscq', n: ['FSCQ', 'validation'], title: 'FSCQ validation', status: 'In progress',
+        { id: 'fscq', n: ['FSCQ', 'adaptation'], title: 'FSCQ adaptation', status: 'In progress',
           role: 'I did most of the analysis and a little of the writing.',
-          plain: 'How close do you feel to the person you will be later in life? The Future Self-Continuity Questionnaire asks in three ways: how vividly you picture that person, how similar you are, and how good it feels. I check that it measures the same thing, the same way, for university students and for a broader community sample.',
+          plain: 'How close do you feel to the person you will be later in life? The Future Self-Continuity Questionnaire asks in three ways: how vividly you picture that person, how similar you are, and how good it feels. I adapted it, and I check that it measures the same thing, the same way, for university students and for a broader community sample.',
           nerd: 'Three-factor CFA with WLSMV for ordinal items. Reliability, discriminant and concurrent validity. Measurement invariance across the two samples.', tag: 'CFA, WLSMV', url: null },
-        { id: 'dastHindi', n: ['DAST-10', 'Hindi'], title: 'Hindi DAST-10', status: 'In progress',
+        { id: 'dastHindi', n: ['DAST-10', 'translation'], title: 'Hindi DAST-10', status: 'In progress',
           role: 'I collected the general-community sample, wrote, and did most of the analysis.',
-          plain: 'A screening questionnaire for drug use only helps if people understand it the way it was meant. I adapt and validate the Hindi version of the DAST-10 for treatment-seeking and community adults, and check which factor structure actually holds.',
-          nerd: 'Translation and back-translation, then CFA with competing published factor structures compared by chi-square difference. The items are yes/no, so the estimator is chosen for categorical data.', tag: 'adaptation', url: null },
-        { id: 'riskScale', n: ['Risk-taking', 'scale'], title: 'Risk-taking scale', status: 'In progress',
+          plain: 'A screening questionnaire for drug use only helps if people understand it the way it was meant. I translated the DAST-10 into Hindi and am validating it with treatment-seeking and community adults, checking which factor structure actually holds.',
+          nerd: 'Translation and back-translation, then CFA with competing published factor structures compared by chi-square difference. The items are yes/no, so the estimator is chosen for categorical data.', tag: 'translation', url: null },
+        { id: 'riskScale', n: ['Risk-taking', 'short form'], title: 'Risk-taking scale', status: 'In progress',
           role: 'I ran the data analysis.',
-          plain: 'Risk-taking is not one thing. Racing a bike, drinking and skipping sleep may not share a cause. I am building a scale that tells five kinds of risk apart, plus a short version for researchers with no time to spare.',
-          nerd: 'Item pool screened with parallel analysis. Five a priori domains. Multidimensional graded response model in mirt, bifactor indices, short form chosen by ant colony search with a domain floor.', tag: 'MIRT', url: null }
+          plain: 'Risk-taking is not one thing. Racing a bike, drinking and skipping sleep may not share a cause. I am building a scale that tells five kinds of risk apart, plus a short form for researchers with no time to spare.',
+          nerd: 'Item pool screened with parallel analysis. Five a priori domains. Multidimensional graded response model in mirt, bifactor indices, short form chosen by ant colony search with a domain floor.', tag: 'mirt', url: null }
       ] },
 
     { name: 'Teaching', key: 'teaching', lav: 'teaching', col: '#3FD6A6',
-      desc: 'Datasets and demos built to be broken on purpose, then repaired by the student.',
+      desc: 'Two courses as a teaching assistant, plus datasets and demos built for students to practise on.',
       ind: [
-        { id: 'srm', n: ['SRM-I', 'class demos'], title: 'Statistics and Research Methods I', status: 'Teaching assistant',
+        { id: 'srm', n: ['SRM-I', 'live class'], title: 'Statistics and Research Methods I', status: 'Teaching assistant',
           role: 'I built the class activity and ran it.',
-          plain: 'The students are the dataset. They fill in a short survey, then we use their own answers to practise descriptive statistics and frequency tables, live, so the numbers describe the room they are sitting in.',
-          nerd: 'Run live in jamovi. One survey dataset used for descriptive statistics and frequency tables.', tag: 'jamovi', url: null },
+          plain: 'An interactive class activity. Students fill in a short survey during class. A simple script downloads their answers, codes them and imports everything into jamovi, where we then explore descriptive statistics, frequency tables, t-tests and Pearson\'s correlations on the room\'s own data.',
+          nerd: 'Run live in jamovi. A short script downloads and codes the survey responses and imports them. Descriptive statistics, frequency tables, t-tests and Pearson correlations on one dataset.', tag: 'jamovi', url: null },
+        { id: 'adapt', n: ['ADAPT', 'TA + lecture'], title: 'Adolescent Development and Psychopathology', status: 'Teaching assistant',
+          role: 'Teaching assistant, and a guest lecture in 2026.',
+          plain: 'I taught the fundamentals of mediation, moderation and structural equation modelling to undergraduates. In 2026 I gave a guest lecture and practical on the medmod module in jamovi: running a mediation or moderation analysis, reading the output and reporting it.',
+          nerd: 'Mediation, moderation and SEM fundamentals. Guest lecture and practical on the jamovi medmod module, 2026.', tag: 'medmod', url: null },
         { id: 'modDemo', n: ['Simulated', 'data'], title: 'Simulated moderation dataset', status: 'Teaching material',
           role: 'Built so that students can check their answer.',
           plain: 'A dataset where I already know the answer. It looks like real survey data, with 5-point items plus gender and self-reliance, but every row is invented. I planted two moderation effects on purpose, and students try to find them.',
@@ -118,10 +122,11 @@ window.PF = (function () {
     sempathy: 'Run CFA the right way for ordinal data, then mediation, moderation and invariance.',
     cleome: 'The whole network-analysis pipeline, with the reason for every step written beside it.',
     distill: 'Shorten a questionnaire while keeping what it could tell you.',
-    fscq: 'Checking that the Future Self-Continuity Questionnaire measures the same thing in two samples.',
-    dastHindi: 'Adapting and validating the Hindi version of the DAST-10 drug-use screener.',
-    riskScale: 'A scale that tells five kinds of risk-taking apart, plus a short version.',
-    srm: 'A class activity where the students\' own answers become the dataset.',
+    fscq: 'Adapting the Future Self-Continuity Questionnaire and checking that it measures the same thing in two samples.',
+    dastHindi: 'Translating the DAST-10 drug-use screener into Hindi and validating it.',
+    riskScale: 'A scale that tells five kinds of risk-taking apart, plus a short form.',
+    srm: 'An interactive class activity where the students\' own answers become the dataset.',
+    adapt: 'Teaching mediation, moderation and SEM, and a 2026 guest lecture on the jamovi medmod module.',
     modDemo: 'An invented dataset with moderation effects planted, so students can check their answer.',
     helpDemo: 'A screening report for a messy merged dataset, with a reason for every missing value.'
   };
@@ -130,7 +135,7 @@ window.PF = (function () {
   factors[0].more[1].line = 'A visual story for a food-delivery startup that employs specially-abled delivery partners.';
 
   var causes = [
-    { key: 'edu', n: ['Ashoka', 'Psychology BSc'], title: 'Ashoka University', desc: 'BSc (Hons) Psychology with research, 2022 to 2025. Dean\'s List for three semesters.', url: RESUME, urlLabel: 'See resume' },
+    { key: 'edu', n: ['Ashoka', 'Psychology BSc'], title: 'Ashoka University', desc: 'BSc (Hons) Psychology with research, 2022 to 2026. Graduated summa cum laude. Dean\'s List for three semesters.', url: RESUME, urlLabel: 'See resume' },
     { key: 'train', n: ['Training', 'certs + courses'], title: 'Certifications and courses', desc: 'Design Thinking (BCcampus Open-Ed), Graphic Design (ALISON), a Diploma in Psychology (XSIQ, Australia), short courses in clinical psychology, and a summer clinical-psychology internship.', url: RESUME, urlLabel: 'See resume' },
     { key: 'exp', n: ['Experience', 'design since 2020'], title: 'Design roles since 2020', desc: 'Jivisha Foundation (2022 to now), HelloHR, CampusArmy and Pankh. Branding, campaigns, pitch decks and teaching material.', url: RESUME, urlLabel: 'See resume' }
   ];
@@ -183,7 +188,25 @@ window.PF = (function () {
       why: 'When I screened a merged dataset for class, every missing value got a reason. My thesis used planned missing data, which is not the same thing as dropout.' }
   ];
 
-  return { factors: factors, causes: causes, cross: cross, fit: fit, toys: toys, apps: APPS, source: SOURCE,
+  /* short silent clips, played by assets/clip.js. Each one needs an mp4 and a poster still. */
+  var CLIPS = {
+    thesis: { mp4: 'assets/media/thesis-talk.mp4', webm: 'assets/media/thesis-talk.webm', poster: 'assets/media/thesis-talk-poster.webp', posterJpg: 'assets/media/thesis-talk-poster.jpg',
+      cap: 'Presenting the thesis', alt: 'Sukrit presenting the honours thesis in a seminar room, speaking and gesturing.' }
+  };
+
+  var ABOUT = {
+    photo: { webp: 'assets/media/portrait-full.webp', jpg: 'assets/media/portrait-full.jpg', alt: 'Sukrit smiling and looking to the right, in front of a glowing circle of warm light.' },
+    heading: 'Sukrit Bhatnagar',
+    paras: [
+      'I studied psychology at Ashoka University, where I graduated summa cum laude, with an honours thesis on why young people do or do not seek mental health help. I work on measuring what cannot be seen directly, such as distress, emotion regulation and help-seeking, and on checking that a scale means the same thing for the people who answer it.',
+      'I build the R tools I wished I had as a student, and I have taught the methods as a teaching assistant. I am looking for research-assistant and methods teaching roles.'
+    ],
+    /* [label, key in PF.links, style]. The note sits under the row. */
+    links: [['Resume', 'resume', ''], ['Contact', 'contact', 'alt'], ['Design portfolio', 'webflow', 'alt'], ['LinkedIn', 'linkedin', 'alt'], ['Instagram', 'instagram', 'alt']],
+    note: 'Fair warning: the design portfolio is extremely out of date. Think of it as an archaeological site.'
+  };
+
+  return { factors: factors, causes: causes, cross: cross, fit: fit, toys: toys, apps: APPS, source: SOURCE, clips: CLIPS, about: ABOUT,
     tagline: 'Measuring the parts of mental health you cannot see directly.',
     links: { webflow: WF, resume: RESUME, linkedin: 'https://linkedin.com/sukritbhatnagar', instagram: 'https://instagram.com/sukritbhatnagar', contact: WF + '/contact' } };
 })();

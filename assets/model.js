@@ -55,7 +55,9 @@
       var c = n.c; title = c.title; desc = c.desc; col = '#BFC4CF'; coverText = 'background'; url = c.url; urlLabel = c.urlLabel;
     }
     pop.style.setProperty('--c', col);
-    var cv = html('div', { 'class': 'cover' }, pop); cv.style.setProperty('--c', col); html('span', { text: coverText }, cv);
+    var cv = html('div', { 'class': 'cover' }, pop); cv.style.setProperty('--c', col);
+    var clipCfg = n.type === 'ind' && n.d.clip && PF.clip && PF.clips && PF.clips[n.d.clip];
+    if (clipCfg) { cv.classList.add('has-clip'); PF.clip(cv, clipCfg); } else html('span', { text: coverText }, cv);
     var x = html('button', { type: 'button', 'class': 'pclose', 'aria-label': 'Close details', text: '\u00D7' }, cv);
     x.addEventListener('click', function (ev) { ev.stopPropagation(); if (cur) cur.unpin(true); });
     var b = html('div', { 'class': 'pbody' }, pop);
@@ -87,7 +89,7 @@
     if (MOBILE) { pop.style.left = ''; pop.style.top = ''; scrim.classList.add('show'); }
     pop.classList.add('show'); if (!MOBILE) placePop(n);
   }
-  function hidePop() { pop.classList.remove('show', 'pinned'); scrim.classList.remove('show'); popNode = null; pinnedPop = false; }
+  function hidePop() { var pv = pop.querySelector('video'); if (pv) pv.pause(); pop.classList.remove('show', 'pinned'); scrim.classList.remove('show'); popNode = null; pinnedPop = false; }
   pop.addEventListener('mouseenter', function () { clearTimeout(hideTimer); });
   pop.addEventListener('mouseleave', function () { if (!pinnedPop && cur) cur.leave(); });
   scrim.addEventListener('click', function () { if (cur) cur.unpin(true); });
@@ -107,10 +109,11 @@
     var legWrap = html('div', { 'class': 'legend' }, dockL);
     var ctrl = html('div', { 'class': 'ctrl' }, dock);
     var mbox = html('div', { 'class': 'modebox' }, ctrl);
-    html('span', { 'class': 'mode-l', id: 'modeL', text: 'Explain it in' }, mbox);
+    html('span', { 'class': 'mode-l', id: 'modeL', text: 'Explain it in:' }, mbox);
     var seg = html('div', { 'class': 'seg', role: 'group', 'aria-labelledby': 'modeL' }, mbox);
-    var bP = html('button', { type: 'button', text: 'Plain English' }, seg);
-    var bN = html('button', { type: 'button', text: 'Nerd' }, seg);
+    var bP = html('button', { type: 'button', 'class': 'seg-l', text: 'Plain English' }, seg);
+    var trk = html('button', { type: 'button', 'class': 'seg-track', 'aria-hidden': 'true', tabindex: '-1' }, seg); html('i', { 'class': 'knob' }, trk); /* a bigger target for the same switch: the two words below stay the accessible controls */
+    var bN = html('button', { type: 'button', 'class': 'seg-l', text: 'Nerd' }, seg);
     var tip = html('span', { 'class': 'mode-tip', 'aria-hidden': 'true', text: 'Try Nerd for the methods' }, mbox); tip.hidden = true;
     var bR = html('button', { type: 'button', 'class': 'replay', text: 'Replay the build' }, ctrl);
     var canvas = html('div', { 'class': 'canvas' }, stage);
@@ -120,8 +123,8 @@
     /* a short way in: what this picture is, in plain words or in SEM terms, and where to go next */
     var intro = html('div', { 'class': 'intro' }, MOBILE ? dockL : canvas);
     intro.innerHTML = '<p class="intro-lead">I’m Sukrit, a psychology researcher who builds tools. This is a map of my work.</p>' +
-      '<p class="pl">Ovals are areas of work. Boxes are the projects behind them. Hover or tap anything to open it.</p>' +
-      '<p class="nd">A measurement model. Ovals are factors, boxes are projects (indicators), and a dotted arrow means one project counts toward two factors.</p>';
+      (MOBILE ? '<p class="pl">Tap an oval or a box to open it.</p><p class="nd">A measurement model: ovals are factors, boxes are projects (indicators). Tap one to open it.</p>'
+              : '<p class="pl">Ovals are areas of work. Boxes are the projects behind them. Hover or tap anything to open it.</p><p class="nd">A measurement model. Ovals are factors, boxes are projects (indicators), and a dotted arrow means one project counts toward two factors.</p>');
     var acts = html('div', { 'class': 'acts' }, MOBILE ? intro : canvas);
     html('a', { 'class': 'btn', href: 'play.html', text: 'Try the toys' }, acts);
     html('a', { 'class': 'btn alt', href: (PF.links && PF.links.resume) || '#', target: '_blank', rel: 'noopener', text: 'Resume ↗' }, acts);
@@ -147,9 +150,11 @@
       var p = el('pattern', { id: 'ht' + i, width: 7, height: 7, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(28)' }, defs);
       el('rect', { width: 7, height: 7, fill: '#F8F9FC' }, p); el('circle', { cx: 3.5, cy: 3.5, r: 2.2, fill: f.col }, p);
     });
-    [[26, 26], [W - 26, 26], [26, H - 26], [W - 26, H - 26]].forEach(function (c) {
-      el('circle', { cx: c[0], cy: c[1], r: 9, 'class': 'reg-m' }, bgL);
-      el('path', { d: 'M' + (c[0] - 16) + ' ' + c[1] + 'H' + (c[0] + 16) + 'M' + c[0] + ' ' + (c[1] - 16) + 'V' + (c[1] + 16), 'class': 'reg-m' }, bgL);
+    /* registration marks: on a desktop they are centred 16px in from the sheet edge, the same line the logo, the key and the list start on */
+    var kpx = MOBILE ? 1 : W / (canvas.clientWidth || window.innerWidth), mIn = MOBILE ? 26 : 16 * kpx, mR = MOBILE ? 9 : 6 * kpx, mA = MOBILE ? 16 : 10 * kpx;
+    [[mIn, mIn], [W - mIn, mIn], [mIn, H - mIn], [W - mIn, H - mIn]].forEach(function (c) {
+      el('circle', { cx: c[0], cy: c[1], r: mR, 'class': 'reg-m' }, bgL);
+      el('path', { d: 'M' + (c[0] - mA) + ' ' + c[1] + 'H' + (c[0] + mA) + 'M' + c[0] + ' ' + (c[1] - mA) + 'V' + (c[1] + mA), 'class': 'reg-m' }, bgL);
     });
 
     var yCause = MOBILE ? 50 : Math.max(60, H * 0.09), yRoot = MOBILE ? 172 : H * 0.27, yFac = MOBILE ? 0 : H * 0.54, yInd = MOBILE ? 0 : H * 0.835;
@@ -159,6 +164,7 @@
       var cn = MOBILE ? { type: 'cause', f: -1, x: 75 + k * 120, y: yCause, hw: 54, hh: 28, c: c } : { type: 'cause', f: -1, x: W / 2 + (k - 1) * 240, y: yCause, hw: 78, hh: 27, c: c };
       nodes.push(cn); cauN.push(cn); edges.push({ a: cn, b: root, kind: 'cause' });
     });
+    if (!MOBILE) { var nInd = 0; F.forEach(function (f) { nInd += f.ind.length; }); SP = Math.min(78, Math.floor((W - 60 - GAP * (F.length - 1)) / nInd)); HW = Math.min(36, Math.floor(SP / 2) - 2); } /* the row of projects shrinks a little to stay inside the sheet as projects are added */
     var total = 0; F.forEach(function (f) { total += f.ind.length * SP; }); total += GAP * (F.length - 1);
     var cursor = (W - total) / 2, ybase = 300;
     F.forEach(function (f, i) {
@@ -188,7 +194,7 @@
         n.regEl = el('ellipse', { 'class': 'reg', rx: n.rx, ry: n.ry }, p); el('ellipse', { 'class': 'main', rx: n.rx, ry: n.ry }, p);
         n.lbl = txt(p, 'lbl big', 'Sukrit', 0, -9); n.dotEl = el('circle', { 'class': 'rootdot', cx: 0, cy: MOBILE ? 18 : 22, r: 7 }, p);
         if (!MOBILE) {
-          n.caps = [txt(g, 'cap pl', 'inferred from everything around it', n.rx + 18, 0, 'start'), txt(g, 'cap nd', 'ξ · second-order factor, never observed', n.rx + 18, 0, 'start')];
+          n.caps = [txt(g, 'cap pl', 'as inferred from everything around him', n.rx + 18, 0, 'start'), txt(g, 'cap nd', 'ξ · second-order factor, never observed', n.rx + 18, 0, 'start')];
         }
         g.setAttribute('aria-label', 'Sukrit, the unobserved person this all adds up to');
       } else if (n.type === 'cause') {
@@ -196,7 +202,7 @@
         g.setAttribute('aria-label', n.c.title + ', background');
       } else if (n.type === 'factor') {
         el('ellipse', { 'class': 'reg', rx: n.rx, ry: n.ry }, p); el('ellipse', { 'class': 'main', rx: n.rx, ry: n.ry }, p);
-        txt(p, 'lbl', n.name, 0, 0); txt(p, 'sym nd', F[n.f].ind.length + ' indicators' + (n.cx ? ' · ' + n.cx + ' cross-loaded' : ''), 0, 16);
+        txt(p, 'lbl', n.name, 0, 0); (MOBILE && n.cx) ? (txt(p, 'sym nd', F[n.f].ind.length + ' indicators', 0, 14), txt(p, 'sym nd', n.cx + ' cross-loaded', 0, 27)) : txt(p, 'sym nd', F[n.f].ind.length + ' indicators' + (n.cx ? ' · ' + n.cx + ' cross-loaded' : ''), 0, 16);
         g.setAttribute('aria-label', n.name + ', a factor of my work');
       } else {
         n.plate = el('rect', { 'class': 'plate', x: -n.hw, y: -n.hh, width: n.hw * 2, height: n.hh * 2 }, p);
@@ -299,6 +305,7 @@
     function refreshPop() { if (popNode) { var keep = pop.scrollTop; fillPop(popNode); pop.scrollTop = keep; if (!MOBILE) placePop(popNode); } }
     bP.addEventListener('click', function () { mode = 'plain'; syncMode(); apply(); refreshPop(); });
     bN.addEventListener('click', function () { mode = 'nerd'; syncMode(); apply(); refreshPop(); });
+    trk.addEventListener('click', function () { mode = mode === 'plain' ? 'nerd' : 'plain'; syncMode(); apply(); refreshPop(); });
     bR.addEventListener('click', function () { play(); });
     syncMode();
     /* draw the eye to the toggle until it has been used */
@@ -370,10 +377,21 @@
       el('ellipse', { rx: root.rx, ry: root.ry }, ring);
       var th = -0.56, lab = null, lx = root.rx * Math.cos(th), ly = root.ry * Math.sin(th);
       if (!MOBILE) { lab = txt(root.g, 'cap conf-l', 'uncertainty', lx + 10, ly - 6, 'start'); transients.push(lab); }
-      var capX = root.rx * S0 + 20, c1 = null, c2 = null;
-      if (!MOBILE) { c1 = txt(root.g, 'cap introcap', 'A person can\u2019t be measured directly.', capX, 0, 'start'); c2 = txt(root.g, 'cap introcap', 'So you stack up evidence.', capX, 0, 'start'); transients.push(c1, c2); }
+      /* the opening statement: two big beats on the empty sheet, then they clear before the first factor is stamped */
+      var headT = MOBILE ? 2800 : 3400, sc = canvas.clientWidth / W, hl = html('div', { 'class': 'introline', 'aria-hidden': 'true' }, canvas); transients.push(hl);
+      hl.style.top = Math.round((root.y + root.ry * S0) * sc + (MOBILE ? 14 : 26)) + 'px';
+      var wordsIn = function (line, at) {
+        var ph = html('p', {}, hl), n = 0;
+        line.forEach(function (w) {
+          var sp = html('span', { 'class': 'w' + (w[1] ? ' ' + w[1] : ''), text: w[0] }, ph); ph.appendChild(document.createTextNode(' '));
+          an(sp, [{ opacity: 0, transform: 'translateY(-16px) scale(1.5) rotate(-4deg)' }, { opacity: 1, transform: 'translateY(2px) scale(.96)', offset: .6 }, { opacity: 1, transform: 'none' }], at + n * 70, 430, 'cubic-bezier(.3,.7,.2,1)', 'both'); n++;
+        });
+      };
+      wordsIn([['A'], ['person'], ['can\u2019t', 'no'], ['be'], ['measured'], ['directly.']], MOBILE ? 250 : 350);
+      wordsIn([['So'], ['you'], ['stack'], ['up'], ['evidence.', 'ev']], MOBILE ? 1000 : 1500);
+      an(hl, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-18px)' }], headT - 330, 300, 'ease-in', 'forwards');
       /* factors, each followed by its projects, stamped one at a time */
-      var K = MOBILE ? .65 : 1, t = MOBILE ? 900 : 2300, tStart = t, stamps = [];
+      var K = MOBILE ? .65 : 1, t = headT, tStart = t, stamps = [];
       facN.forEach(function (fn, i) {
         an(fn.in, [{ transform: 'scale(.2) rotate(-14deg)', opacity: 0 }, { transform: 'scale(1) rotate(0)', opacity: 1 }], t, 700, 'cubic-bezier(.34,1.56,.64,1)');
         var rootEdge = edges.filter(function (e) { return e.kind === 'root' && e.b === fn; })[0];
@@ -399,7 +417,6 @@
       stamps.sort(function (a, b) { return a - b; }).forEach(function (ts, k) { var s = SEND + (S0 - SEND) * Math.pow(1 - (k + 1) / total, 1.5); pose(s, Math.min(.985, (ts + 200 - n0) / dur), 1); });
       pose(SEND, 1, 1);
       an(ring, kf, n0, dur, 'cubic-bezier(.25,.8,.3,1)', 'both'); if (lab) an(lab, lkf, n0, dur, 'cubic-bezier(.25,.8,.3,1)', 'both');
-      if (c1) { an(c1, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none', offset: .2 }, { opacity: 1, offset: .8 }, { opacity: 0 }], 800, 2300, 'ease-out', 'both'); an(c2, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none', offset: .09 }, { opacity: 1, offset: .93 }, { opacity: 0 }], 2900, tF - 2900 + 300, 'ease-out', 'both'); }
       /* the name inks in */
       an(q, [{ opacity: .35 }, { opacity: .35, offset: .85 }, { opacity: 0 }], 300, tF - 300 + 160, 'ease-out', 'both');
       an(ring, [{ opacity: 1 }, { opacity: 0 }], tF + 60, 520, 'ease-out', 'forwards'); if (lab) an(lab, [{ opacity: 1 }, { opacity: 0 }], tF, 200, 'ease-out', 'forwards');
@@ -408,6 +425,15 @@
       an(root.regEl, [{ transform: 'translate(-16px,14px)' }, { transform: 'translate(7px,-6px)' }], tF, 560, EASE, 'backwards');
       an(root.in, [{ transform: 'scale(1)' }, { transform: 'scale(1.06)', offset: .35 }, { transform: 'scale(1)' }], tF, 520, 'ease-out', 'none');
       ripple(root.x, root.y, root.rx, root.ry, tF + 60, true);
+      /* a face for the name: it pops in beside the oval as the name inks in, then leaves with the rest of the intro */
+      var fr = MOBILE ? 30 : 46, fg = el('g', { transform: 'translate(' + (-root.rx + (MOBILE ? 12 : 6)) + ' ' + (MOBILE ? 8 : 4) + ')', 'pointer-events': 'none', 'aria-hidden': 'true' }, root.g); transients.push(fg);
+      var fi = el('g', {}, fg); fi.style.transformBox = 'fill-box'; fi.style.transformOrigin = 'center';
+      el('circle', { cx: 4, cy: 4, r: fr, fill: '#12141C' }, fi); el('circle', { r: fr, fill: '#F8F9FC' }, fi);
+      var fcp = el('clipPath', { id: 'pfFace' }, fi); el('circle', { r: fr }, fcp);
+      var fim = el('image', { x: -fr, y: -fr, width: fr * 2, height: fr * 2, preserveAspectRatio: 'xMidYMid slice', 'clip-path': 'url(#pfFace)' }, fi); fim.setAttribute('href', 'assets/media/avatar-256.webp');
+      el('circle', { r: fr, fill: 'none', stroke: '#12141C', 'stroke-width': 3 }, fi);
+      an(fi, [{ opacity: 0, transform: 'scale(.2) rotate(-14deg)' }, { opacity: 1, transform: 'scale(1.08) rotate(0)', offset: .6 }, { opacity: 1, transform: 'none' }], tF + 140, 560, 'cubic-bezier(.34,1.56,.64,1)', 'both');
+      an(fi, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(.6) translateY(14px)' }], tF + 1040, 380, 'ease-in', 'forwards');
       if (root.caps) root.caps.forEach(function (c) { an(c, [{ opacity: 0 }, { opacity: 1 }], tF + 600, 600); });
       if (!MOBILE) an(bw, [{ fontStretch: '62%', opacity: 0, transform: 'translateY(50px)' }, { fontStretch: bw.style.fontStretch || '125%', opacity: .16, transform: 'none' }], tF - 80, 1000, EASE);
       edges.forEach(function (e) { if (e.kind === 'cross') an(e.g, [{ opacity: 0 }, { opacity: 1 }], tF + 300, 700); });

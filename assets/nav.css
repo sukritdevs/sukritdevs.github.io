@@ -1,5 +1,6 @@
 /* Shared by every page: the top bar and the little "factor to project" drawing. Fixed paper and ink colours, so it looks the same in light and dark. */
 :root{--bar:60px;--noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+:root{--m:max(16px,calc((100% - 1408px) / 2))} /* the side margin line of the 1440px content column: 16px, or wider once it is centred. The list and the footer hang from it; the header and the diagram chrome stay at 16px. */
 .skip{position:absolute;left:-999px;top:8px;background:#12141C;color:#fff;padding:8px 12px;z-index:100}.skip:focus{left:8px}
 
 .topbar{--tp:#ECEEF3;--ti:#12141C;--td:#F4807A;position:sticky;top:0;z-index:40;height:var(--bar);display:flex;align-items:center;justify-content:space-between;gap:20px;

@@ -18,12 +18,13 @@
   var tt = h('div', { 'class': 'tt' }, from);
   var a = h('div', {}, tt); h('p', { 'class': 'tk', text: 'What it shows' }, a); h('p', { text: t.learn }, a);
   var b = h('div', {}, tt); h('p', { 'class': 'tk', text: 'Why it is here' }, b); h('p', { text: t.why }, b);
-  var l = h('div', { 'class': 'links' }, tt);
-  h('a', { 'class': 'go', href: model(m.d.id), text: 'See it in the model \u2192' }, l);
-  var others = t.from.slice(1).map(function (x) { return U.find(x); }).filter(Boolean);
-  if (others.length) { var r = h('span', { 'class': 'rel' }, l); r.appendChild(document.createTextNode('Also related: ')); others.forEach(function (o, i) { if (i) r.appendChild(document.createTextNode(', ')); h('a', { href: model(o.d.id), text: o.d.title }, r); }); }
 
   var nx = document.getElementById('toy-next'); if (!nx) return;
+  /* where the toy comes from: a quiet line after the toy, not a button above it */
+  var others = t.from.slice(1).map(function (x) { return U.find(x); }).filter(Boolean);
+  var src = h('p', { 'class': 'tsrc' }, nx); src.appendChild(document.createTextNode('Source project: '));
+  h('a', { href: model(m.d.id), text: m.f.name + ' \u203A ' + m.d.title }, src);
+  if (others.length) { src.appendChild(document.createTextNode('. Also related: ')); others.forEach(function (o, i) { if (i) src.appendChild(document.createTextNode(', ')); h('a', { href: model(o.d.id), text: o.d.title }, src); }); }
   var nav = h('nav', { 'class': 'tnext', 'aria-label': 'More toys' }, nx);
   var tint = function (a, toy) { var mm = toy && U.find(toy.from[0]); a.style.setProperty('--c', mm ? mm.f.col : m.f.col); return a; };
   var prev = PF.toys[idx - 1], next = PF.toys[idx + 1];

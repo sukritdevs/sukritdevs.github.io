@@ -49,12 +49,11 @@
     var top = h('div', { 'class': 'pc-top' }, c);
     top.appendChild(U.glyph(m.f, m.d, 'index.html?open=' + m.d.id, m.d.title + ', under ' + m.f.name + '. See it in the model.'));
     var b = h('div', { 'class': 'pc-b' }, c);
-    h('p', { 'class': 'pc-from', text: 'From the model: ' + m.f.name + ' › ' + m.d.title }, b);
     h('h2', { text: t.title }, b);
     h('p', { 'class': 'pc-q', text: t.q }, b);
     var act = h('div', { 'class': 'pc-act' }, b);
     h('a', { 'class': 'go', href: t.file, text: 'Play it' }, act);
-    h('a', { 'class': 'see', href: 'index.html?open=' + m.d.id, text: 'See it in the model' }, act);
+    var srcp = h('p', { 'class': 'pc-src' }, b); srcp.appendChild(document.createTextNode('Source project: ')); h('a', { href: 'index.html?open=' + m.d.id, text: m.f.name + ' › ' + m.d.title }, srcp);
   });
 })();
 </script>

@@ -19,6 +19,7 @@
 </head>
 <body>
 <script src="assets/content.js"></script>
+<script src="assets/clip.js"></script>
 <script src="assets/nav.js" data-page="model"></script>
 
 <main id="main">
@@ -35,13 +36,10 @@
       <div class="lwrap" id="lgrid"></div>
     </section>
 
-    <footer class="site">
-      <a href="https://linkedin.com/sukritbhatnagar" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://instagram.com/sukritbhatnagar" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://sukrit-bhatnagar.webflow.io/" target="_blank" rel="noopener">Design portfolio</a>
-    </footer>
   </div>
 </main>
+
+<footer class="foot" id="about" aria-labelledby="abouth"></footer>
 
 <script src="assets/model.js"></script>
 <script>
@@ -58,6 +56,24 @@
   PF.fit.forEach(function (r) { var d = h('div', { 'class': 'fit-row' + (r[0] === 'An honest gap' ? ' gap' : '') }, rows); h('b', { text: r[0] }, d); h('span', { text: r[1] }, d); });
   function syncFit() { var on = location.hash === '#research'; fit.hidden = !on; if (on) fit.scrollIntoView(); }
   window.addEventListener('hashchange', syncFit); syncFit();
+
+  if (/[?&]adjust(&|$)/.test(location.search)) { var adj = document.createElement('script'); adj.src = 'assets/adjust.js'; document.body.appendChild(adj); } /* the framing tuner for the footer portrait */
+
+  /* the footer: portrait, a short bio and every link, all copy from content.js */
+  var A = PF.about, foot = $('#about');
+  if (A && foot) {
+    var inn = h('div', { 'class': 'foot-in' }, foot);
+    var fig = h('figure', {}, inn), pic = h('picture', {}, fig);
+    h('source', { type: 'image/webp', srcset: A.photo.webp }, pic);
+    h('img', { src: A.photo.jpg, alt: A.photo.alt, width: '867', height: '1156', loading: 'lazy', decoding: 'async' }, pic);
+    var bio = h('div', { 'class': 'foot-bio' }, inn);
+    h('h2', { 'class': 'serif', id: 'abouth', text: A.heading }, bio);
+    A.paras.forEach(function (x) { h('p', { text: x }, bio); });
+    var nav = h('nav', { 'class': 'foot-links', 'aria-label': 'Elsewhere' }, inn);
+    A.links.forEach(function (l) { h('a', { 'class': 'btn' + (l[2] ? ' ' + l[2] : ''), href: PF.links[l[1]], target: '_blank', rel: 'noopener', text: l[0] + ' \u2197' }, nav); });
+    if (A.note) h('p', { 'class': 'foot-note', text: A.note }, nav);
+    var end = h('div', { 'class': 'foot-end' }, foot); h('span', { text: '\u00A9 2026 Sukrit Bhatnagar' }, end);
+  }
 
 })();
 </script>
