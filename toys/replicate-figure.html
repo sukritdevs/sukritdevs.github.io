@@ -88,7 +88,7 @@ svg text{font-family:'Archivo',sans-serif;fill:var(--ink)}
     <div class="cover"><h2>Your settings</h2><span>Cleome · Substance use network · DERS network</span></div>
     <div class="body">
       <p class="try"><b>Start here</b>Everything begins unreported. Tick one box at a time and watch the right-hand figure change, to find which omission matters most.</p>
-      <p class="hint">Eight invented items, simulated from a known network. The estimator is a simplified in-browser version of EBICglasso, so the numbers are for teaching and are not research results.</p>
+      <p class="hint">Eight invented items, simulated from a known network. The estimator is a simplified in-browser version of EBICglasso.</p>
       <div class="tbl" id="tbl" role="group" aria-label="Author settings and reader guesses"></div>
       <div class="bar"><button class="btn" id="bNone">Report nothing</button><button class="btn" id="bAll">Report everything</button><button class="btn" id="bDef">Report only the correlation type</button></div>
     </div>
@@ -120,7 +120,7 @@ svg text{font-family:'Archivo',sans-serif;fill:var(--ink)}
     <div class="cover"><h2>What the guidelines ask you to state</h2><span>paraphrased from the papers</span></div>
     <div class="body">
       <div class="cols">
-        <div><h3>Undirected networks: Burger et al. (2023)</h3><ul>
+        <div><h3>Undirected networks: <a href="https://doi.org/10.1037/met0000471" target="_blank" rel="noopener">Burger et al. (2023)</a></h3><ul>
           <li><code>§2.2</code><span>The estimation method and its settings: thresholds, regularization parameters. State them even when they are the defaults, because defaults change between package versions.</span></li>
           <li><code>§2.3</code><span>The number of bootstrap samples and the type of bootstrap.</span></li>
           <li><code>§2.4</code><span>The software and package versions, and any seeds set in the code.</span></li>
@@ -128,7 +128,7 @@ svg text{font-family:'Archivo',sans-serif;fill:var(--ink)}
           <li><code>§3.4</code><span>Network density and the average absolute edge weight, which the picture alone cannot show.</span></li>
           <li><code>also</code><span>How missing data were handled, the sample size after preprocessing, and the same layout and maximum edge value when comparing networks. A visual comparison alone is not enough.</span></li>
         </ul></div>
-        <div><h3>Directed networks: Briganti et al.</h3><ul>
+        <div><h3>Directed networks: <a href="https://doi.org/10.1037/met0000479" target="_blank" rel="noopener">Briganti et al. (2023)</a></h3><ul>
           <li><code>algo</code><span>The structure-learning algorithm you chose, stated clearly.</span></li>
           <li><code>boot</code><span>Report only stable networks from bootstrapping. The authors recommend 100 to 200 bootstrap samples and say earlier empirical papers kept edges present in over 85% of networks, with direction in over 50%.</span></li>
           <li><code>freq</code><span>How often each edge appeared across the bootstrap networks.</span></li>

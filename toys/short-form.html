@@ -80,6 +80,23 @@ button.cell.ok{border-style:solid;border-color:var(--good);color:var(--good);fon
 .legend{display:grid;gap:2px;font-size:13px}
 .legend span{display:flex;gap:8px}.legend b{font-family:'Red Hat Mono',monospace;font-weight:500;font-size:12px;min-width:56px}
 .fb{min-height:64px}
+/* purpose comparison table */
+.lab{margin-bottom:4px}
+.cmpw{overflow-x:auto}.cmpw:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+table.cmp{border-collapse:collapse;width:100%;font-size:13.5px}
+@media(max-width:560px){table.cmp{font-size:12.5px}.cmp th,.cmp td{padding:5px 5px!important}.cmp caption{font-size:15px}}
+.cmp caption{text-align:left;font-weight:900;font-stretch:85%;font-size:16px;padding:0 0 6px}
+.cmp th,.cmp td{border:2px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.cmp thead th{font-weight:800;font-stretch:88%;background:var(--sheet)}
+.cmp thead th small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.cmp thead th.on{background:var(--c-tool)}.cmp thead th.on small{color:#12141C}
+.cmp tbody th{font-weight:800;font-stretch:90%}
+.cmp td.cnt{white-space:nowrap}
+.cmp td.num{font-family:'Red Hat Mono',monospace;font-weight:500}
+.cmp td.best{font-weight:900;background:rgba(255,225,74,.5)}
+.cmp tr.you th,.cmp tr.you td{border-style:dashed}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.how h2{margin:0 0 4px;font-weight:900;font-stretch:85%;font-size:16px}.how p{margin:0;font-size:14.5px}
 .fb.good{border-color:var(--good)}.fb.bad{border-color:var(--bad)}
 
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -95,17 +112,33 @@ button.cell.ok{border-style:solid;border-color:var(--good);color:var(--good);fon
 <div id="toy-intro"></div>
 <section class="sheet" id="shortform">
     <div class="body">
-      <p class="try"><b>Start here</b>The page opens on a 12-item form. Press Rank and cut, then Search, and compare "Worst domain".</p>
-      <p class="hint">Twenty invented items in three domains. Information is how precisely the scale measures at each trait level. Click an item to drop or restore it. Rank and cut keeps the strongest items overall and ignores domains. Search keeps at least two items per domain and penalises imbalance.</p>
+      <p class="try"><b>Start here</b>Choose what the short form is for. Press Rank and cut, then Search, and watch the table under the chart.</p>
+      <p class="hint">Twenty invented items in three domains, each with a known difficulty and discrimination. Information is how precisely the scale measures at each trait level. Standard error is 1 divided by the square root of information, so a taller information curve means a smaller error. Click an item to drop or restore it.</p>
+      <div class="ctrls">
+        <div><div class="hint lab" id="plab">The short form is for</div><div class="seg" role="group" aria-labelledby="plab" id="purp"></div></div>
+        <div><div class="hint lab" id="vlab">The chart shows</div><div class="seg" role="group" aria-labelledby="vlab" id="view"><button type="button" class="btn" data-v="info" aria-pressed="true">Information</button><button type="button" class="btn" data-v="se" aria-pressed="false">Standard error</button></div></div>
+      </div>
+      <p class="box" id="pdesc" aria-live="polite"></p>
       <svg id="sf" viewBox="0 0 560 230" role="img" aria-label="Test information curve for the full and shortened scale"></svg>
       <div class="chips" id="chips"></div>
       <div class="ctrls">
         <label>Target length <output id="oN">12</output><input type="range" id="tn" min="6" max="20" value="12"></label>
-        <div><div class="hint" style="margin-bottom:4px">Reach the target by</div><div class="seg"><button class="btn" id="bAll">Keep all</button><button class="btn" id="bRank">Rank and cut</button><button class="btn go" id="bSearch">Search</button></div></div>
+        <div><div class="hint lab">Reach the target by</div><div class="seg"><button class="btn" id="bAll">Keep all</button><button class="btn" id="bRank">Rank and cut</button><button class="btn go" id="bSearch">Search for this purpose</button></div></div>
       </div>
       <div id="dbars" style="display:grid;gap:5px"></div>
-      <div class="stat"><span>Items kept <b id="sK">20</b></span><span>Average retained <b id="sM">100%</b></span><span>Worst domain <b id="sW">100%</b></span><span id="sFlag" class="hint"></span></div>
-      <p class="hint">The real app searches with ant colony, genetic, annealing and greedy methods. This toy uses a simple greedy search so it runs instantly.</p>
+      <div class="stat"><span>Items kept <b id="sK">20</b></span><span><span id="sPl"></span> <b id="sP"></b></span><span id="sFlag" class="hint"></span></div>
+      <div class="cmpw" tabindex="0" role="region" aria-label="Forms of the same length, judged for each purpose">
+        <table class="cmp" id="cmp">
+          <caption>The same length, judged for each purpose</caption>
+          <thead></thead><tbody></tbody>
+        </table>
+      </div>
+      <p class="hint" id="verd" aria-live="polite"></p>
+      <p class="hint">SE is standard error. Bold marks the best result in each column, not counting your own selection. Group reliability is 1 minus the average of 1 / (1 + information) across people drawn from a standard normal, so it runs from 0 to 1 and higher is better.</p>
+      <div class="how">
+        <div class="box"><h2>Rank and cut</h2><p>Scores every item by how much information it gives across all trait levels (the area under its curve), sorts them, and keeps the top ones until the target length is reached. It is quick and easy to explain, but it never looks at domains or at what the scale is for, so it keeps the same items whatever the purpose.</p></div>
+        <div class="box"><h2>Search</h2><p>Starts from all 20 items and removes one at a time, each time the item whose removal leaves the best score for the purpose you chose. One rule stays fixed: every domain keeps at least two items. This toy uses a simple greedy search so it runs instantly. The real app also offers ant colony, genetic and annealing searches.</p></div>
+      </div>
     </div>
 </section>
 <div id="toy-next"></div>
@@ -131,48 +164,99 @@ var T=function(p,s,x,y,o){var t=S('text',{x:x,y:y},p);t.textContent=s;if(o)for(v
   var DM=[{n:'Domain A',c:'var(--c-res)',it:[[1.6,-1.0],[1.9,-.4],[1.4,.2],[2.1,.6],[1.7,1.0],[1.5,1.4],[1.8,-.7]]},
           {n:'Domain B',c:'var(--c-teach)',it:[[1.8,-.8],[1.5,-.2],[2.0,.3],[1.6,.8],[1.9,1.2],[1.4,-.5],[1.7,.1]]},
           {n:'Domain C',c:'var(--c-tool)',it:[[.9,-.3],[1.1,.4],[.8,.9],[1.0,1.4],[1.2,.1],[.9,-.6]]}];
-  var TH=[];for(var t=-3;t<=3.001;t+=.25)TH.push(t);
+  var TH=[];for(var t=-3;t<=3.001;t+=.25)TH.push(Math.round(t*100)/100);
+  var ix=function(t){return TH.indexOf(t);},MINUS='−';
   var I=[];DM.forEach(function(d,di){d.it.forEach(function(p,k){var a=p[0],b=p[1];var inf=TH.map(function(x){var P=1/(1+Math.exp(-a*(x-b)));return a*a*P*(1-P);});I.push({d:di,l:'ABC'[di]+(k+1),inf:inf,area:inf.reduce(function(s,v){return s+v;},0)});});});
-  var keep=I.map(function(){return true;}),svg=$('#sf'),chips=$('#chips');
-  var full=TH.map(function(_,i){return I.reduce(function(s,it){return s+it.inf[i];},0);}),ymax=Math.max.apply(null,full)*1.08;
-  var dArea=DM.map(function(_,di){return I.filter(function(it){return it.d===di;}).reduce(function(s,it){return s+it.area;},0);});
-  var X=function(t){return 44+(t+3)/6*496;},Y=function(v){return 196-v/ymax*170;};
-  function ret(k){var r=DM.map(function(_,di){var s=0;I.forEach(function(it,i){if(k[i]&&it.d===di)s+=it.area;});return s/dArea[di];});return r;}
-  function counts(k){return DM.map(function(_,di){return I.filter(function(it,i){return k[i]&&it.d===di;}).length;});}
-  function obj(k){var r=ret(k),m=r.reduce(function(a,b){return a+b;},0)/r.length;return m-.5*(Math.max.apply(null,r)-Math.min.apply(null,r));}
+  var NI=I.length,ALL=I.map(function(){return true;});
+  var PHI=TH.map(function(t){return Math.exp(-t*t/2);}),PS=PHI.reduce(function(a,b){return a+b;},0);
+  var CI=ix(1),LO=ix(-2),HI=ix(2);
+  function info(k){return TH.map(function(_,i){var s=0;for(var j=0;j<NI;j++)if(k[j])s+=I[j].inf[i];return s;});}
+  function seOf(v){return v>1e-9?1/Math.sqrt(v):Infinity;}
+  function rel(f){var s=0;for(var i=0;i<f.length;i++)s+=PHI[i]/(1+f[i]);return 1-s/PS;}
+  function minIn(f){return Math.min.apply(null,f.slice(LO,HI+1));}
+  /* what a short form is for decides what "good" means */
+  var PUR=[
+    {k:'cut',nm:'A cut-off',tag:'the cut-off',col:'Standard error at the cut-off',sh:'SE at the cut-off',low:true,sc:function(f){return f[CI];},val:function(f){return seOf(f[CI]);},
+     desc:'You will flag everyone above one cut-off, set one standard deviation above average (the dashed line). Only precision near that point matters.'},
+    {k:'groups',nm:'Comparing groups',tag:'group comparison',col:'Reliability for group comparison',sh:'Reliability for groups',low:false,sc:rel,val:rel,
+     desc:'You will compare group averages. Precision matters most where most people are, so the middle counts more than the tails.'},
+    {k:'all',nm:'Scoring every person',tag:'every person',col:'Worst standard error, '+MINUS+'2 to 2',sh:'Worst SE, '+MINUS+'2 to 2',low:true,sc:minIn,val:function(f){return seOf(minIn(f));},
+     desc:'Every person gets their own score, anywhere from 2 standard deviations below average to 2 above. The least precise point on that range is what counts.'}];
+  var byK=function(k){return PUR.filter(function(p){return p.k===k;})[0];};
+  var fmt=function(v){return isFinite(v)?v.toFixed(2):'n/a';};
+  function counts(k){return DM.map(function(_,di){var c=0;for(var j=0;j<NI;j++)if(k[j]&&I[j].d===di)c++;return c;});}
+  function rankKeep(n){var o=I.map(function(_,i){return i;}).sort(function(a,b){return I[b].area-I[a].area;}),k=ALL.map(function(){return false;});o.slice(0,n).forEach(function(i){k[i]=true;});return k;}
+  function searchKeep(n,pk){var P=byK(pk),k=ALL.slice();
+    while(k.filter(Boolean).length>n){var c=counts(k),best=-1,bs=-Infinity;
+      for(var i=0;i<NI;i++){if(!k[i]||c[I[i].d]<=2)continue;k[i]=false;var s=P.sc(info(k));k[i]=true;if(s>bs){bs=s;best=i;}}
+      if(best<0)break;k[best]=false;}
+    return k;}
+
+  var keep=ALL.slice(),purp=0,view='info',svg=$('#sf'),chips=$('#chips'),SEMAX=1.5;
+  var X=function(t){return 44+(t+3)/6*496;};
+  var full=info(ALL),ymaxInfo=Math.max.apply(null,full)*1.08;
+  function target(){return +$('#tn').value;}
   I.forEach(function(it,i){var b=H('button',{type:'button','class':'chip','aria-pressed':'true',text:it.l},chips);b.style.setProperty('--c',DM[it.d].c);it.b=b;b.addEventListener('click',function(){keep[i]=!keep[i];draw();});});
-  function path(arr){return arr.map(function(v,i){return (i?'L':'M')+X(TH[i]).toFixed(1)+' '+Y(v).toFixed(1);}).join(' ');}
+  var pb=$('#purp');PUR.forEach(function(p,i){var b=H('button',{type:'button','class':'btn','aria-pressed':String(i===purp),text:p.nm},pb);b.addEventListener('click',function(){purp=i;[].forEach.call(pb.children,function(x,j){x.setAttribute('aria-pressed',String(j===i));});draw();});});
+  [].forEach.call($('#view').children,function(b){b.addEventListener('click',function(){view=b.getAttribute('data-v');[].forEach.call($('#view').children,function(x){x.setAttribute('aria-pressed',String(x===b));});draw();});});
+  var th=$('#cmp thead');var hr=H('tr',{},th);H('th',{scope:'col',text:'Form'},hr);
+  PUR.forEach(function(p){var c=H('th',{scope:'col','data-k':p.k,text:p.sh,title:p.col},hr);H('small',{text:p.low?'lower is better':'higher is better'},c);});
+  H('th',{scope:'col',text:'Items in A·B·C'},hr);
+
+  function path(arr,Y){return arr.map(function(v,i){return (i?'L':'M')+X(TH[i]).toFixed(1)+' '+Y(v).toFixed(1);}).join(' ');}
+  function table(n){
+    var tuned={};PUR.forEach(function(p){tuned[p.k]=searchKeep(n,p.k);});
+    var rows=[{n:'Your selection ('+keep.filter(Boolean).length+' items)',k:keep,you:true},{n:'Rank and cut',k:rankKeep(n)}].concat(PUR.map(function(p){return {n:'Search for '+p.tag,k:tuned[p.k]};}));
+    rows.forEach(function(r){r.f=info(r.k);r.c=counts(r.k);});
+    var best=PUR.map(function(p,ci){var b=null;rows.forEach(function(r){if(r.you)return;var v=p.val(r.f);if(b===null||(p.low?v<b:v>b))b=v;});return b;});
+    var tb=$('#cmp tbody');tb.textContent='';
+    rows.forEach(function(r){var tr=H('tr',{'class':r.you?'you':''},tb);H('th',{scope:'row',text:r.n},tr);
+      PUR.forEach(function(p,ci){var v=p.val(r.f),td=H('td',{'class':'num'+(!r.you&&Math.abs(v-best[ci])<1e-9?' best':''),text:fmt(v)},tr);});
+      H('td',{'class':'num cnt',text:r.c.join('·')},tr);});
+    [].forEach.call(document.querySelectorAll('#cmp thead th[data-k]'),function(c){c.classList.toggle('on',c.getAttribute('data-k')===PUR[purp].k);});
+    /* the lesson, in numbers from this very table */
+    var P=PUR[purp],Q=PUR[purp===2?0:2],tf={cut:info(tuned.cut),groups:info(tuned.groups),all:info(tuned.all)};
+    var pp=P.val(tf[P.k]),qp=P.val(tf[Q.k]),qq=Q.val(tf[Q.k]),pq=Q.val(tf[P.k]);
+    var win=function(p,a,b){return p.low?a<b-1e-9:a>b+1e-9;};
+    var t='';
+    if(win(P,pp,qp)){t='Tuned for '+P.tag+', Search reaches '+fmt(pp)+' on '+P.col.toLowerCase()+'. The form tuned for '+Q.tag+' only reaches '+fmt(qp)+' there'+(win(Q,qq,pq)?', but it wins on '+Q.col.toLowerCase()+' ('+fmt(qq)+' against '+fmt(pq)+').':'.');}
+    else t='At this length the forms tuned for different purposes are close. Shorten the target to see them pull apart.';
+    var rk=rows[1],zero=DM.filter(function(_,di){return rk.c[di]===0;}).map(function(d){return d.n;});
+    if(zero.length)t+=' Rank and cut ignores domains: at this length it keeps no items from '+zero.join(' or ')+', so it can look strong on precision while dropping a whole part of what the scale measures.';
+    $('#verd').textContent=t;
+  }
   function draw(){
     svg.textContent='';
+    var p=PUR[purp],f=info(keep),isSE=view==='se',ymax=isSE?SEMAX:ymaxInfo,n=keep.filter(Boolean).length;
+    var V=function(v){return isSE?Math.min(SEMAX,v>1e-9?1/Math.sqrt(v):SEMAX):v;},Y=function(v){return 196-V(v)/ymax*170;};
+    /* where this purpose needs precision */
+    var reg=function(a,b){var r=S('rect',{x:X(a),y:20,width:X(b)-X(a),height:176},svg);r.style.fill='var(--c-tool)';r.style.opacity='.25';};
+    if(p.k==='cut'){reg(.5,1.5);var cl=S('line',{x1:X(1),y1:20,x2:X(1),y2:196,'stroke-width':2.5,'stroke-dasharray':'6 5'},svg);cl.style.stroke='var(--ink)';T(svg,'cut-off',X(1)+6,34,{'font-size':'11.5','font-weight':'800'});}
+    else if(p.k==='groups'){var d=S('path',{d:'M'+X(TH[0])+' 196 '+TH.map(function(t,i){return 'L'+X(t).toFixed(1)+' '+(196-PHI[i]*92).toFixed(1);}).join(' ')+' L'+X(TH[TH.length-1])+' 196Z'},svg);d.style.fill='var(--c-tool)';d.style.opacity='.35';T(svg,'where most people are',X(0),190,{'text-anchor':'middle','font-size':'11.5','font-weight':'800'});}
+    else{reg(-2,2);T(svg,'every person from '+MINUS+'2 to 2',X(0),190,{'text-anchor':'middle','font-size':'11.5','font-weight':'800'});}
     S('line',{x1:44,y1:196,x2:540,y2:196,'stroke-width':2},svg).style.stroke='var(--ink)';S('line',{x1:44,y1:20,x2:44,y2:196,'stroke-width':2},svg).style.stroke='var(--ink)';
-    for(var t=-3;t<=3;t++){T(svg,String(t),X(t),213,{'text-anchor':'middle','font-size':'11','font-weight':'700'});}
-    T(svg,'trait level',292,227,{'text-anchor':'middle','font-size':'11','font-weight':'700'});T(svg,'information',12,108,{'text-anchor':'middle','font-size':'11','font-weight':'700','transform':'rotate(-90 12 108)'});
-    var fp=S('path',{d:path(full),fill:'none','stroke-width':2.5,'stroke-dasharray':'7 6'},svg);fp.style.stroke='var(--muted)';
-    var cur=TH.map(function(_,i){return I.reduce(function(s,it,j){return s+(keep[j]?it.inf[i]:0);},0);});
-    var kp=S('path',{d:path(cur),fill:'none','stroke-width':5,'stroke-linejoin':'round'},svg);kp.style.stroke='var(--coral)';
-    T(svg,'full scale',X(1.6),Y(full[TH.indexOf(1.5)])-8,{'font-size':'11.5','font-weight':'800','style':'fill:var(--muted)'});
-    T(svg,'your short form',X(.25),Y(Math.max.apply(null,cur))+26,{'text-anchor':'middle','font-size':'11.5','font-weight':'800'});
+    for(var t=-3;t<=3;t++){T(svg,(t<0?MINUS+Math.abs(t):String(t)),X(t),213,{'text-anchor':'middle','font-size':'11','font-weight':'700'});}
+    T(svg,'trait level',292,227,{'text-anchor':'middle','font-size':'11','font-weight':'700'});
+    T(svg,isSE?'standard error':'information',12,108,{'text-anchor':'middle','font-size':'11','font-weight':'700','transform':'rotate(-90 12 108)'});
+    if(isSE)[0,.5,1,1.5].forEach(function(v){var yy=196-v/SEMAX*170;T(svg,String(v),38,yy+4,{'text-anchor':'end','font-size':'10.5','font-weight':'600'});});
+    var fp=S('path',{d:path(full,Y),fill:'none','stroke-width':2.5,'stroke-dasharray':'7 6'},svg);fp.style.stroke='var(--muted)';
+    var kp=S('path',{d:path(f,Y),fill:'none','stroke-width':5,'stroke-linejoin':'round'},svg);kp.style.stroke='var(--coral)';
+    if(isSE){T(svg,'full scale',X(-1.1),Y(full[ix(-1)])+24,{'font-size':'11.5','font-weight':'800','style':'fill:var(--muted)'});if(n)T(svg,'your short form',X(-1.8),Y(f[ix(-1.75)])-8,{'font-size':'11.5','font-weight':'800'});}
+    else{T(svg,'full scale',X(1.6),Y(full[ix(1.5)])-8,{'font-size':'11.5','font-weight':'800','style':'fill:var(--muted)'});if(n)T(svg,'your short form',X(.25),Y(Math.max.apply(null,f))+26,{'text-anchor':'middle','font-size':'11.5','font-weight':'800'});}
     I.forEach(function(it,i){it.b.setAttribute('aria-pressed',keep[i]);});
-    var r=ret(keep),c=counts(keep),n=keep.filter(Boolean).length,mean=r.reduce(function(a,b){return a+b;},0)/3;
-    $('#sK').textContent=n;$('#sM').textContent=Math.round(mean*100)+'%';$('#sW').textContent=Math.round(Math.min.apply(null,r)*100)+'%';
+    var c=counts(keep);
+    $('#sK').textContent=n;$('#sPl').textContent=p.col;$('#sP').textContent=n?fmt(p.val(f)):'n/a';$('#pdesc').textContent=p.desc;
     var low=DM.filter(function(_,di){return c[di]<2;});$('#sFlag').textContent=low.length?'Warning: '+low.map(function(d){return d.n;}).join(', ')+' has fewer than 2 items':'';
-    var db=$('#dbars');db.textContent='';DM.forEach(function(d,di){var row=H('div',{'class':'dbar'},db);H('span',{text:d.n},row);var tr=H('div',{'class':'t'},row);var f=H('i',{},tr);f.style.setProperty('--c',d.c);f.style.width=Math.round(r[di]*100)+'%';H('span',{'class':'v',text:Math.round(r[di]*100)+'%'},row);});
+    var db=$('#dbars');db.textContent='';DM.forEach(function(d,di){var tot=0,got=0;I.forEach(function(it,i){if(it.d===di){tot+=it.area;if(keep[i])got+=it.area;}});var share=Math.round(got/tot*100);
+      var row=H('div',{'class':'dbar'},db);H('span',{text:d.n},row);var tr=H('div',{'class':'t'},row);var fi=H('i',{},tr);fi.style.setProperty('--c',d.c);fi.style.width=share+'%';H('span',{'class':'v',text:share+'%'},row);});
+    table(target());
+    fitText(svg);
   }
-  function target(){return +$('#tn').value;}
-  $('#tn').addEventListener('input',function(){$('#oN').textContent=target();});
+  $('#tn').addEventListener('input',function(){$('#oN').textContent=target();draw();});
   $('#oN').textContent=target();
-  $('#bAll').addEventListener('click',function(){keep=I.map(function(){return true;});draw();});
-  $('#bRank').addEventListener('click',function(){
-    var order=I.map(function(_,i){return i;}).sort(function(a,b){return I[b].area-I[a].area;}),k=I.map(function(){return false;});
-    order.slice(0,target()).forEach(function(i){k[i]=true;});keep=k;draw();});
-  $('#bSearch').addEventListener('click',function(){
-    var k=I.map(function(){return true;});
-    while(k.filter(Boolean).length>target()){
-      var c=counts(k),best=-1,bs=-9;
-      I.forEach(function(it,i){if(!k[i]||c[it.d]<=2)return;k[i]=false;var s=obj(k);k[i]=true;if(s>bs){bs=s;best=i;}});
-      if(best<0)break;k[best]=false;}
-    keep=k;draw();});
-  var _ds=draw;draw=function(){_ds();fitText(svg);};
+  $('#bAll').addEventListener('click',function(){keep=ALL.slice();draw();});
+  $('#bRank').addEventListener('click',function(){keep=rankKeep(target());draw();});
+  $('#bSearch').addEventListener('click',function(){keep=searchKeep(target(),PUR[purp].k);draw();});
   $('#bSearch').click();
 })();
 
