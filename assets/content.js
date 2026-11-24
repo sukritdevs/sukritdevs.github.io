@@ -179,7 +179,7 @@ window.PF = (function () {
       why: 'A translated screening tool should be checked item by item before anyone compares total scores across groups. That is the question behind the Hindi DAST-10, and behind checking the FSCQ across two samples.' },
     { id: 'cell', file: 'toys/empty-cell.html', title: 'Why is this cell empty?', from: ['helpDemo', 'thesis'],
       q: 'A value is missing. Is that a problem, a design choice, or information?',
-      learn: 'Read a survey map and what you know about each person, then give every empty cell its reason. Each answer says what it means for the analysis.',
+      learn: 'Read a survey map and what you know about each person, then give every empty cell its reason. Then see what a reason does to an estimate when you delete the incomplete cases and when you do not.',
       why: 'When I screened a merged dataset for class, every missing value got a reason. My thesis used planned missing data, which is not the same thing as dropout.' }
   ];
 

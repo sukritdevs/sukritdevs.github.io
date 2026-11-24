@@ -82,6 +82,16 @@ button.cell.ok{border-style:solid;border-color:var(--good);color:var(--good);fon
 .fb{min-height:64px}
 .fb.good{border-color:var(--good)}.fb.bad{border-color:var(--bad)}
 
+.lab{margin-bottom:4px}
+.cmpw{overflow-x:auto}.cmpw:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+table.cmp{border-collapse:collapse;width:100%;font-size:13.5px}
+.cmp caption{text-align:left;font-weight:900;font-stretch:85%;font-size:16px;padding:0 0 6px}
+.cmp th,.cmp td{border:2px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.cmp thead th{font-weight:800;font-stretch:88%;background:var(--sheet)}
+.cmp thead th small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.cmp tbody th{font-weight:800;font-stretch:90%}
+.cmp td.num{font-family:'Red Hat Mono',monospace;font-weight:500;white-space:nowrap}
+@media(max-width:560px){table.cmp{font-size:12.5px}.cmp th,.cmp td{padding:5px 5px}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
@@ -105,6 +115,26 @@ button.cell.ok{border-style:solid;border-color:var(--good);color:var(--good);fon
       <div class="seg" id="rseg"></div>
       <div class="box fb" id="fb" aria-live="polite"></div>
       <div class="stat"><span>Correct <b id="gOk">0</b></span><span>Tries <b id="gTry">0</b></span><span>Empty cells <b id="gLeft">0</b></span></div>
+    </div>
+</section>
+<section class="sheet" id="estimate">
+    <div class="cover"><h2>What it does to an estimate</h2><span>invented data, known truth</span></div>
+    <div class="body">
+      <p class="try"><b>Try it</b>The true average distress score is 50, because these data are invented. Choose how scores went missing, then compare two ways of analysing what is left.</p>
+      <p class="hint">Every person has a starting score. About 3 in 10 follow-up scores go missing. Each run draws 200 new studies, so you see how an estimate behaves over many studies, not one lucky or unlucky result. Each dot is one study, and the thick bar is the average of the dots.</p>
+      <div class="ctrls">
+        <div><div class="hint lab" id="mlab">Scores went missing because</div><div class="seg" role="group" aria-labelledby="mlab" id="mech"></div></div>
+        <label>How strongly it depends on distress <output id="oS">1.5</output><input type="range" id="ms" min="0.5" max="2" step="0.25" value="1.5"></label>
+      </div>
+      <p class="box" id="mdesc" aria-live="polite"></p>
+      <svg id="mplot" viewBox="0 0 560 244" role="img" aria-label="Estimates from 200 simulated studies"></svg>
+      <div class="cmpw" tabindex="0" role="region" aria-label="Average estimate, bias and spread for each way of analysing the data">
+        <table class="cmp" id="mtab"><caption>Over 200 studies</caption>
+          <thead><tr><th scope="col">Analysis</th><th scope="col">Average estimate</th><th scope="col">Bias <small>estimate minus 50</small></th><th scope="col">Spread <small>SD across studies</small></th></tr></thead><tbody></tbody></table>
+      </div>
+      <p class="box fb" id="mverd" aria-live="polite"></p>
+      <div class="bar"><button class="btn go" id="mgo" type="button">Draw 200 new studies</button></div>
+      <p class="hint">The second analysis is a simple regression on the starting score, so the idea stays visible. Full-information maximum likelihood and multiple imputation make this kind of adjustment in a fuller way. Skip logic and survey version are a different problem: they change who a question is about, so the fix is to define that group before you analyse, not to adjust.</p>
     </div>
 </section>
 <div id="toy-next"></div>
@@ -168,6 +198,69 @@ var T=function(p,s,x,y,o){var t=S('text',{x:x,y:y},p);t.textContent=s;if(o)for(v
     else{fb.className='box fb bad';fb.innerHTML='';H('b',{text:'Not quite. '},fb);fb.appendChild(document.createTextNode('Re-read the survey map and what you know about this person, then try again.'));}
     $('#gOk').textContent=ok;$('#gTry').textContent=tries;$('#gLeft').textContent=total-ok-auto;});
   $('#gLeft').textContent=total;$('#fb').className='box fb';
+})();
+
+/* ---------- 6b what the reason does to an estimate ---------- */
+(function(){
+  var MINUS='−',RHO=.6,N=300,R=200,PM=.3,TRUE=50,LO=44,HI=56;
+  function rng(seed){var a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  function norm(r){var u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+  var lg=function(x){return 1/(1+Math.exp(-x));};
+  var MECH=[
+    {k:'mcar',nm:'It was planned',desc:'Everyone had the same chance of being missing, like a randomly assigned short form. Nothing about the person predicts it.'},
+    {k:'mar',nm:'Higher starting scores left',desc:'People with higher distress at the start were more likely to drop out. You saw that starting score for everyone, so you can use it.'},
+    {k:'mnar',nm:'Higher unseen scores left',desc:'People with higher distress at follow-up were more likely to drop out, and follow-up is the score that is missing. The starting score only helps as far as it predicts it.'}];
+  var cal={};
+  function calib(mech,s){var key=mech+s;if(cal[key]!==undefined)return cal[key];var r=rng(99),pts=[];
+    for(var i=0;i<4000;i++){var x=norm(r),e=norm(r),y=RHO*x+Math.sqrt(1-RHO*RHO)*e;pts.push(mech==='mar'?x:y);}
+    var lo=-10,hi=10;for(var k=0;k<50;k++){var a=(lo+hi)/2,m=0;for(var j=0;j<pts.length;j++)m+=lg(a+s*pts[j]);m/=pts.length;if(m>PM)hi=a;else lo=a;}
+    return cal[key]=(lo+hi)/2;}
+  var mean=function(v){var s=0;for(var i=0;i<v.length;i++)s+=v[i];return s/v.length;};
+  var sd=function(v){var u=mean(v),s=0;for(var i=0;i<v.length;i++)s+=(v[i]-u)*(v[i]-u);return Math.sqrt(s/(v.length-1));};
+  function run(mech,s,seed){
+    var r=rng(seed),a=mech==='mcar'?Math.log(PM/(1-PM)):calib(mech,s),sl=mech==='mcar'?0:s,cc=[],ad=[];
+    for(var q=0;q<R;q++){var X=[],Y=[],xo=[],yo=[];
+      for(var i=0;i<N;i++){var x=norm(r),e=norm(r),z=RHO*x+Math.sqrt(1-RHO*RHO)*e;X.push(x);var y=TRUE+10*z;Y.push(y);
+        var zz=mech==='mar'?x:z;if(r()>=lg(a+sl*zz)){xo.push(x);yo.push(y);}}
+      var mx=mean(xo),my=mean(yo),c=0,vv=0;for(var j=0;j<xo.length;j++){c+=(xo[j]-mx)*(yo[j]-my);vv+=(xo[j]-mx)*(xo[j]-mx);}
+      cc.push(my);ad.push(my+(c/vv)*(mean(X)-mx));}
+    return {cc:cc,ad:ad};}
+  var mech=1,seed=11,res=null,svg=$('#mplot'),X=function(v){return 44+(Math.min(HI,Math.max(LO,v))-LO)/(HI-LO)*496;};
+  var seg=$('#mech');MECH.forEach(function(m,i){var b=H('button',{type:'button','class':'btn','aria-pressed':String(i===mech),text:m.nm},seg);b.addEventListener('click',function(){mech=i;[].forEach.call(seg.children,function(x,j){x.setAttribute('aria-pressed',String(j===i));});go();});});
+  var sg=function(v){var r=Math.round(v*10)/10;return r===0?'0.0':(r<0?MINUS:'+')+Math.abs(r).toFixed(1);};
+  function go(){
+    var m=MECH[mech],s=+$('#ms').value;$('#oS').textContent=s.toFixed(2).replace(/0$/,'');$('#ms').disabled=m.k==='mcar';
+    res=run(m.k,s,seed);$('#mdesc').textContent=m.desc;
+    var narrow=svg.clientWidth<480,BH=narrow?128:92,axY=48+2*BH-4;svg.setAttribute('viewBox','0 0 560 '+(axY+30));
+    var rows=[{n:'Delete incomplete cases',sn:narrow?'Delete cases':'Delete incomplete cases',v:res.cc,c:'var(--coral)'},{n:'Keep everyone, use the starting score',sn:narrow?'Use starting score':'Keep everyone, use the starting score',v:res.ad,c:'var(--c-teach)'}];
+    rows.forEach(function(r){r.m=mean(r.v);r.b=r.m-TRUE;r.s=sd(r.v);});
+    /* plot */
+    svg.textContent='';
+    S('line',{x1:44,y1:axY,x2:540,y2:axY,'stroke-width':2},svg).style.stroke='var(--ink)';
+    for(var t=LO;t<=HI;t+=2){T(svg,String(t),X(t),axY+17,{'text-anchor':'middle','font-size':'11','font-weight':'700'});S('line',{x1:X(t),y1:axY,x2:X(t),y2:axY+5,'stroke-width':1.5},svg).style.stroke='var(--ink)';}
+    var tl=S('line',{x1:X(TRUE),y1:30,x2:X(TRUE),y2:axY,'stroke-width':2.5,'stroke-dasharray':'6 5'},svg);tl.style.stroke='var(--ink)';
+    T(svg,'true average, 50',X(TRUE)+6,22,{'font-size':'11.5','font-weight':'800'});
+    rows.forEach(function(r,ri){var top=48+ri*BH;
+      T(svg,r.sn,46,top+10,{'font-size':'12','font-weight':'800'});
+      r.v.forEach(function(v,i){var jy=((i*37)%23)/23,c=S('circle',{cx:X(v).toFixed(1),cy:(top+26+jy*(BH-52)).toFixed(1),r:3.2},svg);c.style.fill=r.c;c.style.opacity='.55';});
+      var mk=S('line',{x1:X(r.m),y1:top+20,x2:X(r.m),y2:top+BH-14,'stroke-width':4,'stroke-linecap':'round'},svg);mk.style.stroke='var(--ink)';});
+    svg.setAttribute('aria-label','Estimates from 200 simulated studies. True average 50. '+rows.map(function(r){return r.n+': average '+r.m.toFixed(1)+', bias '+sg(r.b);}).join('. '));
+    fitText(svg);
+    /* table */
+    var tb=$('#mtab tbody');tb.textContent='';
+    rows.forEach(function(r){var tr=H('tr',{},tb);H('th',{scope:'row',text:r.n},tr);H('td',{'class':'num',text:r.m.toFixed(1)},tr);H('td',{'class':'num',text:sg(r.b)},tr);H('td',{'class':'num',text:r.s.toFixed(2)},tr);});
+    /* what to take from it */
+    var cc=rows[0],ad=rows[1],t2;
+    if(m.k==='mcar')t2='Both land on the true value. Planned missingness cost some precision, not accuracy, which is why it is the easy case. Raise the dependence in the other two cases and watch what changes.';
+    else if(m.k==='mar')t2='Deleting incomplete cases leaves the average '+Math.abs(cc.b).toFixed(1)+' points '+(cc.b<0?'too low':'too high')+', because the people who left scored higher. Using the starting score leaves a bias of '+sg(ad.b)+'. The reason was something you had measured, so you could correct for it.';
+    else t2='Both are off: '+sg(cc.b)+' for deleting cases and '+sg(ad.b)+' for using the starting score. The adjustment helps only as far as the starting score predicts follow-up. The reason lives in the part you cannot see, so no simple adjustment on these data fixes it. The honest move is to say so and test how much it could matter with a sensitivity analysis.';
+    if(m.k!=='mcar')t2+=' In real data you never see the true average of 50, so the two dropout cases would look alike: some scores are missing and the people who left are different. Only the reason tells them apart, which is why the game above asks for it.';
+    $('#mverd').textContent=t2;
+  }
+  var wasNarrow=null;window.addEventListener('resize',function(){var n=svg.clientWidth<480;if(wasNarrow!==null&&n!==wasNarrow)go();wasNarrow=n;});
+  $('#ms').addEventListener('input',go);
+  $('#mgo').addEventListener('click',function(){seed+=17;go();});
+  go();
 })();
 
 })();
