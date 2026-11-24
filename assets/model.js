@@ -5,7 +5,8 @@
   var host = document.getElementById('model');
   if (!host || !PF) return;
   var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&]still/.test(location.search);
-  var mq = window.matchMedia('(max-width: 1279px)');
+  /* The vertical (phone) drawing is for phones and touch tablets. A desktop window that is merely narrow (a 1080p screen at 125-150% scaling with a wide side taskbar is about 1100-1250 CSS px) keeps the real diagram. */
+  var mq = window.matchMedia('(max-width: 819px), (pointer: coarse) and (max-width: 1199px)');
   var MOBILE = mq.matches || /[?&]phone/.test(location.search);
   var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
   var rand = function (a, b) { return a + Math.random() * (b - a); };
@@ -129,7 +130,7 @@
     var SP = 78, HW = 36, HH = 25, GAP = 18, ROW = 72, H;
     var blockH = F.map(function (f) { return MOBILE ? (f.ind.length > 3 ? 268 : 196) : 0; });
     if (MOBILE) { H = 300; blockH.forEach(function (b) { H += b; }); H += 40; }
-    else { var cw = canvas.clientWidth || window.innerWidth, ch = canvas.clientHeight || (window.innerHeight - 120); H = clamp(Math.round(W * ch / cw), 600, 1100); }
+    else { var cw = canvas.clientWidth || window.innerWidth, ch = canvas.clientHeight || (window.innerHeight - 120); H = clamp(Math.round(W * ch / cw), 540, 1100); }
     build.H = H;
     var nodes = [], edges = [], facN = [], indN = [], cauN = [], root;
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'group', 'aria-label': 'Model of my work: background above, five factors, and the projects as evidence for each' }, canvas);
@@ -423,6 +424,16 @@
     var api = { leave: leave, calm: calm,
       unpin: function (refocus) { pinned = null; hover = null; clearTimeout(showTimer); hidePop(); apply(); if (refocus && lastFocus && lastFocus.focus) { try { lastFocus.focus({ preventScroll: true }); } catch (x) { } } },
       destroy: function () { alive = false; window.removeEventListener('keydown', skipIntro); window.removeEventListener('wheel', skipIntro); window.removeEventListener('touchmove', skipIntro); clearTimeout(introT); clearFit(); clearTimeout(nudgeT); clearTimeout(hideT); cancelAnimationFrame(raf2); clearTimeout(wordTimer); clearTimeout(showTimer); anims.forEach(function (a) { try { a.cancel(); } catch (x) { } }); hidePop(); host.textContent = ''; } };
+    /* on a short or narrow window the card and buttons would land on top of a node: shrink them until they do not */
+    function fitOverlays() {
+      if (MOBILE || !alive) return;
+      [intro, acts].forEach(function (box) {
+        box.classList.remove('compact', 'mini');
+        var hit = function () { var r = box.getBoundingClientRect(); return nodes.some(function (n) { if (!n.g) return false; var b = n.g.getBoundingClientRect(); return b.width > 0 && b.right > r.left - 8 && b.left < r.right + 8 && b.bottom > r.top - 8 && b.top < r.bottom + 8; }); };
+        if (hit()) { box.classList.add('compact'); if (hit()) box.classList.add('mini'); }
+      });
+    }
+    build.fit = fitOverlays; fitOverlays();
     cur = api; apply();
     /* arriving from a toy: ?open=cleome pins that card straight away, with no intro */
     var want = (location.search.match(/[?&]open=([\w-]+)/) || [])[1], target = null;
@@ -438,8 +449,8 @@
     clearTimeout(rebuildT);
     rebuildT = setTimeout(function () {
       var m = mq.matches; var need = m !== lastMobile;
-      if (!m && !need) { var canvas = host.querySelector('.canvas'); if (canvas) { var H2 = clamp(Math.round(1470 * canvas.clientHeight / canvas.clientWidth), 600, 1100); if (Math.abs(H2 - build.H) > 40) need = true; } }
-      if (need) { lastMobile = m; MOBILE = m; if (cur) cur.destroy(); build(); }
+      if (!m && !need) { var canvas = host.querySelector('.canvas'); if (canvas) { var H2 = clamp(Math.round(1470 * canvas.clientHeight / canvas.clientWidth), 540, 1100); if (Math.abs(H2 - build.H) > 40) need = true; } }
+      if (need) { lastMobile = m; MOBILE = m; if (cur) cur.destroy(); build(); } else if (build.fit) build.fit();
     }, 220);
   }
   window.addEventListener('resize', maybeRebuild);

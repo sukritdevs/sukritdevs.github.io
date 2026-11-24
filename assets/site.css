@@ -9,7 +9,7 @@ a{color:var(--fg);text-decoration-thickness:2px;text-underline-offset:3px}
 .page{max-width:1440px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));padding-bottom:56px}
 
 /* the model fills the window */
-#model{height:calc(100svh - var(--bar));min-height:560px;scroll-margin-top:var(--bar)}
+#model{height:calc(100svh - var(--bar));min-height:520px;scroll-margin-top:var(--bar)}
 .stage{--paper:#ECEEF3;--ink:#12141C;--wc:#7B8DFF;position:relative;display:flex;flex-direction:column;height:100%;overflow:hidden;isolation:isolate;background:var(--paper) var(--noise);color:var(--ink);font-weight:500;font-size:14px}
 .canvas{position:relative;flex:1;min-height:0}
 .canvas svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible;z-index:1}
@@ -181,6 +181,16 @@ footer.site a{color:var(--muted);padding:6px 0;min-height:40px;display:inline-fl
 .stage.mobile .dockl{width:100%}
 .stage.mobile .ctrl{width:100%}
 @media (max-width:1380px) and (min-width:1281px){.intro{width:min(270px,19vw);font-size:14px}.intro-lead{font-size:16px}}
+/* a narrow or short desktop window (1080p at 125-150% scaling, side taskbar): keep the real diagram, tighten the chrome around it */
+.intro.compact{width:min(250px,21vw);padding:10px 12px 12px}.intro.compact p:not(.intro-lead){display:none}.intro.compact .intro-lead{font-size:15.5px}
+.intro.mini{width:min(200px,21vw)}.intro.mini .intro-lead{font-size:14px}
+.acts.compact .btn.alt{display:none}
+@media (min-width:820px) and (max-width:1280px){
+  .legend{font-size:13px;gap:4px 14px}.hintline{font-size:13px}.dock{gap:6px 20px}
+  .dock button{min-height:36px}.seg button{min-height:38px;padding:0 14px}
+}
+@media (min-width:820px) and (max-width:1000px){.mode-tip{display:none}}
+@media (min-width:820px) and (max-height:720px){.hintline{display:none}.dock{padding-top:6px;padding-bottom:6px}}
 .soon{border-style:solid;border-width:2px;background:#E7E9EF;color:#2C313D;font-weight:600;min-height:0;padding:6px 12px}
 
 p,li,.lede{text-wrap:pretty}h1,h2,h3{text-wrap:balance}
