@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shorten the scale | Sukrit’s Portfolio</title>
+<meta name="description" content="An interactive piece from my portfolio, run on invented data where the truth is known.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%279%27 fill=%27%23F4807A%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Red+Hat+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one paper sheet per toy, each with a colour-coded cover band, the toy itself, and one question for the author. Print-shop look from the diagram draft: ink borders, hard shadows, dots. */
+:root{color-scheme:light;--paper:#ECEEF3;--sheet:#F8F9FC;--ink:#12141C;--muted:#464C5A;--line:#12141C;--shadow:#12141C;--coral:#F4807A;--on:#12141C;
+--c-res:#7B8DFF;--c-tool:#FFE14A;--c-scale:#FF7AB6;--c-teach:#3FD6A6;--c-design:#FF8A4C;--good:#1E8F5B;--bad:#D8453B}
+*{box-sizing:border-box}
+body{margin:0;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--paper);color:var(--ink);font-family:'Archivo',system-ui,sans-serif;font-weight:500;font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto}
+h1{margin:0 0 8px;font-weight:900;font-stretch:80%;font-size:clamp(2.2rem,6vw,3.6rem);line-height:.95;letter-spacing:-.01em;text-wrap:balance}
+h1 i{display:inline-block;width:.2em;height:.2em;border-radius:50%;background:var(--coral);margin-left:.06em}
+.lede{max-width:62ch;color:var(--muted);margin:0 0 20px}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 34px}
+.jump a{color:var(--ink);text-decoration:none;font-weight:800;font-stretch:90%;font-size:13px;border:2.5px solid var(--line);padding:4px 10px}
+.jump a:hover{background:var(--ink);color:var(--paper)}
+.sheet{background:var(--sheet);border:3px solid var(--line);box-shadow:7px 7px 0 var(--shadow);margin:0 0 44px;scroll-margin-top:16px}
+.cover{--c:var(--c-res);background:radial-gradient(circle,rgba(18,20,28,.55) 1.2px,transparent 1.6px) 0 0/8px 8px,var(--c);color:var(--on);border-bottom:3px solid var(--line);padding:14px 16px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end;justify-content:space-between}
+.cover h2{margin:0;font-weight:900;font-stretch:80%;font-size:26px;line-height:1;background:#F8F9FC;border:2.5px solid #12141C;padding:3px 9px}
+.cover .serves{font-weight:800;font-stretch:85%;font-size:12.5px;background:#F8F9FC;border:2px solid #12141C;padding:1px 7px}
+.body{padding:16px 16px 18px;display:grid;gap:14px}
+.body>p{margin:0;max-width:70ch}
+.hint{color:var(--muted);font-size:14.5px}
+.try{margin:0;border:2.5px solid var(--line);padding:8px 12px}
+.try b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;margin-right:8px;border:2px solid var(--line);padding:0 6px}
+.node:focus-visible circle.ci{stroke-width:5}
+.node:focus-visible{outline:none}
+.nleg{display:none}
+.narrow .nleg{display:block}
+@media (pointer:coarse){.btn,select{min-height:44px}.chip{min-height:40px;min-width:48px}button.cell,.cell{width:40px;height:40px}table.g{border-spacing:2px}}
+.ask{border-top:2px dashed var(--line);padding:10px 16px 12px;font-size:14px;display:flex;gap:10px;align-items:baseline}
+.ask b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;flex:none;border:2px solid var(--line);padding:0 6px}
+.two{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.ctrls{display:grid;gap:10px 22px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.ctrls label{display:flex;flex-direction:column;gap:3px;font-weight:700;font-stretch:90%;font-size:13px}
+.ctrls output{font-family:'Red Hat Mono',monospace;font-weight:500;font-size:12.5px;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--ink);margin:2px 0}
+.btn{font:inherit;font-weight:800;font-stretch:90%;font-size:13.5px;color:var(--ink);background:transparent;border:2.5px solid var(--line);padding:6px 12px;min-height:36px;cursor:pointer}
+.btn:hover{background:rgba(127,127,140,.18)}
+.btn[aria-pressed="true"],.btn.on{background:var(--ink);color:var(--paper)}
+.btn.go{background:#FFE14A;color:#12141C}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,input:focus-visible,.cell:focus-visible,.chip:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.box{border:2.5px solid var(--line);padding:10px 12px;background:var(--sheet)}
+.box b{font-weight:800}
+.mono{font-family:'Red Hat Mono',monospace;font-size:12.5px;font-weight:500}
+svg{display:block;max-width:100%;height:auto}
+svg text{font-family:'Archivo',sans-serif;fill:var(--ink)}
+.node{cursor:grab;touch-action:none}.node:active{cursor:grabbing}
+.stat{display:flex;flex-wrap:wrap;gap:6px 18px;font-weight:700;font-stretch:90%;font-size:13.5px}
+.stat span b{font-family:'Red Hat Mono',monospace;font-weight:500}
+/* short form */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-weight:800;font-stretch:88%;font-size:12.5px;border:2.5px solid var(--line);padding:3px 8px;cursor:pointer;background:var(--c);color:#12141C;min-width:46px}
+.chip[aria-pressed="false"]{background:transparent;color:var(--muted);border-style:dashed;text-decoration:line-through}
+.dbar{display:grid;grid-template-columns:76px 1fr 46px;gap:8px;align-items:center;font-size:12.5px;font-weight:700;font-stretch:90%}
+.dbar .t{height:12px;border:2px solid var(--line);position:relative}.dbar .t i{position:absolute;inset:0 auto 0 0;background:var(--c)}
+.dbar .v{font-family:'Red Hat Mono',monospace;font-weight:500;text-align:right}
+/* grid game */
+.gwrap{overflow-x:auto;padding-bottom:4px}
+table.g{border-collapse:separate;border-spacing:3px;font-size:12.5px;font-weight:700}
+table.g th{font-weight:800;font-stretch:85%;font-size:11.5px;color:var(--muted);padding:0 2px;text-align:center}
+table.g th.rh{text-align:left;padding-right:8px;color:var(--ink)}
+.cell{width:34px;height:28px;text-align:center;border:2px solid transparent;font-family:'Red Hat Mono',monospace;font-weight:500;background:rgba(127,127,140,.16);color:var(--muted);padding:0}
+button.cell{cursor:pointer;background:transparent;border:2px dashed var(--ink);color:var(--ink)}
+button.cell.sel{background:var(--c-tool);color:#12141C;border-style:solid}
+button.cell.ok{border-style:solid;border-color:var(--good);color:var(--good);font-weight:900}
+.legend{display:grid;gap:2px;font-size:13px}
+.legend span{display:flex;gap:8px}.legend b{font-family:'Red Hat Mono',monospace;font-weight:500;font-size:12px;min-width:56px}
+.fb{min-height:64px}
+.fb.good{border-color:var(--good)}.fb.bad{border-color:var(--bad)}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<link rel="stylesheet" href="../assets/nav.css">
+<link rel="stylesheet" href="../assets/shell.css">
+</head>
+<body data-toy="short">
+<script src="../assets/content.js"></script>
+<script src="../assets/nav.js" data-base="../" data-page="toy"></script>
+<main class="wrap" id="main">
+<div id="toy-intro"></div>
+<section class="sheet" id="shortform">
+    <div class="body">
+      <p class="try"><b>Start here</b>The page opens on a 12-item form. Press Rank and cut, then Search, and compare "Worst domain".</p>
+      <p class="hint">Twenty invented items in three domains. Information is how precisely the scale measures at each trait level. Click an item to drop or restore it. Rank and cut keeps the strongest items overall and ignores domains. Search keeps at least two items per domain and penalises imbalance.</p>
+      <svg id="sf" viewBox="0 0 560 230" role="img" aria-label="Test information curve for the full and shortened scale"></svg>
+      <div class="chips" id="chips"></div>
+      <div class="ctrls">
+        <label>Target length <output id="oN">12</output><input type="range" id="tn" min="6" max="20" value="12"></label>
+        <div><div class="hint" style="margin-bottom:4px">Reach the target by</div><div class="seg"><button class="btn" id="bAll">Keep all</button><button class="btn" id="bRank">Rank and cut</button><button class="btn go" id="bSearch">Search</button></div></div>
+      </div>
+      <div id="dbars" style="display:grid;gap:5px"></div>
+      <div class="stat"><span>Items kept <b id="sK">20</b></span><span>Average retained <b id="sM">100%</b></span><span>Worst domain <b id="sW">100%</b></span><span id="sFlag" class="hint"></span></div>
+      <p class="hint">The real app searches with ant colony, genetic, annealing and greedy methods. This toy uses a simple greedy search so it runs instantly.</p>
+    </div>
+</section>
+<div id="toy-next"></div>
+</main>
+<script src="../assets/shell.js"></script>
+<script>
+
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+var $=function(s){return document.querySelector(s);};
+var clamp=function(v,a,b){return Math.min(b,Math.max(a,v));};
+var S=function(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+var H=function(t,a,p){var e=document.createElement(t);for(var k in a){if(k==='text')e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;};
+var FIT=[],RO=window.ResizeObserver?new ResizeObserver(function(){FIT.forEach(fitText);}):null;
+function fitText(svg){var vb=svg.viewBox&&svg.viewBox.baseVal,w=svg.clientWidth;if(!vb||!w)return;var k=vb.width/w;
+  [].forEach.call(svg.querySelectorAll('text'),function(t){if(!t.dataset.fs)t.dataset.fs=parseFloat(t.getAttribute('font-size'))||12;t.setAttribute('font-size',Math.max(+t.dataset.fs,12*k).toFixed(1));});
+  if(FIT.indexOf(svg)<0){FIT.push(svg);if(RO)RO.observe(svg);}}
+var T=function(p,s,x,y,o){var t=S('text',{x:x,y:y},p);t.textContent=s;if(o)for(var k in o)t.setAttribute(k,o[k]);return t;};
+
+/* ---------- 5 short form ---------- */
+(function(){
+  var DM=[{n:'Domain A',c:'var(--c-res)',it:[[1.6,-1.0],[1.9,-.4],[1.4,.2],[2.1,.6],[1.7,1.0],[1.5,1.4],[1.8,-.7]]},
+          {n:'Domain B',c:'var(--c-teach)',it:[[1.8,-.8],[1.5,-.2],[2.0,.3],[1.6,.8],[1.9,1.2],[1.4,-.5],[1.7,.1]]},
+          {n:'Domain C',c:'var(--c-tool)',it:[[.9,-.3],[1.1,.4],[.8,.9],[1.0,1.4],[1.2,.1],[.9,-.6]]}];
+  var TH=[];for(var t=-3;t<=3.001;t+=.25)TH.push(t);
+  var I=[];DM.forEach(function(d,di){d.it.forEach(function(p,k){var a=p[0],b=p[1];var inf=TH.map(function(x){var P=1/(1+Math.exp(-a*(x-b)));return a*a*P*(1-P);});I.push({d:di,l:'ABC'[di]+(k+1),inf:inf,area:inf.reduce(function(s,v){return s+v;},0)});});});
+  var keep=I.map(function(){return true;}),svg=$('#sf'),chips=$('#chips');
+  var full=TH.map(function(_,i){return I.reduce(function(s,it){return s+it.inf[i];},0);}),ymax=Math.max.apply(null,full)*1.08;
+  var dArea=DM.map(function(_,di){return I.filter(function(it){return it.d===di;}).reduce(function(s,it){return s+it.area;},0);});
+  var X=function(t){return 44+(t+3)/6*496;},Y=function(v){return 196-v/ymax*170;};
+  function ret(k){var r=DM.map(function(_,di){var s=0;I.forEach(function(it,i){if(k[i]&&it.d===di)s+=it.area;});return s/dArea[di];});return r;}
+  function counts(k){return DM.map(function(_,di){return I.filter(function(it,i){return k[i]&&it.d===di;}).length;});}
+  function obj(k){var r=ret(k),m=r.reduce(function(a,b){return a+b;},0)/r.length;return m-.5*(Math.max.apply(null,r)-Math.min.apply(null,r));}
+  I.forEach(function(it,i){var b=H('button',{type:'button','class':'chip','aria-pressed':'true',text:it.l},chips);b.style.setProperty('--c',DM[it.d].c);it.b=b;b.addEventListener('click',function(){keep[i]=!keep[i];draw();});});
+  function path(arr){return arr.map(function(v,i){return (i?'L':'M')+X(TH[i]).toFixed(1)+' '+Y(v).toFixed(1);}).join(' ');}
+  function draw(){
+    svg.textContent='';
+    S('line',{x1:44,y1:196,x2:540,y2:196,'stroke-width':2},svg).style.stroke='var(--ink)';S('line',{x1:44,y1:20,x2:44,y2:196,'stroke-width':2},svg).style.stroke='var(--ink)';
+    for(var t=-3;t<=3;t++){T(svg,String(t),X(t),213,{'text-anchor':'middle','font-size':'11','font-weight':'700'});}
+    T(svg,'trait level',292,227,{'text-anchor':'middle','font-size':'11','font-weight':'700'});T(svg,'information',12,108,{'text-anchor':'middle','font-size':'11','font-weight':'700','transform':'rotate(-90 12 108)'});
+    var fp=S('path',{d:path(full),fill:'none','stroke-width':2.5,'stroke-dasharray':'7 6'},svg);fp.style.stroke='var(--muted)';
+    var cur=TH.map(function(_,i){return I.reduce(function(s,it,j){return s+(keep[j]?it.inf[i]:0);},0);});
+    var kp=S('path',{d:path(cur),fill:'none','stroke-width':5,'stroke-linejoin':'round'},svg);kp.style.stroke='var(--coral)';
+    T(svg,'full scale',X(1.6),Y(full[TH.indexOf(1.5)])-8,{'font-size':'11.5','font-weight':'800','style':'fill:var(--muted)'});
+    T(svg,'your short form',X(.25),Y(Math.max.apply(null,cur))+26,{'text-anchor':'middle','font-size':'11.5','font-weight':'800'});
+    I.forEach(function(it,i){it.b.setAttribute('aria-pressed',keep[i]);});
+    var r=ret(keep),c=counts(keep),n=keep.filter(Boolean).length,mean=r.reduce(function(a,b){return a+b;},0)/3;
+    $('#sK').textContent=n;$('#sM').textContent=Math.round(mean*100)+'%';$('#sW').textContent=Math.round(Math.min.apply(null,r)*100)+'%';
+    var low=DM.filter(function(_,di){return c[di]<2;});$('#sFlag').textContent=low.length?'Warning: '+low.map(function(d){return d.n;}).join(', ')+' has fewer than 2 items':'';
+    var db=$('#dbars');db.textContent='';DM.forEach(function(d,di){var row=H('div',{'class':'dbar'},db);H('span',{text:d.n},row);var tr=H('div',{'class':'t'},row);var f=H('i',{},tr);f.style.setProperty('--c',d.c);f.style.width=Math.round(r[di]*100)+'%';H('span',{'class':'v',text:Math.round(r[di]*100)+'%'},row);});
+  }
+  function target(){return +$('#tn').value;}
+  $('#tn').addEventListener('input',function(){$('#oN').textContent=target();});
+  $('#oN').textContent=target();
+  $('#bAll').addEventListener('click',function(){keep=I.map(function(){return true;});draw();});
+  $('#bRank').addEventListener('click',function(){
+    var order=I.map(function(_,i){return i;}).sort(function(a,b){return I[b].area-I[a].area;}),k=I.map(function(){return false;});
+    order.slice(0,target()).forEach(function(i){k[i]=true;});keep=k;draw();});
+  $('#bSearch').addEventListener('click',function(){
+    var k=I.map(function(){return true;});
+    while(k.filter(Boolean).length>target()){
+      var c=counts(k),best=-1,bs=-9;
+      I.forEach(function(it,i){if(!k[i]||c[it.d]<=2)return;k[i]=false;var s=obj(k);k[i]=true;if(s>bs){bs=s;best=i;}});
+      if(best<0)break;k[best]=false;}
+    keep=k;draw();});
+  var _ds=draw;draw=function(){_ds();fitText(svg);};
+  $('#bSearch').click();
+})();
+
+})();
+</script>
+</body>
+</html>

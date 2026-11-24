@@ -1,0 +1,12 @@
+# Internal files: not part of the public site
+HANDOFF.md
+PRODUCT.md
+content-draft.md
+_backup/
+tests/
+.impeccable/
+.claude/
+node_modules/
+*.log
+Thumbs.db
+.DS_Store

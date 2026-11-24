@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Replicate this figure | Sukrit’s Portfolio</title>
+<meta name="description" content="An interactive piece from my portfolio, run on invented data where the truth is known.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%279%27 fill=%27%23F4807A%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Red+Hat+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: print-shop sheet. Author settings table on top, auto-written methods text, then the published figure beside the reader's replication, a verdict, and the reporting checklists with their sources. */
+:root{color-scheme:light;--paper:#ECEEF3;--sheet:#F8F9FC;--ink:#12141C;--muted:#464C5A;--line:#12141C;--shadow:#12141C;--coral:#F4807A;--c-res:#7B8DFF;--on:#12141C;--pos:#2F5BE0;--neg:#C25E00;--flag:#B5179E;--bad:#C62F26;--good:#1E8F5B;--warn:#B45309;--wash:rgba(127,127,140,.16)}
+*{box-sizing:border-box}
+body{margin:0;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--paper);color:var(--ink);font-family:'Archivo',system-ui,sans-serif;font-weight:500;font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:28px}
+h1{margin:0 0 6px;font-weight:900;font-stretch:80%;font-size:clamp(2.1rem,6vw,3.5rem);line-height:.95;text-wrap:balance}
+h1 i{display:inline-block;width:.2em;height:.2em;border-radius:50%;background:var(--coral);margin-left:.06em}
+.lede{max-width:66ch;color:var(--muted);margin:0}
+.sheet{background:var(--sheet);border:3px solid var(--line);box-shadow:7px 7px 0 var(--shadow)}
+.cover{background:radial-gradient(circle,rgba(18,20,28,.55) 1.2px,transparent 1.6px) 0 0/8px 8px,var(--c-res);color:var(--on);border-bottom:3px solid var(--line);padding:12px 14px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end;justify-content:space-between}
+.cover h2{margin:0;font-weight:900;font-stretch:80%;font-size:23px;line-height:1.15;background:#F8F9FC;color:#12141C;border:2.5px solid #12141C;padding:8px 13px}
+.cover span{font-weight:800;font-stretch:85%;font-size:12.5px;background:#F8F9FC;color:#12141C;border:2px solid #12141C;padding:1px 7px}
+.body{padding:14px 16px 16px;display:grid;gap:12px}
+.body>p{margin:0;max-width:72ch}
+.hint{color:var(--muted);font-size:14.5px}
+.tbl{display:grid;gap:0;border:2.5px solid var(--line)}
+.tr{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(130px,1fr) 108px minmax(130px,1fr) minmax(150px,1.2fr);gap:8px 12px;align-items:center;padding:8px 10px;border-top:2px solid var(--line)}
+.tr:first-child{border-top:0}
+.th{font-weight:900;font-stretch:85%;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--wash)}
+.tr b{font-weight:800;font-stretch:90%}
+.tr .imp{font-size:12.5px;color:var(--muted)}
+.tr .imp em{font-style:normal;font-weight:800;color:var(--ink)}
+select{font:inherit;font-weight:700;font-size:13.5px;color:var(--ink);background:var(--sheet);border:2.5px solid var(--line);padding:5px 6px;width:100%;min-height:34px}
+select:disabled{opacity:.4}
+.rep{display:flex;gap:7px;align-items:center;font-weight:800;font-stretch:90%;font-size:13px;cursor:pointer}
+.rep input{width:18px;height:18px;accent-color:var(--ink)}
+@media(max-width:800px){.tr{grid-template-columns:1fr 1fr}.th{display:none}.tr b{grid-column:1/-1}.tr .imp{grid-column:1/-1}.tr select{min-width:0}}
+.meth{border:2.5px solid var(--line);padding:10px 12px;background:var(--sheet);font-size:14.5px;line-height:1.65}
+.meth .no{background:var(--wash);color:var(--muted);border:1.5px dashed var(--muted);padding:0 5px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:700px){.figs{grid-template-columns:minmax(0,1fr)}}
+.fig{border:2.5px solid var(--line);background:var(--sheet)}
+.fig h3{margin:0;padding:6px 10px;font-weight:900;font-stretch:85%;font-size:13.5px;letter-spacing:.04em;text-transform:uppercase;border-bottom:2.5px solid var(--line);background:var(--wash)}
+.fig .st{padding:6px 10px 8px;font-family:'Red Hat Mono',monospace;font-size:12px;font-weight:500;color:var(--muted);border-top:2px solid var(--line)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:'Archivo',sans-serif;fill:var(--ink)}
+.verdict{border:3px solid var(--line);padding:12px 14px;display:grid;gap:4px}
+.verdict.good{border-color:var(--good)}.verdict.mid{border-color:var(--warn)}.verdict.bad{border-color:var(--bad)}
+.verdict b{font-weight:900;font-stretch:85%;font-size:17px}
+.verdict.good b{color:var(--good)}.verdict.mid b{color:var(--warn)}.verdict.bad b{color:var(--bad)}
+.verdict p{margin:0;max-width:75ch}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media(max-width:760px){.cols{grid-template-columns:minmax(0,1fr)}}
+.cols h3{margin:0 0 6px;font-weight:900;font-stretch:85%;font-size:15px}
+.cols ul{margin:0;padding:0;list-style:none;display:grid;gap:7px;font-size:14px}
+.cols li{display:grid;grid-template-columns:54px 1fr;gap:8px;align-items:baseline}
+.cols li code{font-family:'Red Hat Mono',monospace;font-size:11.5px;font-weight:500;border:1.5px solid var(--line);padding:0 4px;text-align:center}
+.btn{font:inherit;font-weight:800;font-stretch:90%;font-size:13.5px;color:var(--ink);background:transparent;border:2.5px solid var(--line);padding:6px 12px;min-height:36px;cursor:pointer}
+.btn:hover{background:var(--wash)}
+.btn:focus-visible,select:focus-visible,.rep input:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.src{font-size:13px;color:var(--muted)}
+.try{margin:0;border:2.5px solid var(--line);padding:8px 12px;max-width:none}
+.try b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;margin-right:8px;border:2px solid var(--line);padding:0 6px}
+.tr small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);line-height:1.35;margin-top:2px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;font-weight:700;font-stretch:92%}
+.legend span{display:inline-flex;gap:7px;align-items:center}
+.legend svg{flex:none;width:30px;height:auto}.legend span{white-space:nowrap}
+.next{font-weight:700}
+@media (pointer:coarse){select,.btn,.rep{min-height:44px}.rep input{width:22px;height:22px}}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<link rel="stylesheet" href="../assets/nav.css">
+<link rel="stylesheet" href="../assets/shell.css">
+</head>
+<body data-toy="figure">
+<script src="../assets/content.js"></script>
+<script src="../assets/nav.js" data-base="../" data-page="toy"></script>
+<main class="wrap" id="main">
+<div id="toy-intro"></div>
+
+  <section class="sheet">
+    <div class="cover"><h2>Your settings</h2><span>Cleome · Substance use network · DERS network</span></div>
+    <div class="body">
+      <p class="try"><b>Start here</b>Everything begins unreported. Tick one box at a time and watch the right-hand figure change, to find which omission matters most.</p>
+      <p class="hint">Eight invented items, simulated from a known network. The estimator is a simplified in-browser version of EBICglasso, so the numbers are for teaching and are not research results.</p>
+      <div class="tbl" id="tbl" role="group" aria-label="Author settings and reader guesses"></div>
+      <div class="bar"><button class="btn" id="bNone">Report nothing</button><button class="btn" id="bAll">Report everything</button><button class="btn" id="bDef">Report only the correlation type</button></div>
+    </div>
+  </section>
+
+  <section class="sheet">
+    <div class="cover"><h2>Your methods section</h2><span>what the reader has to work with</span></div>
+    <div class="body"><div class="meth" id="meth" aria-live="polite"></div></div>
+  </section>
+
+  <section class="sheet">
+    <div class="cover"><h2>Figure and replication</h2><span>same data, different settings</span></div>
+    <div class="body">
+      <div class="figs">
+        <div class="fig"><h3>Published figure</h3><svg id="figA" viewBox="0 0 320 270" role="img" aria-label="Published network figure"></svg><div class="st" id="stA"></div></div>
+        <div class="fig"><h3>Reader's replication</h3><svg id="figB" viewBox="0 0 320 270" role="img" aria-label="Network figure rebuilt by a reader"></svg><div class="st" id="stB"></div></div>
+      </div>
+      <div class="legend" aria-label="How to read the figures">
+        <span><svg width="30" height="10"><line x1="1" y1="5" x2="29" y2="5" stroke-width="4" style="stroke:var(--pos)"/></svg>positive edge</span>
+        <span><svg width="30" height="10"><line x1="1" y1="5" x2="29" y2="5" stroke-width="4" style="stroke:var(--neg)"/></svg>negative edge</span>
+        <span><svg width="30" height="14"><line x1="1" y1="7" x2="29" y2="7" stroke-width="9" stroke-dasharray="5 4" opacity=".6" style="stroke:var(--flag)"/><line x1="1" y1="7" x2="29" y2="7" stroke-width="3" style="stroke:var(--pos)"/></svg>edge the published figure does not have</span>
+        <span><svg width="30" height="10"><line x1="1" y1="5" x2="29" y2="5" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round" style="stroke:var(--muted)"/></svg>edge the reader lost</span>
+      </div>
+      <div class="verdict" id="verdict" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="sheet">
+    <div class="cover"><h2>What the guidelines ask you to state</h2><span>paraphrased from the papers</span></div>
+    <div class="body">
+      <div class="cols">
+        <div><h3>Undirected networks: Burger et al. (2023)</h3><ul>
+          <li><code>§2.2</code><span>The estimation method and its settings: thresholds, regularization parameters. State them even when they are the defaults, because defaults change between package versions.</span></li>
+          <li><code>§2.3</code><span>The number of bootstrap samples and the type of bootstrap.</span></li>
+          <li><code>§2.4</code><span>The software and package versions, and any seeds set in the code.</span></li>
+          <li><code>§3.3</code><span>What the edges represent, the smallest and largest edge, any minimum, maximum or cut value used when plotting, and how the layout was set.</span></li>
+          <li><code>§3.4</code><span>Network density and the average absolute edge weight, which the picture alone cannot show.</span></li>
+          <li><code>also</code><span>How missing data were handled, the sample size after preprocessing, and the same layout and maximum edge value when comparing networks. A visual comparison alone is not enough.</span></li>
+        </ul></div>
+        <div><h3>Directed networks: Briganti et al.</h3><ul>
+          <li><code>algo</code><span>The structure-learning algorithm you chose, stated clearly.</span></li>
+          <li><code>boot</code><span>Report only stable networks from bootstrapping. The authors recommend 100 to 200 bootstrap samples and say earlier empirical papers kept edges present in over 85% of networks, with direction in over 50%.</span></li>
+          <li><code>freq</code><span>How often each edge appeared across the bootstrap networks.</span></li>
+          <li><code>check</code><span>Run the other algorithm families as robustness checks, so readers can see which edge directions change between them.</span></li>
+          <li><code>equiv</code><span>Graphs in the same equivalence class cannot be told apart from the data, so arrow directions need care.</span></li>
+        </ul></div>
+      </div>
+      <p class="src">The toy adds one point beyond the papers: a layout seed is what lets a reader redraw your exact figure. Burger et al. ask for the seeds used in analysis code and for how the layout was set, and they warn that algorithms such as Fruchterman-Reingold are sensitive to small changes and that exact node placement should not be read as meaning. Cleome's Report and Export page writes a methods paragraph and an R replication script from the settings you actually used.</p>
+    </div>
+  </section>
+<div id="toy-next"></div>
+</main>
+<script src="../assets/shell.js"></script>
+
+
+<script>
+
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+var $=function(s){return document.querySelector(s);};
+var S=function(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+var H=function(t,a,p){var e=document.createElement(t);for(var k in a){if(k==='text')e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;};
+
+/* ---- maths helpers ---- */
+function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function gauss(r){var u=Math.max(r(),1e-12),v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function pnorm(x){var s=x<0?-1:1,z=Math.abs(x)/Math.SQRT2,t=1/(1+0.3275911*z),y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z);return 0.5*(1+s*y);}
+function qnorm(p){var lo=-8,hi=8;for(var i=0;i<42;i++){var m=(lo+hi)/2;if(pnorm(m)<p)lo=m;else hi=m;}return (lo+hi)/2;}
+function zeros(n){var m=[];for(var i=0;i<n;i++){m.push(new Array(n).fill(0));}return m;}
+function chol(A){var n=A.length,L=zeros(n);for(var i=0;i<n;i++){for(var j=0;j<=i;j++){var s=A[i][j];for(var k=0;k<j;k++)s-=L[i][k]*L[j][k];if(i===j){if(s<=1e-12)return null;L[i][i]=Math.sqrt(s);}else L[i][j]=s/L[j][j];}}return L;}
+function inv(A){var n=A.length,M=A.map(function(r,i){return r.concat(zeros(n)[i].map(function(_,j){return i===j?1:0;}));});
+  for(var i=0;i<n;i++){var p=i;for(var r=i+1;r<n;r++)if(Math.abs(M[r][i])>Math.abs(M[p][i]))p=r;var t=M[i];M[i]=M[p];M[p]=t;var d=M[i][i];for(var j=0;j<2*n;j++)M[i][j]/=d;
+    for(var r2=0;r2<n;r2++){if(r2===i)continue;var f=M[r2][i];if(f)for(var j2=0;j2<2*n;j2++)M[r2][j2]-=f*M[i][j2];}}
+  return M.map(function(r){return r.slice(n);});}
+
+/* ---- invented data from a known network ---- */
+var P=8,NOBS=250;
+var TRUE=[[0,1,.28],[1,2,.28],[2,3,.28],[3,4,-.25],[4,5,.28],[5,6,.28],[6,7,.28],[7,0,.28],[0,4,.14],[1,5,.12],[2,6,-.12],[3,7,.10]];
+var data=(function(){
+  var K=zeros(P);for(var i=0;i<P;i++)K[i][i]=1;TRUE.forEach(function(e){K[e[0]][e[1]]=-e[2];K[e[1]][e[0]]=-e[2];});
+  var Sg=inv(K),L=chol(Sg),r=rng(16);
+  var cut=[[-1.1,-.2,.5,1.3],[-.8,.1,.8,1.5],[-1.3,-.4,.3,1.1],[-.9,0,.7,1.4],[-1.2,-.3,.4,1.2],[-.7,.2,.9,1.6],[-1.0,-.1,.6,1.3],[-1.4,-.5,.2,1.0]];
+  var X=[];for(var n=0;n<NOBS;n++){var z=[],row=[];for(var a=0;a<P;a++)z.push(gauss(r));
+    for(var b=0;b<P;b++){var v=0;for(var c=0;c<=b;c++)v+=L[b][c]*z[c];v/=Math.sqrt(Sg[b][b]);var cat=1;for(var q=0;q<4;q++)if(v>cut[b][q])cat++;row.push(cat);}X.push(row);}
+  return X;
+})();
+
+/* ---- correlations ---- */
+function pearson(){var n=data.length,m=[],sd=[];for(var j=0;j<P;j++){var s=0;for(var i=0;i<n;i++)s+=data[i][j];m.push(s/n);}
+  for(var j2=0;j2<P;j2++){var v=0;for(var i2=0;i2<n;i2++)v+=Math.pow(data[i2][j2]-m[j2],2);sd.push(Math.sqrt(v/n));}
+  var R=zeros(P);for(var a=0;a<P;a++)for(var b=0;b<P;b++){if(a===b){R[a][b]=1;continue;}var s2=0;for(var k=0;k<n;k++)s2+=(data[k][a]-m[a])*(data[k][b]-m[b]);R[a][b]=s2/n/(sd[a]*sd[b]);}return R;}
+function thresholds(j){var n=data.length,cnt=[0,0,0,0,0];for(var i=0;i<n;i++)cnt[data[i][j]-1]++;var t=[-Infinity],c=0;for(var k=0;k<4;k++){c+=cnt[k]/n;t.push(qnorm(Math.min(.999,Math.max(.001,c))));}t.push(Infinity);return t;}
+var ZG=[];(function(){var N=60,lo=-4.5;for(var i=0;i<=N;i++)ZG.push(lo+9*i/N);})();
+function Fbiv(a,b,rho){if(a===-Infinity||b===-Infinity)return 0;if(a===Infinity)return pnorm(b);if(b===Infinity)return pnorm(a);
+  var s=Math.sqrt(1-rho*rho),tot=0,prev=null,top=Math.min(a,4.5);if(top<=-4.5)return 0;var N=40,h=(top+4.5)/N;
+  for(var i=0;i<=N;i++){var z=-4.5+h*i,f=Math.exp(-z*z/2)/2.5066282746*pnorm((b-rho*z)/s);var w=(i===0||i===N)?.5:1;tot+=w*f;}return tot*h;}
+function pairLL(tx,ty,tab,rho){var F=[];for(var i=0;i<6;i++){F.push([]);for(var j=0;j<6;j++)F[i].push(Fbiv(tx[i],ty[j],rho));}
+  var ll=0;for(var a=0;a<5;a++)for(var b=0;b<5;b++){if(!tab[a][b])continue;var p=F[a+1][b+1]-F[a][b+1]-F[a+1][b]+F[a][b];ll+=tab[a][b]*Math.log(Math.max(p,1e-12));}return ll;}
+function polychoric(){var TH=[];for(var j=0;j<P;j++)TH.push(thresholds(j));var R=zeros(P);for(var a=0;a<P;a++){R[a][a]=1;}
+  for(var a2=0;a2<P;a2++)for(var b2=a2+1;b2<P;b2++){var tab=[];for(var i=0;i<5;i++)tab.push([0,0,0,0,0]);data.forEach(function(r){tab[r[a2]-1][r[b2]-1]++;});
+    var best=-.95,bl=-Infinity,rho;for(rho=-.9;rho<=.9001;rho+=.1){var l=pairLL(TH[a2],TH[b2],tab,rho);if(l>bl){bl=l;best=rho;}}
+    var c=best;bl=-Infinity;for(rho=c-.1;rho<=c+.1001;rho+=.01){if(rho<=-.98||rho>=.98)continue;var l2=pairLL(TH[a2],TH[b2],tab,rho);if(l2>bl){bl=l2;best=rho;}}
+    R[a2][b2]=R[b2][a2]=best;}
+  return R;}
+var CORR={};
+function corrOf(t){if(!CORR[t])CORR[t]=t==='pearson'?pearson():polychoric();return CORR[t];}
+
+/* ---- simplified EBICglasso ---- */
+function soft(x,l){return x>l?x-l:x<-l?x+l:0;}
+function glasso(Sm,lam,W0){var p=Sm.length,W=W0?W0.map(function(r){return r.slice();}):Sm.map(function(r){return r.slice();}),B=[];for(var d0=0;d0<p;d0++)W[d0][d0]=Sm[d0][d0]+lam;
+  for(var it=0;it<60;it++){var maxd=0;for(var j=0;j<p;j++){var idx=[];for(var k=0;k<p;k++)if(k!==j)idx.push(k);
+      var beta=B[j]||new Array(p-1).fill(0);
+      for(var inner=0;inner<40;inner++){var ch=0;for(var a=0;a<p-1;a++){var r=Sm[idx[a]][j];for(var b=0;b<p-1;b++)if(b!==a)r-=W[idx[a]][idx[b]]*beta[b];var nb=soft(r,lam)/W[idx[a]][idx[a]];ch=Math.max(ch,Math.abs(nb-beta[a]));beta[a]=nb;}if(ch<1e-6)break;}
+      B[j]=beta;for(var a2=0;a2<p-1;a2++){var w=0;for(var b2=0;b2<p-1;b2++)w+=W[idx[a2]][idx[b2]]*beta[b2];maxd=Math.max(maxd,Math.abs(W[idx[a2]][j]-w));W[idx[a2]][j]=w;W[j][idx[a2]]=w;}}
+    if(maxd<1e-4)break;}
+  var Th=zeros(p);for(var j2=0;j2<p;j2++){var idx2=[];for(var k2=0;k2<p;k2++)if(k2!==j2)idx2.push(k2);var dot=0;for(var a3=0;a3<p-1;a3++)dot+=W[idx2[a3]][j2]*B[j2][a3];
+    var tjj=1/(W[j2][j2]-dot);Th[j2][j2]=tjj;for(var a4=0;a4<p-1;a4++)Th[idx2[a4]][j2]=-B[j2][a4]*tjj;}
+  for(var i2=0;i2<p;i2++)for(var j3=i2+1;j3<p;j3++){var m=(Th[i2][j3]+Th[j3][i2])/2;Th[i2][j3]=Th[j3][i2]=m;}
+  return {W:W,Th:Th};}
+function logdet(A){var L=chol(A);if(!L)return null;var s=0;for(var i=0;i<A.length;i++)s+=2*Math.log(L[i][i]);return s;}
+var NETS={};
+function netOf(corr,gamma){var key=corr+'|'+gamma;if(NETS[key])return NETS[key];
+  var Sm=corrOf(corr),p=P,lmax=0;for(var i=0;i<p;i++)for(var j=i+1;j<p;j++)lmax=Math.max(lmax,Math.abs(Sm[i][j]));
+  var best=null,W=null;
+  for(var k=0;k<100;k++){var lam=lmax*Math.pow(.01,k/99),g=glasso(Sm,lam,W);W=g.W;var Th=g.Th,E=0;
+    for(var a=0;a<p;a++)for(var b=a+1;b<p;b++)if(Math.abs(Th[a][b])>1e-8)E++;
+    var ld=logdet(Th);if(ld===null)continue;var tr=0;for(var a2=0;a2<p;a2++)for(var b2=0;b2<p;b2++)tr+=Sm[a2][b2]*Th[b2][a2];
+    var ebic=NOBS*(tr-ld)+E*Math.log(NOBS)+4*gamma*E*Math.log(p);if(!best||ebic<best.e)best={e:ebic,Th:Th};}
+  var pc=zeros(p);for(var x=0;x<p;x++)for(var y=0;y<p;y++){if(x===y)continue;var v=-best.Th[x][y]/Math.sqrt(best.Th[x][x]*best.Th[y][y]);pc[x][y]=Math.abs(v)<1e-8?0:v;}
+  NETS[key]={pc:pc};return NETS[key];}
+
+/* ---- layout ---- */
+function layoutOf(kind,seed,pc){var n=P,pos=[];
+  if(kind==='circle'){for(var i=0;i<n;i++){var a=-Math.PI/2+2*Math.PI*i/n;pos.push([.5+.45*Math.cos(a),.5+.45*Math.sin(a)]);}return pos;}
+  var r=rng(seed),x=[],y=[];for(var j=0;j<n;j++){x.push(r()*2-1);y.push(r()*2-1);}
+  var maxw=0;for(var a2=0;a2<n;a2++)for(var b2=a2+1;b2<n;b2++)maxw=Math.max(maxw,Math.abs(pc[a2][b2]));maxw=maxw||1;var k=1.1/Math.sqrt(n),T=300;
+  for(var it=0;it<T;it++){var t=.18*(1-it/T)+.002,dx=new Array(n).fill(0),dy=new Array(n).fill(0);
+    for(var u=0;u<n;u++)for(var v=u+1;v<n;v++){var ex=x[u]-x[v],ey=y[u]-y[v],d=Math.max(.01,Math.hypot(ex,ey)),rep=k*k/d;dx[u]+=ex/d*rep;dy[u]+=ey/d*rep;dx[v]-=ex/d*rep;dy[v]-=ey/d*rep;
+      var w=Math.abs(pc[u][v]);if(w>0){var at=d*d/k*(w/maxw);dx[u]-=ex/d*at;dy[u]-=ey/d*at;dx[v]+=ex/d*at;dy[v]+=ey/d*at;}}
+    for(var q=0;q<n;q++){var len=Math.hypot(dx[q],dy[q])||1,st=Math.min(len,t);x[q]+=dx[q]/len*st;y[q]+=dy[q]/len*st;}}
+  var x0=Math.min.apply(null,x),x1=Math.max.apply(null,x),y0=Math.min.apply(null,y),y1=Math.max.apply(null,y);
+  for(var m=0;m<n;m++)pos.push([.06+.88*(x[m]-x0)/((x1-x0)||1),.06+.88*(y[m]-y0)/((y1-y0)||1)]);return pos;}
+
+/* ---- settings ---- */
+var DEFS=[
+ {id:'corr',label:'Correlations',desc:'How answers are turned into relationships. Polychoric is built for rating scales.',opts:[['pearson','Pearson'],['polychoric','Polychoric']],imp:'model',note:'Changes the model'},
+ {id:'gamma',label:'EBIC γ',desc:'How hard weak links are pruned. Higher means fewer edges.',opts:[['0','γ = 0'],['0.25','γ = 0.25'],['0.5','γ = 0.5']],imp:'model',note:'Changes the model'},
+ {id:'layout',label:'Layout',desc:'How the nodes are placed on the page.',opts:[['spring','Spring (Fruchterman-Reingold)'],['circle','Circle']],imp:'pic',note:'Changes the picture'},
+ {id:'seed',label:'Layout seed',desc:'The random starting point of the spring layout.',opts:[['1','1'],['7','7'],['42','42'],['2026','2026']],imp:'pic',note:'Changes the picture'},
+ {id:'min',label:'Minimum edge drawn',desc:'Links weaker than this are hidden from the plot.',opts:[['0','none'],['0.05','0.05'],['0.1','0.10']],imp:'shown',note:'Changes what is shown'}];
+var author={corr:'pearson',gamma:'0.25',layout:'spring',seed:'2026',min:'0'};
+var guess={corr:'polychoric',gamma:'0.5',layout:'spring',seed:'1',min:'0'};
+var rep={corr:false,gamma:false,layout:false,seed:false,min:false};
+var tbl=$('#tbl'),rows={};
+var head=H('div',{'class':'tr th'},tbl);['Setting','You used','Reported?','Reader guesses','If left out'].forEach(function(t){H('span',{text:t},head);});
+DEFS.forEach(function(d){
+  var tr=H('div',{'class':'tr'},tbl);var nm=H('b',{},tr);nm.textContent=d.label;H('small',{text:d.desc},nm);
+  var s1=H('select',{id:'a_'+d.id,'aria-label':d.label+', what you used'},tr);d.opts.forEach(function(o){H('option',{value:o[0],text:o[1]},s1);});s1.value=author[d.id];
+  var lab=H('label',{'class':'rep'},tr);var cb=H('input',{type:'checkbox',id:'r_'+d.id},lab);H('span',{text:'Yes, reported'},lab);
+  var s2=H('select',{id:'g_'+d.id,'aria-label':d.label+', what the reader guesses'},tr);d.opts.forEach(function(o){H('option',{value:o[0],text:o[1]},s2);});s2.value=guess[d.id];
+  var im=H('span',{'class':'imp'},tr);im.innerHTML='<em>'+d.note+'</em>';
+  rows[d.id]={a:s1,c:cb,g:s2};
+  s1.addEventListener('change',function(){author[d.id]=s1.value;run();});s2.addEventListener('change',function(){guess[d.id]=s2.value;run();});cb.addEventListener('change',function(){rep[d.id]=cb.checked;run();});});
+function setRep(o){DEFS.forEach(function(d){rep[d.id]=!!o[d.id];rows[d.id].c.checked=rep[d.id];});run();}
+$('#bNone').addEventListener('click',function(){setRep({});});
+$('#bAll').addEventListener('click',function(){setRep({corr:1,gamma:1,layout:1,seed:1,min:1});});
+$('#bDef').addEventListener('click',function(){setRep({corr:1});});
+
+function eff(){var o={};DEFS.forEach(function(d){o[d.id]=rep[d.id]?author[d.id]:guess[d.id];});return o;}
+function build(cfg){var net=netOf(cfg.corr,+cfg.gamma),pos=layoutOf(cfg.layout,+cfg.seed,net.pc),edges=[];
+  for(var i=0;i<P;i++)for(var j=i+1;j<P;j++){var w=net.pc[i][j];if(w!==0)edges.push({i:i,j:j,w:w,shown:Math.abs(w)>=+cfg.min});}
+  return {cfg:cfg,pc:net.pc,pos:pos,edges:edges};}
+function keySet(g){var s={};g.edges.forEach(function(e){if(e.shown)s[e.i+'-'+e.j]=e;});return s;}
+
+function draw(svg,g,ref){svg.textContent='';var W=320,Hh=270,pad=24,X=function(p){return pad+p[0]*(W-2*pad);},Y=function(p){return pad+p[1]*(Hh-2*pad);};
+  var mine=keySet(g),other=ref?keySet(ref):null;
+  if(other)Object.keys(other).forEach(function(k){if(!mine[k]){var e=other[k];var l=S('line',{x1:X(g.pos[e.i]),y1:Y(g.pos[e.i]),x2:X(g.pos[e.j]),y2:Y(g.pos[e.j]),'stroke-width':1.5,'stroke-dasharray':'1 5','stroke-linecap':'round'},svg);l.style.stroke='var(--muted)';}});
+  Object.keys(mine).forEach(function(k){var e=mine[k],x1=X(g.pos[e.i]),y1=Y(g.pos[e.i]),x2=X(g.pos[e.j]),y2=Y(g.pos[e.j]),extra=other&&!other[k];
+    if(extra){var h=S('line',{x1:x1,y1:y1,x2:x2,y2:y2,'stroke-width':Math.abs(e.w)*14+6,'stroke-dasharray':'5 5',opacity:.55},svg);h.style.stroke='var(--flag)';}
+    var l2=S('line',{x1:x1,y1:y1,x2:x2,y2:y2,'stroke-width':(1+Math.abs(e.w)*12).toFixed(1),'stroke-linecap':'round'},svg);l2.style.stroke=e.w>0?'var(--pos)':'var(--neg)';});
+  g.pos.forEach(function(p,i){var c=S('circle',{cx:X(p),cy:Y(p),r:15,'stroke-width':2.5},svg);c.style.fill='var(--sheet)';c.style.stroke='var(--ink)';
+    var t=S('text',{x:X(p),y:Y(p),'text-anchor':'middle','dominant-baseline':'central','font-size':12.5,'font-weight':800},svg);t.textContent='N'+(i+1);});}
+function stats(g){var e=Object.keys(keySet(g)).map(function(k){return keySet(g)[k];}),n=e.length,m=n?e.reduce(function(a,x){return a+Math.abs(x.w);},0)/n:0;return 'density '+(n/(P*(P-1)/2)).toFixed(2)+' · mean |weight| '+m.toFixed(2)+' · '+n+' edges drawn';}
+
+function methods(){var a=author,r=rep,m=$('#meth');m.textContent='';
+  function no(t){var s=H('span',{'class':'no',text:t},m);return s;}
+  function tx(t){m.appendChild(document.createTextNode(t));}
+  tx('A regularized partial correlation network was estimated on 8 ordinal items, using ');
+  if(r.corr)tx((a.corr==='pearson'?'Pearson':'polychoric')+' correlations');else no('correlation type not stated');
+  tx(' and EBIC model selection');if(r.gamma)tx(' (γ = '+a.gamma+')');else{tx(' ');no('γ not stated');}
+  tx('. The network is plotted ');
+  if(r.layout){tx(a.layout==='spring'?'with the Fruchterman-Reingold spring layout':'in a circle');if(a.layout==='spring'){if(r.seed)tx(' (seed = '+a.seed+')');else{tx(' ');no('seed not stated');}}}else no('layout not stated');
+  tx(', ');if(r.min)tx(+a.min?'and edges weaker than '+a.min+' are not drawn.':'and all estimated edges are drawn.');else no('plotting minimum not stated');tx('.');}
+
+function run(){
+  rows.seed.a.disabled=author.layout==='circle';rows.seed.c.disabled=author.layout==='circle';
+  var e=eff(),ge=e.layout==='circle';rows.seed.g.disabled=rep.seed||ge||(rep.layout?author.layout==='circle':false);
+  DEFS.forEach(function(d){rows[d.id].g.disabled=rep[d.id]||(d.id==='seed'&&(ge||author.layout==='circle'));if(rep[d.id])rows[d.id].g.value=author[d.id];else rows[d.id].g.value=guess[d.id];});
+  var A=build(author),B=build(e);methods();draw($('#figA'),A,null);draw($('#figB'),B,A);
+  $('#stA').textContent=stats(A);$('#stB').textContent=stats(B);
+  var ka=keySet(A),kb=keySet(B),extra=0,miss=0,shared=0;Object.keys(kb).forEach(function(k){if(ka[k])shared++;else extra++;});Object.keys(ka).forEach(function(k){if(!kb[k])miss++;});
+  var samePos=A.pos.every(function(p,i){return Math.abs(p[0]-B.pos[i][0])<1e-6&&Math.abs(p[1]-B.pos[i][1])<1e-6;});
+  var v=$('#verdict');v.textContent='';var cls,head,body;
+  if(!extra&&!miss&&samePos){cls='good';head='Reproducible';body='A reader following your methods draws your exact figure. Nothing is left to guess.';}
+  else if(!extra&&!miss){cls='mid';head='Same network, different picture';body='The edges match, but the nodes sit in different places. Burger et al. warn that node placement should not be read as meaning, yet readers will look for clusters anyway, and without the layout and seed your exact figure cannot be redrawn.';}
+  else{var why=[];if(e.corr!==author.corr)why.push('the correlation type');if(e.gamma!==author.gamma)why.push('γ');if(e.min!==author.min)why.push('the plotting minimum');
+    cls='bad';head='A different network';body=(extra+miss)+' edges differ ('+extra+' extra, '+miss+' missing)'+(why.length?', because the reader had to guess '+why.join(' and ')+'.':'.')+' This is the costly kind of omission: it changes what a reader would conclude about the symptoms.';}
+  v.className='verdict '+cls;H('b',{text:head},v);H('p',{text:body},v);
+  if(cls!=='good'){var todo=DEFS.filter(function(d){if(rep[d.id])return false;if(d.id==='seed'&&(author.layout==='circle'))return false;return guess[d.id]!==author[d.id]||(d.id==='seed'&&author.layout==='spring'&&guess.seed!==author.seed);}).map(function(d){return d.label.toLowerCase();});
+    if(todo.length){var nx=H('p',{'class':'next'},v);nx.textContent='Still to report: '+todo.join(', ')+'.';}}}
+setTimeout(function(){run();},30);
+})();
+
+</script>
+</body>
+</html>

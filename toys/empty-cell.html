@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Why is this cell empty? | Sukrit’s Portfolio</title>
+<meta name="description" content="An interactive piece from my portfolio, run on invented data where the truth is known.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%279%27 fill=%27%23F4807A%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Red+Hat+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one paper sheet per toy, each with a colour-coded cover band, the toy itself, and one question for the author. Print-shop look from the diagram draft: ink borders, hard shadows, dots. */
+:root{color-scheme:light;--paper:#ECEEF3;--sheet:#F8F9FC;--ink:#12141C;--muted:#464C5A;--line:#12141C;--shadow:#12141C;--coral:#F4807A;--on:#12141C;
+--c-res:#7B8DFF;--c-tool:#FFE14A;--c-scale:#FF7AB6;--c-teach:#3FD6A6;--c-design:#FF8A4C;--good:#1E8F5B;--bad:#D8453B}
+*{box-sizing:border-box}
+body{margin:0;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--paper);color:var(--ink);font-family:'Archivo',system-ui,sans-serif;font-weight:500;font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto}
+h1{margin:0 0 8px;font-weight:900;font-stretch:80%;font-size:clamp(2.2rem,6vw,3.6rem);line-height:.95;letter-spacing:-.01em;text-wrap:balance}
+h1 i{display:inline-block;width:.2em;height:.2em;border-radius:50%;background:var(--coral);margin-left:.06em}
+.lede{max-width:62ch;color:var(--muted);margin:0 0 20px}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 34px}
+.jump a{color:var(--ink);text-decoration:none;font-weight:800;font-stretch:90%;font-size:13px;border:2.5px solid var(--line);padding:4px 10px}
+.jump a:hover{background:var(--ink);color:var(--paper)}
+.sheet{background:var(--sheet);border:3px solid var(--line);box-shadow:7px 7px 0 var(--shadow);margin:0 0 44px;scroll-margin-top:16px}
+.cover{--c:var(--c-res);background:radial-gradient(circle,rgba(18,20,28,.55) 1.2px,transparent 1.6px) 0 0/8px 8px,var(--c);color:var(--on);border-bottom:3px solid var(--line);padding:14px 16px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end;justify-content:space-between}
+.cover h2{margin:0;font-weight:900;font-stretch:80%;font-size:26px;line-height:1;background:#F8F9FC;border:2.5px solid #12141C;padding:3px 9px}
+.cover .serves{font-weight:800;font-stretch:85%;font-size:12.5px;background:#F8F9FC;border:2px solid #12141C;padding:1px 7px}
+.body{padding:16px 16px 18px;display:grid;gap:14px}
+.body>p{margin:0;max-width:70ch}
+.hint{color:var(--muted);font-size:14.5px}
+.try{margin:0;border:2.5px solid var(--line);padding:8px 12px}
+.try b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;margin-right:8px;border:2px solid var(--line);padding:0 6px}
+.node:focus-visible circle.ci{stroke-width:5}
+.node:focus-visible{outline:none}
+.nleg{display:none}
+.narrow .nleg{display:block}
+@media (pointer:coarse){.btn,select{min-height:44px}.chip{min-height:40px;min-width:48px}button.cell,.cell{width:40px;height:40px}table.g{border-spacing:2px}}
+.ask{border-top:2px dashed var(--line);padding:10px 16px 12px;font-size:14px;display:flex;gap:10px;align-items:baseline}
+.ask b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;flex:none;border:2px solid var(--line);padding:0 6px}
+.two{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.ctrls{display:grid;gap:10px 22px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.ctrls label{display:flex;flex-direction:column;gap:3px;font-weight:700;font-stretch:90%;font-size:13px}
+.ctrls output{font-family:'Red Hat Mono',monospace;font-weight:500;font-size:12.5px;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--ink);margin:2px 0}
+.btn{font:inherit;font-weight:800;font-stretch:90%;font-size:13.5px;color:var(--ink);background:transparent;border:2.5px solid var(--line);padding:6px 12px;min-height:36px;cursor:pointer}
+.btn:hover{background:rgba(127,127,140,.18)}
+.btn[aria-pressed="true"],.btn.on{background:var(--ink);color:var(--paper)}
+.btn.go{background:#FFE14A;color:#12141C}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,input:focus-visible,.cell:focus-visible,.chip:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.box{border:2.5px solid var(--line);padding:10px 12px;background:var(--sheet)}
+.box b{font-weight:800}
+.mono{font-family:'Red Hat Mono',monospace;font-size:12.5px;font-weight:500}
+svg{display:block;max-width:100%;height:auto}
+svg text{font-family:'Archivo',sans-serif;fill:var(--ink)}
+.node{cursor:grab;touch-action:none}.node:active{cursor:grabbing}
+.stat{display:flex;flex-wrap:wrap;gap:6px 18px;font-weight:700;font-stretch:90%;font-size:13.5px}
+.stat span b{font-family:'Red Hat Mono',monospace;font-weight:500}
+/* short form */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-weight:800;font-stretch:88%;font-size:12.5px;border:2.5px solid var(--line);padding:3px 8px;cursor:pointer;background:var(--c);color:#12141C;min-width:46px}
+.chip[aria-pressed="false"]{background:transparent;color:var(--muted);border-style:dashed;text-decoration:line-through}
+.dbar{display:grid;grid-template-columns:76px 1fr 46px;gap:8px;align-items:center;font-size:12.5px;font-weight:700;font-stretch:90%}
+.dbar .t{height:12px;border:2px solid var(--line);position:relative}.dbar .t i{position:absolute;inset:0 auto 0 0;background:var(--c)}
+.dbar .v{font-family:'Red Hat Mono',monospace;font-weight:500;text-align:right}
+/* grid game */
+.gwrap{overflow-x:auto;padding-bottom:4px}
+table.g{border-collapse:separate;border-spacing:3px;font-size:12.5px;font-weight:700}
+table.g th{font-weight:800;font-stretch:85%;font-size:11.5px;color:var(--muted);padding:0 2px;text-align:center}
+table.g th.rh{text-align:left;padding-right:8px;color:var(--ink)}
+.cell{width:34px;height:28px;text-align:center;border:2px solid transparent;font-family:'Red Hat Mono',monospace;font-weight:500;background:rgba(127,127,140,.16);color:var(--muted);padding:0}
+button.cell{cursor:pointer;background:transparent;border:2px dashed var(--ink);color:var(--ink)}
+button.cell.sel{background:var(--c-tool);color:#12141C;border-style:solid}
+button.cell.ok{border-style:solid;border-color:var(--good);color:var(--good);font-weight:900}
+.legend{display:grid;gap:2px;font-size:13px}
+.legend span{display:flex;gap:8px}.legend b{font-family:'Red Hat Mono',monospace;font-weight:500;font-size:12px;min-width:56px}
+.fb{min-height:64px}
+.fb.good{border-color:var(--good)}.fb.bad{border-color:var(--bad)}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<link rel="stylesheet" href="../assets/nav.css">
+<link rel="stylesheet" href="../assets/shell.css">
+</head>
+<body data-toy="cell">
+<script src="../assets/content.js"></script>
+<script src="../assets/nav.js" data-base="../" data-page="toy"></script>
+<main class="wrap" id="main">
+<div id="toy-intro"></div>
+<section class="sheet" id="empty">
+    <div class="body">
+      <p class="try"><b>Start here</b>Click the dashed cell in row P2, column Q5. Then pick the reason that fits.</p>
+      <p class="hint">Ten invented participants. Missing data comes in different kinds: some questions are skipped by design, some do not apply, some people drop out. Read the survey map and what you know about the person, then pick the reason. Each answer says what it means for the analysis.</p>
+      <div class="two">
+        <div class="gwrap"><table class="g" id="gtab"></table></div>
+        <div class="legend" id="gleg" aria-label="Survey map"></div>
+      </div>
+      <div class="box" id="clue" aria-live="polite">Pick a dashed cell.</div>
+      <div class="seg" id="rseg"></div>
+      <div class="box fb" id="fb" aria-live="polite"></div>
+      <div class="stat"><span>Correct <b id="gOk">0</b></span><span>Tries <b id="gTry">0</b></span><span>Empty cells <b id="gLeft">0</b></span></div>
+    </div>
+</section>
+<div id="toy-next"></div>
+</main>
+<script src="../assets/shell.js"></script>
+<script>
+
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+var $=function(s){return document.querySelector(s);};
+var clamp=function(v,a,b){return Math.min(b,Math.max(a,v));};
+var S=function(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+var H=function(t,a,p){var e=document.createElement(t);for(var k in a){if(k==='text')e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;};
+var FIT=[],RO=window.ResizeObserver?new ResizeObserver(function(){FIT.forEach(fitText);}):null;
+function fitText(svg){var vb=svg.viewBox&&svg.viewBox.baseVal,w=svg.clientWidth;if(!vb||!w)return;var k=vb.width/w;
+  [].forEach.call(svg.querySelectorAll('text'),function(t){if(!t.dataset.fs)t.dataset.fs=parseFloat(t.getAttribute('font-size'))||12;t.setAttribute('font-size',Math.max(+t.dataset.fs,12*k).toFixed(1));});
+  if(FIT.indexOf(svg)<0){FIT.push(svg);if(RO)RO.observe(svg);}}
+var T=function(p,s,x,y,o){var t=S('text',{x:x,y:y},p);t.textContent=s;if(o)for(var k in o)t.setAttribute(k,o[k]);return t;};
+
+/* ---------- 6 empty cell ---------- */
+(function(){
+  var C=[['Q1','core'],['Q2','core'],['Q3','core'],['Q4','screener'],['Q5','followup'],['Q6','f1'],['Q7','f1'],['Q8','f2'],['Q9','f2'],['Q10','late']];
+  var R=[{n:'P1',v:'current',f:1,s:'yes'},{n:'P2',v:'current',f:2,s:'no'},{n:'P3',v:'early',f:1,s:'no',drop:6},{n:'P4',v:'current',f:2,s:'yes',skip:1},{n:'P5',v:'early',f:2,s:'yes'},
+         {n:'P6',v:'current',f:1,s:'no',drop:5},{n:'P7',v:'current',f:1,s:'yes',skip:2},{n:'P8',v:'early',f:1,s:'yes'},{n:'P9',v:'current',f:2,s:'yes',drop:3},{n:'P10',v:'current',f:2,s:'no'}];
+  var RS={planned:{t:'Planned by design',x:'This person was assigned the other form, so these questions were never meant for them. It is missing by design and ignorable if the assignment was random. Analyse with the design in mind, for example full-information maximum likelihood.'},
+          logic:{t:'Skip logic',x:'The screener answer routed them past this question. It is not missing, it did not apply. Do not impute it; analyse only the people it applied to.'},
+          version:{t:'Not in that survey version',x:'The question was added after this person took the survey. Structural, not random. Analyse the later cohort, or model survey version, and say which.'},
+          drop:{t:'Dropped out',x:'They were asked this question but had already left. Attrition. Compare completers and drop-outs on what you did observe before assuming anything about it.'},
+          skip:{t:'Skipped without a reason',x:'They answered later questions but left this one blank. Unplanned item missingness. Check whether it clusters on one item or one kind of person.'}};
+  function why(r,ci){var g=C[ci][1];
+    if(g==='late'&&r.v==='early')return'version';if(g==='followup'&&r.s==='no')return'logic';
+    if((g==='f1'&&r.f===2)||(g==='f2'&&r.f===1))return'planned';
+    if(r.drop!=null&&ci>=r.drop)return'drop';if(r.skip===ci)return'skip';return null;}
+  var tab=$('#gtab'),sel=null,ok=0,tries=0,total=0;
+  var hr=H('tr',{},tab);H('th',{'class':'sr',text:'Participant'},hr);C.forEach(function(c){H('th',{text:c[0]},hr);});
+  R.forEach(function(r,ri){var tr=H('tr',{},tab);H('th',{'class':'rh',text:r.n},tr);C.forEach(function(c,ci){var w=why(r,ci),td=H('td',{},tr);
+    if(!w){H('div',{'class':'cell',text:String(((ri*7+ci*3)%5)+1)},td);}
+    else{total++;var b=H('button',{type:'button','class':'cell','aria-label':r.n+' '+c[0]+' empty',text:'·'},td);b.addEventListener('click',function(){pick(r,ci,b,w);});}});});
+  var leg=$('#gleg');[['Q1–Q3','everyone'],['Q4','screener question'],['Q5','only if Q4 = yes'],['Q6–Q7','Form 1 only'],['Q8–Q9','Form 2 only'],['Q10','added after the first wave']].forEach(function(l){var s=H('span',{},leg);H('b',{text:l[0]},s);s.appendChild(document.createTextNode(l[1]));});
+  var seg=$('#rseg');Object.keys(RS).forEach(function(k){var b=H('button',{type:'button','class':'btn','data-k':k,text:RS[k].t},seg);b.disabled=true;});
+  function pick(r,ci,b,w){
+    if(sel&&sel.b)sel.b.classList.remove('sel');sel={r:r,ci:ci,b:b,w:w};b.classList.add('sel');
+    $('#clue').innerHTML='';var p=H('p',{},$('#clue'));p.style.margin=0;H('b',{text:r.n+' · '+C[ci][0]+': '},p);
+    p.appendChild(document.createTextNode('took the '+r.v+' version of the survey, was assigned Form '+r.f+', and answered the screener with "'+r.s+'".'));
+    [].forEach.call(seg.children,function(x){x.disabled=false;});$('#fb').className='box fb';$('#fb').textContent='Which reason fits?';}
+  seg.addEventListener('click',function(ev){var bt=ev.target.closest('button');if(!bt||!sel||bt.disabled)return;tries++;
+    var k=bt.getAttribute('data-k'),fb=$('#fb');
+    if(k===sel.w){ok++;fb.className='box fb good';fb.innerHTML='';H('b',{text:'Yes: '+RS[k].t+'. '},fb);fb.appendChild(document.createTextNode(RS[k].x));sel.b.classList.add('ok');sel.b.classList.remove('sel');sel.b.textContent='✓';sel.b.disabled=true;sel=null;[].forEach.call(seg.children,function(x){x.disabled=true;});}
+    else{fb.className='box fb bad';fb.innerHTML='';H('b',{text:'Not quite. '},fb);fb.appendChild(document.createTextNode('Re-read the survey map and what you know about this person, then try again.'));}
+    $('#gOk').textContent=ok;$('#gTry').textContent=tries;$('#gLeft').textContent=total-ok;});
+  $('#gLeft').textContent=total;$('#fb').className='box fb';
+})();
+
+})();
+</script>
+</body>
+</html>

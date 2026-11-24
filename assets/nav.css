@@ -1,0 +1,66 @@
+/* Shared by every page: the top bar and the little "factor to project" drawing. Fixed paper and ink colours, so it looks the same in light and dark. */
+:root{--bar:60px;--noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.skip{position:absolute;left:-999px;top:8px;background:#12141C;color:#fff;padding:8px 12px;z-index:100}.skip:focus{left:8px}
+
+.topbar{--tp:#ECEEF3;--ti:#12141C;--td:#F4807A;position:sticky;top:0;z-index:40;height:var(--bar);display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));background:var(--tp) var(--noise);color:var(--ti);border-bottom:3px solid var(--ti);
+  font-family:'Archivo',system-ui,sans-serif;font-weight:500;font-size:16px;line-height:1.2;transition:border-color .2s}
+/* on the home page the bar and the model are one sheet until you scroll */
+body.at-top .topbar{border-bottom-color:transparent}
+.topbar *{box-sizing:border-box}
+.topbar :focus-visible{outline:3px solid var(--ti);outline-offset:2px}
+
+/* the name is a paper label, like the boxes in the model */
+.brand{display:flex;align-items:center;gap:18px;min-width:0}
+.wm{font-weight:800;font-stretch:84%;font-size:21px;line-height:1;letter-spacing:.005em;color:var(--ti);text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;min-height:40px;padding:0 14px;background:#F8F9FC;border:2.5px solid var(--ti);box-shadow:3px 3px 0 var(--ti);transition:transform .12s,box-shadow .12s}
+.wm:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ti)}
+.fitbar{display:flex;align-items:center;gap:8px;min-width:0}
+.fit-t{font-size:14.5px;font-weight:700;font-stretch:90%;color:#3E4452;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
+.fit-t.final{color:var(--ti);font-weight:800}
+.fit-t.fit-pop{animation:fitpop .5s cubic-bezier(.3,.7,.2,1) both}
+@keyframes fitpop{0%{transform:translateY(5px) scale(.96);opacity:0}60%{transform:translateY(-1px) scale(1.02);opacity:1}100%{transform:none;opacity:1}}
+.fit-face{width:30px;height:30px;flex:none;overflow:visible}
+.fit-face .fg{transform-box:fill-box;transform-origin:center;transition:transform .45s cubic-bezier(.34,1.56,.64,1)}
+.fit-face .eye-r{transform-box:fill-box;transform-origin:center;transition:transform .16s ease-in,opacity .16s}
+.fit-face .wink{opacity:0;transition:opacity .16s .08s}
+.fit-face.win .fg{transform:rotate(-9deg)}
+.fit-face.win .eye-r{transform:scaleY(.1);opacity:0}
+.fit-face.win .wink{opacity:1}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.topbar nav{display:flex;align-items:center}
+.topbar nav a{position:relative;color:var(--ti);text-decoration:none;font-weight:800;font-stretch:88%;font-size:16px;padding:0 12px;min-height:44px;display:inline-flex;align-items:center}
+.topbar nav a span{background:linear-gradient(#FFE14A,#FFE14A) 0 88%/0 55% no-repeat;transition:background-size .15s}
+.topbar nav a:hover span{background-size:100% 55%}
+.topbar nav a[aria-current] span{background-size:100% 55%}
+.topbar .else{display:flex;align-items:center;margin-left:12px;padding-left:10px;border-left:3px dotted var(--ti)}
+.topbar .else a{padding:0 10px;font-weight:700;font-size:15px}
+.topbar .else a b{font-weight:700;margin-left:3px;font-size:.9em}
+.menu-btn{display:none;font:inherit;font-weight:800;font-stretch:88%;font-size:15px;border:2.5px solid var(--ti);background:var(--tp);color:var(--ti);padding:0 14px;min-height:44px;cursor:pointer;align-items:center;gap:8px;border-radius:0}
+.menu-btn i{width:16px;height:10px;border-top:2.5px solid var(--ti);border-bottom:2.5px solid var(--ti);position:relative;display:inline-block}
+.menu-btn i::after{content:"";position:absolute;left:0;right:0;top:50%;margin-top:-1.25px;height:2.5px;background:var(--ti)}
+.menu-btn[aria-expanded="true"] i{border-color:transparent}.menu-btn[aria-expanded="true"] i::before,.menu-btn[aria-expanded="true"] i::after{content:"";position:absolute;left:-1px;right:-1px;top:50%;margin-top:-1.25px;height:2.5px;background:var(--ti);transform:rotate(45deg)}
+.menu-btn[aria-expanded="true"] i::after{transform:rotate(-45deg)}
+@media (max-width:1180px){.fitbar{display:none}}
+@media (max-width:940px){
+  .menu-btn{display:inline-flex}
+  .topbar nav{display:none;position:absolute;top:calc(var(--bar) - 3px);left:0;right:0;flex-direction:column;align-items:stretch;padding:4px max(16px,env(safe-area-inset-right,0px)) 14px max(16px,env(safe-area-inset-left,0px));background:var(--tp) var(--noise);border-bottom:3px solid var(--ti);border-top:3px solid var(--ti);box-shadow:0 8px 0 rgba(18,20,28,.12)}
+  .topbar nav.open{display:flex}
+  .topbar nav a{min-height:52px;font-size:20px;border-bottom:2px dotted var(--ti);padding-left:4px}
+  .topbar nav a span{align-self:center}
+  .topbar .else{flex-direction:column;align-items:stretch;margin:10px 0 0;padding:0;border-left:0}
+  .topbar .else a{font-size:17px;padding-left:4px}
+  .topbar .else a:last-child{border-bottom:0}
+}
+@media (prefers-reduced-motion:reduce){.topbar,.wm,.topbar nav a span,.fit-face .fg,.fit-face .eye-r,.fit-face .wink{transition:none}.fit-t.fit-pop{animation:none}}
+
+/* a factor and one of its projects, drawn the way the model draws them */
+.glyph{display:block;background:#ECEEF3 var(--noise);border:3px solid #12141C;box-shadow:5px 5px 0 var(--shadow,#12141C);padding:6px 8px;color:#12141C;text-decoration:none;line-height:0}
+.glyph svg{display:block;width:100%;height:auto}
+.glyph:hover{background-color:#FFF3A8}
+.glyph:focus-visible{outline:3px solid var(--coral,#F4807A);outline-offset:3px}
+
+/* the one button style: yellow, inked, with a hard shadow */
+.btn,.plink,.pc-act .go,.tt .go{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;font-family:'Archivo',system-ui,sans-serif;font-weight:800;font-stretch:90%;font-size:15px;line-height:1.2;background:#FFE14A;color:#12141C;border:2.5px solid #12141C;text-decoration:none;box-shadow:3px 3px 0 #12141C;white-space:nowrap;transition:transform .12s,box-shadow .12s}
+.btn:hover,.plink:hover,.pc-act .go:hover,.tt .go:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #12141C}
+.btn:focus-visible,.plink:focus-visible,.pc-act .go:focus-visible,.tt .go:focus-visible{outline:3px solid #12141C;outline-offset:3px}

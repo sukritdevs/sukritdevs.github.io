@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Play | Sukrit’s Portfolio</title>
+<meta name="description" content="Six small experiments, each tied to a project in my work. Invented data where the truth is known, so you can check the method against it.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ECEEF3">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23F4807A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Red+Hat+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/nav.css">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body class="inner">
+<script src="assets/content.js"></script>
+<script src="assets/nav.js" data-page="play"></script>
+
+<main id="main">
+  <div class="page">
+    <header class="phead">
+      <h1 class="serif">Small experiments, each from a project in the model</h1>
+      <p class="lede">Start anywhere. Each toy opens with a “Start here” line, runs on invented data so the true answer is known, and links back to the project it comes from.</p>
+    </header>
+
+    <div class="pgrid" id="pgrid"></div>
+
+    <p class="pback"><a href="index.html">← Back to the model</a></p>
+
+    <footer class="site">
+      <a href="https://linkedin.com/sukritbhatnagar" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://instagram.com/sukritbhatnagar" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://sukrit-bhatnagar.webflow.io/" target="_blank" rel="noopener">Design portfolio</a>
+    </footer>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var PF = window.PF, U = window.PFUI;
+  function h(t, a, p) { var e = document.createElement(t); for (var k in a) { if (k === 'text') e.textContent = a[k]; else e.setAttribute(k, a[k]); } if (p) p.appendChild(e); return e; }
+  var g = document.getElementById('pgrid');
+  PF.toys.forEach(function (t) {
+    var m = U.find(t.from[0]), c = h('article', { 'class': 'pcard' }, g);
+    c.style.setProperty('--c', m.f.col);
+    var top = h('div', { 'class': 'pc-top' }, c);
+    top.appendChild(U.glyph(m.f, m.d, 'index.html?open=' + m.d.id, m.d.title + ', under ' + m.f.name + '. See it in the model.'));
+    var b = h('div', { 'class': 'pc-b' }, c);
+    h('p', { 'class': 'pc-from', text: 'From the model: ' + m.f.name + ' › ' + m.d.title }, b);
+    h('h2', { text: t.title }, b);
+    h('p', { 'class': 'pc-q', text: t.q }, b);
+    var act = h('div', { 'class': 'pc-act' }, b);
+    h('a', { 'class': 'go', href: t.file, text: 'Play it' }, act);
+    h('a', { 'class': 'see', href: 'index.html?open=' + m.d.id, text: 'See it in the model' }, act);
+  });
+})();
+</script>
+</body>
+</html>

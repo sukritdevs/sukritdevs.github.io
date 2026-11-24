@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Treat it as continuous? | Sukrit’s Portfolio</title>
+<meta name="description" content="An interactive piece from my portfolio, run on invented data where the truth is known.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%279%27 fill=%27%23F4807A%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Red+Hat+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: three print-shop sheets. Each opens with a Start here step, one plain-language paragraph, the controls, then a chart and a sentence that reads the result back to the visitor. */
+:root{color-scheme:light;--paper:#ECEEF3;--sheet:#F8F9FC;--ink:#12141C;--muted:#464C5A;--line:#12141C;--shadow:#12141C;--coral:#F4807A;--on:#12141C;--c-res:#7B8DFF;--c-scale:#FF7AB6;--c-tool:#FFE14A;--a:#2F5BE0;--b:#C25E00;--good:#1E8F5B;--bad:#C62F26;--wash:rgba(127,127,140,.16)}
+*{box-sizing:border-box}
+body{margin:0;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--paper);color:var(--ink);font-family:'Archivo',system-ui,sans-serif;font-weight:500;font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:34px}
+h1{margin:0 0 6px;font-weight:900;font-stretch:80%;font-size:clamp(2.1rem,6vw,3.5rem);line-height:.95;text-wrap:balance}
+h1 i{display:inline-block;width:.2em;height:.2em;border-radius:50%;background:var(--coral);margin-left:.06em}
+.lede{max-width:66ch;color:var(--muted);margin:0 0 14px}
+.jump{display:flex;flex-wrap:wrap;gap:8px}
+.jump a{color:var(--ink);text-decoration:none;font-weight:800;font-stretch:90%;font-size:13px;border:2.5px solid var(--line);padding:5px 11px;min-height:34px;display:inline-flex;align-items:center}
+.jump a:hover{background:var(--ink);color:var(--paper)}
+.sheet{background:var(--sheet);border:3px solid var(--line);box-shadow:7px 7px 0 var(--shadow);scroll-margin-top:14px}
+.cover{background:radial-gradient(circle,rgba(18,20,28,.55) 1.2px,transparent 1.6px) 0 0/8px 8px,var(--c);color:var(--on);border-bottom:3px solid var(--line);padding:12px 14px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end;justify-content:space-between}
+.cover h2{margin:0;font-weight:900;font-stretch:80%;font-size:23px;line-height:1;background:#F8F9FC;color:#12141C;border:2.5px solid #12141C;padding:3px 9px}
+.cover span{font-weight:800;font-stretch:85%;font-size:12.5px;background:#F8F9FC;color:#12141C;border:2px solid #12141C;padding:1px 7px}
+.body{padding:14px 16px 16px;display:grid;gap:12px}
+.body p{margin:0;max-width:72ch}
+.try{border:2.5px solid var(--line);padding:8px 12px;max-width:none!important}
+.try b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;margin-right:8px;border:2px solid var(--line);padding:0 6px}
+.hint{color:var(--muted);font-size:14.5px}
+.ctrls{display:grid;gap:10px 22px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.ctrls label,.ctrls .lab{display:flex;flex-direction:column;gap:3px;font-weight:700;font-stretch:90%;font-size:13px}
+.ctrls output{font-family:'Red Hat Mono',monospace;font-weight:500;font-size:12.5px;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--ink);margin:2px 0;min-height:24px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:inherit;font-weight:800;font-stretch:90%;font-size:13.5px;color:var(--ink);background:transparent;border:2.5px solid var(--line);padding:6px 12px;min-height:36px;cursor:pointer}
+.btn:hover{background:var(--wash)}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.btn.go{background:#FFE14A;color:#12141C}
+.btn:disabled{opacity:.5;cursor:wait}
+.btn:focus-visible,input:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+@media (pointer:coarse){.btn{min-height:44px}}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:720px){.two{grid-template-columns:minmax(0,1fr)}}
+.panel{border:2.5px solid var(--line);background:var(--sheet)}
+.panel h2{margin:0;padding:5px 10px;font-weight:900;font-stretch:85%;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;border-bottom:2.5px solid var(--line);background:var(--wash)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:'Archivo',sans-serif;fill:var(--ink)}
+.read{border:3px solid var(--line);padding:10px 14px;display:grid;gap:4px}
+.read b{font-weight:900;font-stretch:85%;font-size:16px}
+.read p{max-width:78ch}
+.read.warn{border-color:var(--bad)}.read.warn b{color:var(--bad)}.read.ok{border-color:var(--good)}.read.ok b{color:var(--good)}
+.stat{display:flex;flex-wrap:wrap;gap:6px 18px;font-weight:700;font-stretch:90%;font-size:13.5px}
+.stat span b{font-family:'Red Hat Mono',monospace;font-weight:500}
+.hist{display:flex;align-items:flex-end;gap:4px;height:64px;padding:6px 8px 0}
+.hist i{flex:1;background:var(--c-res);border:2px solid var(--line);border-bottom:0;min-width:6px}
+.prog{height:12px;border:2px solid var(--line);position:relative}.prog i{position:absolute;inset:0 auto 0 0;background:var(--c-tool);width:0}
+.ask{border-top:2px dashed var(--line);padding:10px 16px 12px;font-size:14px;display:flex;gap:10px;align-items:baseline}
+.ask b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;flex:none;border:2px solid var(--line);padding:0 6px}
+.key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;font-weight:700;font-stretch:92%}
+.key span{display:inline-flex;gap:6px;align-items:center}.key i{width:12px;height:12px;border:2px solid var(--line);display:inline-block}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<link rel="stylesheet" href="../assets/nav.css">
+<link rel="stylesheet" href="../assets/shell.css">
+</head>
+<body data-toy="ordinal">
+<script src="../assets/content.js"></script>
+<script src="../assets/nav.js" data-base="../" data-page="toy"></script>
+<main class="wrap" id="main">
+<div id="toy-intro"></div>
+<section class="sheet" id="ordinal">
+    <div class="body">
+      <p class="try"><b>Start here</b>Press "Yes / no" and watch the blue dots drift left of the dashed line.</p>
+      <p class="hint">Two questions share a hidden true correlation. Their answers were recorded on a rating scale, as most psychology data are. Pearson treats the answers as measurements on a continuous ruler. Polychoric assumes each answer is a coarse reading of an underlying continuous trait. Both are tried on 40 invented studies.</p>
+      <div class="ctrls">
+        <label>True correlation <output id="oR">0.50</output><input type="range" id="tr" min="20" max="80" value="50"></label>
+        <label>Sample size per study <output id="oN">300</output><input type="range" id="tn" min="100" max="1000" step="50" value="300"></label>
+        <label>Answers pile up at the low end <output id="oS">some</output><input type="range" id="ts" min="0" max="150" value="80"></label>
+        <div class="lab">Response options<div class="seg" id="tk"></div></div>
+      </div>
+      <div class="two" style="align-items:start">
+        <div class="panel"><h2>Each dot is one study's estimate</h2><svg id="chA" viewBox="0 0 560 230" role="img" aria-label="Pearson and polychoric estimates of the correlation across 40 studies"></svg></div>
+        <div class="panel"><h2>What the answers to question 1 look like</h2><div class="hist" id="hist" aria-hidden="true"></div><div class="hint" style="padding:4px 10px 8px" id="histLab"></div></div>
+      </div>
+      <div class="key"><span><i style="background:var(--a)"></i>Pearson</span><span><i style="background:var(--b)"></i>Polychoric</span><span>dashed line: the true correlation</span></div>
+      <div class="read" id="readA" aria-live="polite"></div>
+      <p class="hint">Polychoric assumes an underlying normal trait behind each answer, which is the same assumption behind WLSMV in SEMpathy. When that assumption is wrong, the estimate can be wrong too.</p>
+    </div>
+</section>
+<div id="toy-next"></div>
+</main>
+<script src="../assets/shell.js"></script>
+<script>
+
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+var $=function(s){return document.querySelector(s);};
+var clamp=function(v,a,b){return Math.min(b,Math.max(a,v));};
+var S=function(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+var H=function(t,a,p){var e=document.createElement(t);for(var k in a){if(k==='text')e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;};
+var T=function(p,s,x,y,o){var t=S('text',{x:x,y:y,'font-size':12},p);t.textContent=s;if(o)for(var k in o)t.setAttribute(k,o[k]);return t;};
+var FIT=[],RO=window.ResizeObserver?new ResizeObserver(function(){FIT.forEach(fitText);}):null;
+function fitText(svg){var vb=svg.viewBox&&svg.viewBox.baseVal,w=svg.clientWidth;if(!vb||!w)return;var k=vb.width/w;
+  [].forEach.call(svg.querySelectorAll('text'),function(t){if(!t.dataset.fs)t.dataset.fs=parseFloat(t.getAttribute('font-size'))||12;t.setAttribute('font-size',Math.max(+t.dataset.fs,12*k).toFixed(1));});
+  if(FIT.indexOf(svg)<0){FIT.push(svg);if(RO)RO.observe(svg);}}
+
+/*LIB*/
+function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function gauss(r){var u=Math.max(r(),1e-12),v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function pnorm(x){var s=x<0?-1:1,z=Math.abs(x)/Math.SQRT2,t=1/(1+0.3275911*z),y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z);return 0.5*(1+s*y);}
+function qnorm(p){var lo=-8,hi=8;for(var i=0;i<42;i++){var m=(lo+hi)/2;if(pnorm(m)<p)lo=m;else hi=m;}return (lo+hi)/2;}
+function zeros(n){var m=[];for(var i=0;i<n;i++){m.push(new Array(n).fill(0));}return m;}
+function chol(A){var n=A.length,L=zeros(n);for(var i=0;i<n;i++){for(var j=0;j<=i;j++){var s=A[i][j];for(var k=0;k<j;k++)s-=L[i][k]*L[j][k];if(i===j){if(s<=1e-12)return null;L[i][i]=Math.sqrt(s);}else L[i][j]=s/L[j][j];}}return L;}
+function inv(A){var n=A.length,M=A.map(function(r,i){return r.concat(zeros(n)[i].map(function(_,j){return i===j?1:0;}));});
+  for(var i=0;i<n;i++){var p=i;for(var r=i+1;r<n;r++)if(Math.abs(M[r][i])>Math.abs(M[p][i]))p=r;var t=M[i];M[i]=M[p];M[p]=t;var d=M[i][i];for(var j=0;j<2*n;j++)M[i][j]/=d;
+    for(var r2=0;r2<n;r2++){if(r2===i)continue;var f=M[r2][i];if(f)for(var j2=0;j2<2*n;j2++)M[r2][j2]-=f*M[i][j2];}}
+  return M.map(function(r){return r.slice(n);});}
+function pctl(arr,q){var a=arr.slice().sort(function(x,y){return x-y;}),i=(a.length-1)*q,lo=Math.floor(i),hi=Math.ceil(i);return a[lo]+(a[hi]-a[lo])*(i-lo);}
+function mean(a){var s=0;for(var i=0;i<a.length;i++)s+=a[i];return s/a.length;}
+function sd(a){var m=mean(a),s=0;for(var i=0;i<a.length;i++)s+=(a[i]-m)*(a[i]-m);return Math.sqrt(s/(a.length-1));}
+
+/* ---- toy A: ordinal answers ---- */
+function Fbiv(a,b,rho){if(a===-Infinity||b===-Infinity)return 0;if(a===Infinity)return pnorm(b);if(b===Infinity)return pnorm(a);
+  var s=Math.sqrt(1-rho*rho),top=Math.min(a,4.5);if(top<=-4.5)return 0;var N=40,h=(top+4.5)/N,tot=0;
+  for(var i=0;i<=N;i++){var z=-4.5+h*i,f=Math.exp(-z*z/2)/2.5066282746*pnorm((b-rho*z)/s);tot+=((i===0||i===N)?.5:1)*f;}return tot*h;}
+function pearsonXY(x,y){var n=x.length,mx=mean(x),my=mean(y),sxy=0,sxx=0,syy=0;for(var i=0;i<n;i++){var dx=x[i]-mx,dy=y[i]-my;sxy+=dx*dy;sxx+=dx*dx;syy+=dy*dy;}return sxx&&syy?sxy/Math.sqrt(sxx*syy):0;}
+function polyXY(x,y,k){var n=x.length,tab=[],i,j;for(i=0;i<k;i++)tab.push(new Array(k).fill(0));for(i=0;i<n;i++)tab[x[i]-1][y[i]-1]++;
+  function thr(v){var c=new Array(k).fill(0);for(var q=0;q<n;q++)c[v[q]-1]++;var t=[-Infinity],cum=0;for(var m=0;m<k-1;m++){cum+=c[m]/n;t.push(qnorm(clamp(cum,.001,.999)));}t.push(Infinity);return t;}
+  var tx=thr(x),ty=thr(y);
+  function ll(rho){var F=[];for(var a=0;a<=k;a++){F.push([]);for(var b=0;b<=k;b++)F[a].push(Fbiv(tx[a],ty[b],rho));}var s=0;
+    for(var a2=0;a2<k;a2++)for(var b2=0;b2<k;b2++){var c=tab[a2][b2];if(!c)continue;var p=F[a2+1][b2+1]-F[a2][b2+1]-F[a2+1][b2]+F[a2][b2];s+=c*Math.log(Math.max(p,1e-12));}return s;}
+  var best=0,bl=-Infinity,r;
+  for(r=-.9;r<=.9001;r+=.1){var l=ll(r);if(l>bl){bl=l;best=r;}}
+  var c0=best;for(r=c0-.1;r<=c0+.1001;r+=.02){if(Math.abs(r)>.97)continue;var l2=ll(r);if(l2>bl){bl=l2;best=r;}}
+  var c1=best;for(r=c1-.02;r<=c1+.0201;r+=.004){if(Math.abs(r)>.97)continue;var l3=ll(r);if(l3>bl){bl=l3;best=r;}}
+  return best;}
+var AR=40,AMAX=1000,AG=(function(){var o=[];for(var q=0;q<AR;q++){var r=rng(5000+q),g1=[],g2=[];for(var i=0;i<AMAX;i++){g1.push(gauss(r));g2.push(gauss(r));}o.push([g1,g2]);}return o;})();
+function runA(rho,n,skew,k){var cuts=[];for(var i=1;i<k;i++)cuts.push(qnorm(i/k)+skew);var P=[],Q=[],first=null,s=Math.sqrt(1-rho*rho);
+  for(var q=0;q<AR;q++){var x=[],y=[];for(var j=0;j<n;j++){var z1=AG[q][0][j],z2=rho*z1+s*AG[q][1][j],cx=1,cy=1;for(var c=0;c<cuts.length;c++){if(z1>cuts[c])cx++;if(z2>cuts[c])cy++;}x.push(cx);y.push(cy);}
+    if(q===0)first=x;P.push(pearsonXY(x,y));Q.push(polyXY(x,y,k));}
+  return {P:P,Q:Q,first:first};}
+
+/* ---------- UI: toy A ---------- */
+(function(){
+  var K=[2,3,5,7],kk=5,seg=$('#tk');
+  K.forEach(function(k){var b=H('button',{type:'button','class':'btn','aria-pressed':String(k===kk),text:k===2?'Yes / no':k+' options'},seg);b.addEventListener('click',function(){kk=k;[].forEach.call(seg.children,function(x,i){x.setAttribute('aria-pressed',String(K[i]===kk));});upd();});});
+  var timer=0;
+  function upd(){clearTimeout(timer);timer=setTimeout(go,40);}
+  function go(){
+    var rho=+$('#tr').value/100,n=+$('#tn').value,sk=+$('#ts').value/100;
+    $('#oR').textContent=rho.toFixed(2);$('#oN').textContent=n;$('#oS').textContent=sk<.15?'none':sk<.6?'a little':sk<1.1?'some':'a lot';
+    var r=runA(rho,n,sk,kk),svg=$('#chA');svg.textContent='';
+    var lo=Math.max(0,rho-.38),hi=Math.min(1,lo+.6),X=function(v){return 70+(clamp(v,lo,hi)-lo)/(hi-lo)*470;},Y1=70,Y2=140;
+    S('line',{x1:70,y1:190,x2:540,y2:190,'stroke-width':2},svg).style.stroke='var(--ink)';
+    for(var v=Math.ceil(lo*10)/10;v<=hi+.001;v+=.1){S('line',{x1:X(v),y1:190,x2:X(v),y2:196,'stroke-width':2},svg).style.stroke='var(--ink)';T(svg,v.toFixed(1),X(v),214,{'text-anchor':'middle','font-weight':'700'});}
+    var tl=S('line',{x1:X(rho),y1:24,x2:X(rho),y2:190,'stroke-width':2.5,'stroke-dasharray':'6 5'},svg);tl.style.stroke='var(--ink)';
+    T(svg,'true '+rho.toFixed(2),X(rho),16,{'text-anchor':'middle','font-weight':'800'});
+    T(svg,'Pearson',8,Y1+4,{'font-weight':'800'});T(svg,'Polychoric',8,Y2+4,{'font-weight':'800'});
+    function dots(arr,y,col){arr.forEach(function(v,i){var c=S('circle',{cx:X(v),cy:y+((i*37)%31)-15,r:4.5,opacity:.75},svg);c.style.fill=col;});var m=mean(arr);var mk=S('line',{x1:X(m),y1:y-26,x2:X(m),y2:y+26,'stroke-width':4},svg);mk.style.stroke=col;T(svg,m.toFixed(2),X(m),y-32,{'text-anchor':'middle','font-weight':'800'});}
+    dots(r.P,Y1,'var(--a)');dots(r.Q,Y2,'var(--b)');fitText(svg);
+    var mp=mean(r.P),mq=mean(r.Q),pp=Math.round(mp/rho*100),pq=Math.round(mq/rho*100);
+    var h=$('#hist');h.textContent='';var cnt=new Array(kk).fill(0);r.first.forEach(function(v){cnt[v-1]++;});var mx=Math.max.apply(null,cnt);
+    cnt.forEach(function(c,i){var b=H('i',{title:'answer '+(i+1)+': '+Math.round(c/r.first.length*100)+'%'},h);b.style.height=Math.max(3,c/mx*54)+'px';});
+    $('#histLab').textContent='Share choosing each answer, lowest to highest: '+cnt.map(function(c){return Math.round(c/r.first.length*100)+'%';}).join(', ');
+    var box=$('#readA');box.textContent='';var bad=pp<90;box.className='read '+(bad?'warn':'ok');
+    H('b',{text:bad?'Treating the answers as continuous understates the relationship':'Here the two methods agree'},box);
+    H('p',{text:'On '+(kk===2?'yes/no answers':'a '+kk+'-point scale')+' with this skew, Pearson recovers about '+pp+'% of the true correlation on average. Polychoric recovers about '+pq+'%. '+(bad?'A weaker correlation than the truth shrinks factor loadings and can make a good model look worse.':'With many options and balanced answers, the loss is small.')},box);
+  }
+  ['#tr','#tn','#ts'].forEach(function(id){$(id).addEventListener('input',upd);});
+  go();
+})();
+
+})();
+</script>
+</body>
+</html>

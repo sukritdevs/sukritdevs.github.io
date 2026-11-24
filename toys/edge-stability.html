@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How sure are you about this edge? | Sukrit’s Portfolio</title>
+<meta name="description" content="An interactive piece from my portfolio, run on invented data where the truth is known.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%279%27 fill=%27%23F4807A%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Red+Hat+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: three print-shop sheets. Each opens with a Start here step, one plain-language paragraph, the controls, then a chart and a sentence that reads the result back to the visitor. */
+:root{color-scheme:light;--paper:#ECEEF3;--sheet:#F8F9FC;--ink:#12141C;--muted:#464C5A;--line:#12141C;--shadow:#12141C;--coral:#F4807A;--on:#12141C;--c-res:#7B8DFF;--c-scale:#FF7AB6;--c-tool:#FFE14A;--a:#2F5BE0;--b:#C25E00;--good:#1E8F5B;--bad:#C62F26;--wash:rgba(127,127,140,.16)}
+*{box-sizing:border-box}
+body{margin:0;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--paper);color:var(--ink);font-family:'Archivo',system-ui,sans-serif;font-weight:500;font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:34px}
+h1{margin:0 0 6px;font-weight:900;font-stretch:80%;font-size:clamp(2.1rem,6vw,3.5rem);line-height:.95;text-wrap:balance}
+h1 i{display:inline-block;width:.2em;height:.2em;border-radius:50%;background:var(--coral);margin-left:.06em}
+.lede{max-width:66ch;color:var(--muted);margin:0 0 14px}
+.jump{display:flex;flex-wrap:wrap;gap:8px}
+.jump a{color:var(--ink);text-decoration:none;font-weight:800;font-stretch:90%;font-size:13px;border:2.5px solid var(--line);padding:5px 11px;min-height:34px;display:inline-flex;align-items:center}
+.jump a:hover{background:var(--ink);color:var(--paper)}
+.sheet{background:var(--sheet);border:3px solid var(--line);box-shadow:7px 7px 0 var(--shadow);scroll-margin-top:14px}
+.cover{background:radial-gradient(circle,rgba(18,20,28,.55) 1.2px,transparent 1.6px) 0 0/8px 8px,var(--c);color:var(--on);border-bottom:3px solid var(--line);padding:12px 14px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end;justify-content:space-between}
+.cover h2{margin:0;font-weight:900;font-stretch:80%;font-size:23px;line-height:1;background:#F8F9FC;color:#12141C;border:2.5px solid #12141C;padding:3px 9px}
+.cover span{font-weight:800;font-stretch:85%;font-size:12.5px;background:#F8F9FC;color:#12141C;border:2px solid #12141C;padding:1px 7px}
+.body{padding:14px 16px 16px;display:grid;gap:12px}
+.body p{margin:0;max-width:72ch}
+.try{border:2.5px solid var(--line);padding:8px 12px;max-width:none!important}
+.try b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;margin-right:8px;border:2px solid var(--line);padding:0 6px}
+.hint{color:var(--muted);font-size:14.5px}
+.ctrls{display:grid;gap:10px 22px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.ctrls label,.ctrls .lab{display:flex;flex-direction:column;gap:3px;font-weight:700;font-stretch:90%;font-size:13px}
+.ctrls output{font-family:'Red Hat Mono',monospace;font-weight:500;font-size:12.5px;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--ink);margin:2px 0;min-height:24px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:inherit;font-weight:800;font-stretch:90%;font-size:13.5px;color:var(--ink);background:transparent;border:2.5px solid var(--line);padding:6px 12px;min-height:36px;cursor:pointer}
+.btn:hover{background:var(--wash)}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.btn.go{background:#FFE14A;color:#12141C}
+.btn:disabled{opacity:.5;cursor:wait}
+.btn:focus-visible,input:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+@media (pointer:coarse){.btn{min-height:44px}}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:720px){.two{grid-template-columns:minmax(0,1fr)}}
+.panel{border:2.5px solid var(--line);background:var(--sheet)}
+.panel h2{margin:0;padding:5px 10px;font-weight:900;font-stretch:85%;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;border-bottom:2.5px solid var(--line);background:var(--wash)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:'Archivo',sans-serif;fill:var(--ink)}
+.read{border:3px solid var(--line);padding:10px 14px;display:grid;gap:4px}
+.read b{font-weight:900;font-stretch:85%;font-size:16px}
+.read p{max-width:78ch}
+.read.warn{border-color:var(--bad)}.read.warn b{color:var(--bad)}.read.ok{border-color:var(--good)}.read.ok b{color:var(--good)}
+.stat{display:flex;flex-wrap:wrap;gap:6px 18px;font-weight:700;font-stretch:90%;font-size:13.5px}
+.stat span b{font-family:'Red Hat Mono',monospace;font-weight:500}
+.hist{display:flex;align-items:flex-end;gap:4px;height:64px;padding:6px 8px 0}
+.hist i{flex:1;background:var(--c-res);border:2px solid var(--line);border-bottom:0;min-width:6px}
+.prog{height:12px;border:2px solid var(--line);position:relative}.prog i{position:absolute;inset:0 auto 0 0;background:var(--c-tool);width:0}
+.ask{border-top:2px dashed var(--line);padding:10px 16px 12px;font-size:14px;display:flex;gap:10px;align-items:baseline}
+.ask b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;flex:none;border:2px solid var(--line);padding:0 6px}
+.key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;font-weight:700;font-stretch:92%}
+.key span{display:inline-flex;gap:6px;align-items:center}.key i{width:12px;height:12px;border:2px solid var(--line);display:inline-block}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<link rel="stylesheet" href="../assets/nav.css">
+<link rel="stylesheet" href="../assets/shell.css">
+</head>
+<body data-toy="stable">
+<script src="../assets/content.js"></script>
+<script src="../assets/nav.js" data-base="../" data-page="toy"></script>
+<main class="wrap" id="main">
+<div id="toy-intro"></div>
+<section class="sheet" id="stable">
+    <div class="body">
+      <p class="try"><b>Start here</b>Press "Resample" with a small sample, then drag the sample size up and press it again.</p>
+      <p class="hint">A network from one sample is one draw. To see how much it could change, resample the same data 100 times and re-estimate each time. Each bar shows the range an edge took across the resamples. The diamond is the true value, which you could never see in real research. Data are continuous and invented.</p>
+      <div class="ctrls">
+        <label>Sample size <output id="oM">250</output><input type="range" id="sn" min="100" max="1000" step="50" value="250"></label>
+        <div class="lab">Run<div class="seg"><button class="btn go" id="bRun">Resample 100 times</button></div></div>
+      </div>
+      <div class="prog" aria-hidden="true"><i id="pg"></i></div>
+      <div class="two" style="grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)">
+        <div class="panel"><h2>Edge weights and their ranges</h2><svg id="chE" viewBox="0 0 520 100" role="img" aria-label="Estimated edge weights with bootstrap ranges and true values"></svg></div>
+        <div class="panel"><h2>Who is most central?</h2><svg id="chC" viewBox="0 0 310 260" role="img" aria-label="How often each node was the most central across resamples"></svg></div>
+      </div>
+      <div class="key"><span><i style="background:var(--a);border-radius:50%"></i>estimate in your sample</span><span><i style="background:var(--b);transform:rotate(45deg)"></i>true value</span><span>bar: middle 95% of resamples (red if it includes zero)</span></div>
+      <div class="read" id="readC" aria-live="polite"></div>
+      <p class="hint">Network estimation here is a simplified graphical lasso with EBIC (γ = 0.5). Centrality is strength: the sum of a node's absolute edge weights.</p>
+    </div>
+</section>
+<div id="toy-next"></div>
+</main>
+<script src="../assets/shell.js"></script>
+<script>
+
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+var $=function(s){return document.querySelector(s);};
+var clamp=function(v,a,b){return Math.min(b,Math.max(a,v));};
+var S=function(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+var H=function(t,a,p){var e=document.createElement(t);for(var k in a){if(k==='text')e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;};
+var T=function(p,s,x,y,o){var t=S('text',{x:x,y:y,'font-size':12},p);t.textContent=s;if(o)for(var k in o)t.setAttribute(k,o[k]);return t;};
+var FIT=[],RO=window.ResizeObserver?new ResizeObserver(function(){FIT.forEach(fitText);}):null;
+function fitText(svg){var vb=svg.viewBox&&svg.viewBox.baseVal,w=svg.clientWidth;if(!vb||!w)return;var k=vb.width/w;
+  [].forEach.call(svg.querySelectorAll('text'),function(t){if(!t.dataset.fs)t.dataset.fs=parseFloat(t.getAttribute('font-size'))||12;t.setAttribute('font-size',Math.max(+t.dataset.fs,12*k).toFixed(1));});
+  if(FIT.indexOf(svg)<0){FIT.push(svg);if(RO)RO.observe(svg);}}
+
+/*LIB*/
+function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function gauss(r){var u=Math.max(r(),1e-12),v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function pnorm(x){var s=x<0?-1:1,z=Math.abs(x)/Math.SQRT2,t=1/(1+0.3275911*z),y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z);return 0.5*(1+s*y);}
+function qnorm(p){var lo=-8,hi=8;for(var i=0;i<42;i++){var m=(lo+hi)/2;if(pnorm(m)<p)lo=m;else hi=m;}return (lo+hi)/2;}
+function zeros(n){var m=[];for(var i=0;i<n;i++){m.push(new Array(n).fill(0));}return m;}
+function chol(A){var n=A.length,L=zeros(n);for(var i=0;i<n;i++){for(var j=0;j<=i;j++){var s=A[i][j];for(var k=0;k<j;k++)s-=L[i][k]*L[j][k];if(i===j){if(s<=1e-12)return null;L[i][i]=Math.sqrt(s);}else L[i][j]=s/L[j][j];}}return L;}
+function inv(A){var n=A.length,M=A.map(function(r,i){return r.concat(zeros(n)[i].map(function(_,j){return i===j?1:0;}));});
+  for(var i=0;i<n;i++){var p=i;for(var r=i+1;r<n;r++)if(Math.abs(M[r][i])>Math.abs(M[p][i]))p=r;var t=M[i];M[i]=M[p];M[p]=t;var d=M[i][i];for(var j=0;j<2*n;j++)M[i][j]/=d;
+    for(var r2=0;r2<n;r2++){if(r2===i)continue;var f=M[r2][i];if(f)for(var j2=0;j2<2*n;j2++)M[r2][j2]-=f*M[i][j2];}}
+  return M.map(function(r){return r.slice(n);});}
+function pctl(arr,q){var a=arr.slice().sort(function(x,y){return x-y;}),i=(a.length-1)*q,lo=Math.floor(i),hi=Math.ceil(i);return a[lo]+(a[hi]-a[lo])*(i-lo);}
+function mean(a){var s=0;for(var i=0;i<a.length;i++)s+=a[i];return s/a.length;}
+function sd(a){var m=mean(a),s=0;for(var i=0;i<a.length;i++)s+=(a[i]-m)*(a[i]-m);return Math.sqrt(s/(a.length-1));}
+
+/* ---- toy C: network stability ---- */
+var CP=8,CTRUE=[[0,1,.24],[1,2,.24],[2,3,.24],[3,4,-.22],[4,5,.24],[5,6,.24],[6,7,.24],[7,0,.24],[0,4,.26],[2,4,.20],[1,5,.12],[2,6,-.12],[3,7,.10]];
+var CD=(function(){var K=zeros(CP);for(var i=0;i<CP;i++)K[i][i]=1;CTRUE.forEach(function(e){K[e[0]][e[1]]=-e[2];K[e[1]][e[0]]=-e[2];});
+  var Sg=inv(K),L=chol(Sg),r=rng(31),X=[];for(var n=0;n<1000;n++){var z=[],row=[];for(var a=0;a<CP;a++)z.push(gauss(r));for(var b=0;b<CP;b++){var v=0;for(var c=0;c<=b;c++)v+=L[b][c]*z[c];row.push(v);}X.push(row);}return X;})();
+function corrRows(rows){var n=rows.length,m=[],s=[];for(var j=0;j<CP;j++){var t=0;for(var i=0;i<n;i++)t+=rows[i][j];m.push(t/n);}
+  for(var j2=0;j2<CP;j2++){var v=0;for(var i2=0;i2<n;i2++)v+=Math.pow(rows[i2][j2]-m[j2],2);s.push(Math.sqrt(v/n));}
+  var R=zeros(CP);for(var a=0;a<CP;a++)for(var b=0;b<CP;b++){if(a===b){R[a][b]=1;continue;}var q=0;for(var k=0;k<n;k++)q+=(rows[k][a]-m[a])*(rows[k][b]-m[b]);R[a][b]=q/n/(s[a]*s[b]);}return R;}
+function soft(x,l){return x>l?x-l:x<-l?x+l:0;}
+function glasso(Sm,lam,W0){var p=Sm.length,W=W0?W0.map(function(r){return r.slice();}):Sm.map(function(r){return r.slice();}),B=[];for(var d0=0;d0<p;d0++)W[d0][d0]=Sm[d0][d0]+lam;
+  for(var it=0;it<60;it++){var maxd=0;for(var j=0;j<p;j++){var idx=[];for(var k=0;k<p;k++)if(k!==j)idx.push(k);var beta=B[j]||new Array(p-1).fill(0);
+      for(var inner=0;inner<40;inner++){var ch=0;for(var a=0;a<p-1;a++){var r=Sm[idx[a]][j];for(var b=0;b<p-1;b++)if(b!==a)r-=W[idx[a]][idx[b]]*beta[b];var nb=soft(r,lam)/W[idx[a]][idx[a]];ch=Math.max(ch,Math.abs(nb-beta[a]));beta[a]=nb;}if(ch<1e-6)break;}
+      B[j]=beta;for(var a2=0;a2<p-1;a2++){var w=0;for(var b2=0;b2<p-1;b2++)w+=W[idx[a2]][idx[b2]]*beta[b2];maxd=Math.max(maxd,Math.abs(W[idx[a2]][j]-w));W[idx[a2]][j]=w;W[j][idx[a2]]=w;}}
+    if(maxd<1e-4)break;}
+  var Th=zeros(p);for(var j2=0;j2<p;j2++){var idx2=[];for(var k2=0;k2<p;k2++)if(k2!==j2)idx2.push(k2);var dot=0;for(var a3=0;a3<p-1;a3++)dot+=W[idx2[a3]][j2]*B[j2][a3];
+    var tjj=1/(W[j2][j2]-dot);Th[j2][j2]=tjj;for(var a4=0;a4<p-1;a4++)Th[idx2[a4]][j2]=-B[j2][a4]*tjj;}
+  for(var i2=0;i2<p;i2++)for(var j3=i2+1;j3<p;j3++){var m=(Th[i2][j3]+Th[j3][i2])/2;Th[i2][j3]=Th[j3][i2]=m;}
+  return {W:W,Th:Th};}
+function logdet(A){var L=chol(A);if(!L)return null;var s=0;for(var i=0;i<A.length;i++)s+=2*Math.log(L[i][i]);return s;}
+function ebicNet(Sm,n,gamma){var p=Sm.length,lmax=0;for(var i=0;i<p;i++)for(var j=i+1;j<p;j++)lmax=Math.max(lmax,Math.abs(Sm[i][j]));
+  var best=null,W=null;for(var k=0;k<60;k++){var lam=lmax*Math.pow(.01,k/59),g=glasso(Sm,lam,W);W=g.W;var Th=g.Th,E=0;
+    for(var a=0;a<p;a++)for(var b=a+1;b<p;b++)if(Math.abs(Th[a][b])>1e-8)E++;
+    var ld=logdet(Th);if(ld===null)continue;var tr=0;for(var a2=0;a2<p;a2++)for(var b2=0;b2<p;b2++)tr+=Sm[a2][b2]*Th[b2][a2];
+    var e=n*(tr-ld)+E*Math.log(n)+4*gamma*E*Math.log(p);if(!best||e<best.e)best={e:e,Th:Th};}
+  var pc=zeros(p);for(var x=0;x<p;x++)for(var y=0;y<p;y++){if(x===y)continue;var v=-best.Th[x][y]/Math.sqrt(best.Th[x][x]*best.Th[y][y]);pc[x][y]=Math.abs(v)<1e-8?0:v;}return pc;}
+function strength(pc){return pc.map(function(r){return r.reduce(function(s,v){return s+Math.abs(v);},0);});}
+/* ---------- UI: toy C ---------- */
+(function(){
+  var busy=false,state=null;
+  var key=function(i,j){return i+'-'+j;};
+  var truth={};CTRUE.forEach(function(e){truth[key(Math.min(e[0],e[1]),Math.max(e[0],e[1]))]=e[2];});
+  function draw(){
+    if(!state)return;var est=state.est,B=state.boots,n=state.n;
+    var rows=[];for(var i=0;i<CP;i++)for(var j=i+1;j<CP;j++){var vals=B.map(function(m){return m[i][j];}),inc=vals.filter(function(v){return v!==0;}).length/vals.length,tv=truth[key(i,j)]||0;
+      if(est[i][j]!==0||tv!==0||inc>=.2)rows.push({i:i,j:j,e:est[i][j],lo:pctl(vals,.025),hi:pctl(vals,.975),t:tv,inc:inc});}
+    rows.sort(function(a,b){return Math.abs(b.e)-Math.abs(a.e)||Math.abs(b.t)-Math.abs(a.t);});
+    var svg=$('#chE'),rh=19,top=34,Hh=top+rows.length*rh+24;svg.setAttribute('viewBox','0 0 520 '+Hh);svg.textContent='';
+    var X=function(v){return 270+clamp(v,-.6,.6)*380;};
+    T(svg,'weaker',X(-.3),16,{'text-anchor':'middle','font-weight':'700','style':'fill:var(--muted)'});
+    S('line',{x1:X(0),y1:top-6,x2:X(0),y2:Hh-20,'stroke-width':2,'stroke-dasharray':'4 4'},svg).style.stroke='var(--muted)';
+    T(svg,'0',X(0),Hh-6,{'text-anchor':'middle','font-weight':'700'});T(svg,'negative',X(-.45),Hh-6,{'text-anchor':'middle','font-weight':'700','style':'fill:var(--muted)'});T(svg,'positive',X(.45),Hh-6,{'text-anchor':'middle','font-weight':'700','style':'fill:var(--muted)'});
+    var zeroCount=0;
+    rows.forEach(function(r,k){var y=top+k*rh+rh/2;T(svg,'N'+(r.i+1)+'–N'+(r.j+1),8,y+4,{'font-weight':'700'});
+      var crosses=r.lo<=0&&r.hi>=0;if(crosses&&r.e!==0)zeroCount++;
+      var ln=S('line',{x1:X(r.lo),y1:y,x2:X(r.hi),y2:y,'stroke-width':7,opacity:.55},svg);ln.style.stroke=crosses?'var(--bad)':'var(--a)';
+      var dt=S('circle',{cx:X(r.e),cy:y,r:5},svg);dt.style.fill='var(--a)';dt.style.stroke='var(--ink)';dt.setAttribute('stroke-width',1.5);
+      if(r.t!==0){var d=S('rect',{x:X(r.t)-5,y:y-5,width:10,height:10,transform:'rotate(45 '+X(r.t)+' '+y+')'},svg);d.style.fill='var(--b)';d.style.stroke='var(--ink)';d.setAttribute('stroke-width',1.5);}});
+    fitText(svg);
+    var cs=$('#chC');cs.textContent='';var st=strength(est),topEst=st.indexOf(Math.max.apply(null,st)),wins=new Array(CP).fill(0),ts=new Array(CP).fill(0);CTRUE.forEach(function(e){ts[e[0]]+=Math.abs(e[2]);ts[e[1]]+=Math.abs(e[2]);});var tTop=ts.indexOf(Math.max.apply(null,ts));
+    B.forEach(function(m){var s=strength(m);wins[s.indexOf(Math.max.apply(null,s))]++;});
+    wins.forEach(function(w,i){var y=18+i*29;T(cs,'N'+(i+1),6,y+14,{'font-weight':'700'});S('rect',{x:34,y:y,width:130,height:20,fill:'none','stroke-width':2},cs).style.stroke='var(--line)';
+      var f=S('rect',{x:34,y:y,width:Math.max(0,w/B.length*130),height:20},cs);f.style.fill=i===topEst?'var(--c-tool)':'var(--c-res)';f.style.stroke='var(--ink)';f.setAttribute('stroke-width',2);T(cs,w+'%',34+Math.max(0,w/B.length*130)+6,y+14,{'font-weight':'800'});T(cs,'true '+ts[i].toFixed(2),226,y+14,{'font-weight':'700','style':'fill:var(--muted)'});});
+    T(cs,'% of resamples where the node was most central',6,252,{'font-weight':'700','style':'fill:var(--muted)'});fitText(cs);
+    var tp=0,fp=0;for(var a=0;a<CP;a++)for(var b2=a+1;b2<CP;b2++){var has=est[a][b2]!==0,tr=!!truth[key(a,b2)];if(has&&tr)tp++;if(has&&!tr)fp++;}
+    var box=$('#readC');box.textContent='';var top1=wins[topEst],unstable=top1<75;box.className='read '+(unstable?'warn':'ok');
+    H('b',{text:unstable?'Do not rank the nodes on this sample':'The top node holds up'},box);
+    H('p',{text:'With '+n+' people your sample found '+tp+' of the '+CTRUE.length+' true edges and '+fp+' that are not real, and '+zeroCount+' of the edges it found have a range that crosses zero. N'+(topEst+1)+' looks most central'+(topEst===tTop?' (and it is, in truth)':' (but in truth N'+(tTop+1)+' is)')+', and it was top in '+top1+'% of resamples.'+(unstable?' A stability check like this is what tells you how much weight to put on a central node.':' With more people the ranking firms up.')+(topEst!==tTop?' Notice that resamples can agree with each other and still be wrong: the resampling shows how much your sample would vary, not whether it matches the truth.':'')},box);
+  }
+  function run(){
+    if(busy)return;busy=true;var n=+$('#sn').value;$('#oM').textContent=n;var btn=$('#bRun');btn.disabled=true;btn.textContent='Resampling…';
+    var rows=CD.slice(0,n),est=ebicNet(corrRows(rows),n,.5),boots=[],r=rng(900+n),pg=$('#pg');pg.style.width='0';
+    function chunk(){for(var c=0;c<10&&boots.length<100;c++){var res=[];for(var i=0;i<n;i++)res.push(rows[Math.floor(r()*n)]);boots.push(ebicNet(corrRows(res),n,.5));}
+      pg.style.width=boots.length+'%';
+      if(boots.length<100){setTimeout(chunk,0);}else{state={est:est,boots:boots,n:n};busy=false;btn.disabled=false;btn.textContent='Resample 100 times';draw();}}
+    setTimeout(chunk,0);}
+  $('#bRun').addEventListener('click',run);
+  $('#sn').addEventListener('input',function(){$('#oM').textContent=$('#sn').value;});
+  run();
+})();
+})();
+</script>
+</body>
+</html>

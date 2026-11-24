@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Same score, different meaning | Sukrit’s Portfolio</title>
+<meta name="description" content="An interactive piece from my portfolio, run on invented data where the truth is known.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%279%27 fill=%27%23F4807A%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Red+Hat+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: three print-shop sheets. Each opens with a Start here step, one plain-language paragraph, the controls, then a chart and a sentence that reads the result back to the visitor. */
+:root{color-scheme:light;--paper:#ECEEF3;--sheet:#F8F9FC;--ink:#12141C;--muted:#464C5A;--line:#12141C;--shadow:#12141C;--coral:#F4807A;--on:#12141C;--c-res:#7B8DFF;--c-scale:#FF7AB6;--c-tool:#FFE14A;--a:#2F5BE0;--b:#C25E00;--good:#1E8F5B;--bad:#C62F26;--wash:rgba(127,127,140,.16)}
+*{box-sizing:border-box}
+body{margin:0;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--paper);color:var(--ink);font-family:'Archivo',system-ui,sans-serif;font-weight:500;font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:34px}
+h1{margin:0 0 6px;font-weight:900;font-stretch:80%;font-size:clamp(2.1rem,6vw,3.5rem);line-height:.95;text-wrap:balance}
+h1 i{display:inline-block;width:.2em;height:.2em;border-radius:50%;background:var(--coral);margin-left:.06em}
+.lede{max-width:66ch;color:var(--muted);margin:0 0 14px}
+.jump{display:flex;flex-wrap:wrap;gap:8px}
+.jump a{color:var(--ink);text-decoration:none;font-weight:800;font-stretch:90%;font-size:13px;border:2.5px solid var(--line);padding:5px 11px;min-height:34px;display:inline-flex;align-items:center}
+.jump a:hover{background:var(--ink);color:var(--paper)}
+.sheet{background:var(--sheet);border:3px solid var(--line);box-shadow:7px 7px 0 var(--shadow);scroll-margin-top:14px}
+.cover{background:radial-gradient(circle,rgba(18,20,28,.55) 1.2px,transparent 1.6px) 0 0/8px 8px,var(--c);color:var(--on);border-bottom:3px solid var(--line);padding:12px 14px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end;justify-content:space-between}
+.cover h2{margin:0;font-weight:900;font-stretch:80%;font-size:23px;line-height:1;background:#F8F9FC;color:#12141C;border:2.5px solid #12141C;padding:3px 9px}
+.cover span{font-weight:800;font-stretch:85%;font-size:12.5px;background:#F8F9FC;color:#12141C;border:2px solid #12141C;padding:1px 7px}
+.body{padding:14px 16px 16px;display:grid;gap:12px}
+.body p{margin:0;max-width:72ch}
+.try{border:2.5px solid var(--line);padding:8px 12px;max-width:none!important}
+.try b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;margin-right:8px;border:2px solid var(--line);padding:0 6px}
+.hint{color:var(--muted);font-size:14.5px}
+.ctrls{display:grid;gap:10px 22px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.ctrls label,.ctrls .lab{display:flex;flex-direction:column;gap:3px;font-weight:700;font-stretch:90%;font-size:13px}
+.ctrls output{font-family:'Red Hat Mono',monospace;font-weight:500;font-size:12.5px;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--ink);margin:2px 0;min-height:24px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:inherit;font-weight:800;font-stretch:90%;font-size:13.5px;color:var(--ink);background:transparent;border:2.5px solid var(--line);padding:6px 12px;min-height:36px;cursor:pointer}
+.btn:hover{background:var(--wash)}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.btn.go{background:#FFE14A;color:#12141C}
+.btn:disabled{opacity:.5;cursor:wait}
+.btn:focus-visible,input:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+@media (pointer:coarse){.btn{min-height:44px}}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:720px){.two{grid-template-columns:minmax(0,1fr)}}
+.panel{border:2.5px solid var(--line);background:var(--sheet)}
+.panel h2{margin:0;padding:5px 10px;font-weight:900;font-stretch:85%;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;border-bottom:2.5px solid var(--line);background:var(--wash)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:'Archivo',sans-serif;fill:var(--ink)}
+.read{border:3px solid var(--line);padding:10px 14px;display:grid;gap:4px}
+.read b{font-weight:900;font-stretch:85%;font-size:16px}
+.read p{max-width:78ch}
+.read.warn{border-color:var(--bad)}.read.warn b{color:var(--bad)}.read.ok{border-color:var(--good)}.read.ok b{color:var(--good)}
+.stat{display:flex;flex-wrap:wrap;gap:6px 18px;font-weight:700;font-stretch:90%;font-size:13.5px}
+.stat span b{font-family:'Red Hat Mono',monospace;font-weight:500}
+.hist{display:flex;align-items:flex-end;gap:4px;height:64px;padding:6px 8px 0}
+.hist i{flex:1;background:var(--c-res);border:2px solid var(--line);border-bottom:0;min-width:6px}
+.prog{height:12px;border:2px solid var(--line);position:relative}.prog i{position:absolute;inset:0 auto 0 0;background:var(--c-tool);width:0}
+.ask{border-top:2px dashed var(--line);padding:10px 16px 12px;font-size:14px;display:flex;gap:10px;align-items:baseline}
+.ask b{font-weight:900;font-stretch:85%;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;flex:none;border:2px solid var(--line);padding:0 6px}
+.key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;font-weight:700;font-stretch:92%}
+.key span{display:inline-flex;gap:6px;align-items:center}.key i{width:12px;height:12px;border:2px solid var(--line);display:inline-block}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<link rel="stylesheet" href="../assets/nav.css">
+<link rel="stylesheet" href="../assets/shell.css">
+</head>
+<body data-toy="dif">
+<script src="../assets/content.js"></script>
+<script src="../assets/nav.js" data-base="../" data-page="toy"></script>
+<main class="wrap" id="main">
+<div id="toy-intro"></div>
+<section class="sheet" id="dif">
+    <div class="body">
+      <p class="try"><b>Start here</b>Keep the true difference at zero. Read the gap in total scores, then press "Score without the harder items".</p>
+      <p class="hint">Eight yes/no items measure one trait. Both groups are the same simulated people, so any difference in scores is something you put there. Some items are harder to endorse for Group B at the same trait level, which is what an item that translates badly can do. The total score is the number of items endorsed.</p>
+      <div class="ctrls">
+        <label>True average difference, B minus A <output id="oD">0.00</output><input type="range" id="dd" min="-100" max="100" value="0"></label>
+        <label>Items that are harder for Group B <output id="oC">2</output><input type="range" id="dc" min="0" max="3" value="2"></label>
+        <label>How much harder <output id="oI">1.00</output><input type="range" id="di" min="0" max="150" value="100"></label>
+        <div class="lab">Total score<div class="seg"><button class="btn" id="bDrop" aria-pressed="false">Score without the harder items</button></div></div>
+      </div>
+      <div class="two">
+        <div class="panel"><h2>Item 4 at the same trait level</h2><svg id="chI" viewBox="0 0 320 235" role="img" aria-label="Chance of endorsing item 4 by trait level for each group"></svg></div>
+        <div class="panel"><h2>Item 4 at the same score on fair items</h2><svg id="chM" viewBox="0 0 320 235" role="img" aria-label="Proportion endorsing item 4 at each score on the fair items for each group"></svg></div>
+      </div>
+      <div class="key"><span><i style="background:var(--a)"></i>Group A</span><span><i style="background:var(--b)"></i>Group B</span></div>
+      <div class="stat"><span>Gap if every item were fair <b id="sF">0.00</b></span><span>Gap in your total scores <b id="sG">0.00</b></span><span class="hint">standard deviations of the total score</span></div>
+      <div class="read" id="readB" aria-live="polite"></div>
+      <p class="hint">The right-hand chart is the check an analyst runs: compare people with the same score on the fair items. If the two lines separate, the item is not working the same way in both groups.</p>
+    </div>
+</section>
+<div id="toy-next"></div>
+</main>
+<script src="../assets/shell.js"></script>
+<script>
+
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+var $=function(s){return document.querySelector(s);};
+var clamp=function(v,a,b){return Math.min(b,Math.max(a,v));};
+var S=function(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+var H=function(t,a,p){var e=document.createElement(t);for(var k in a){if(k==='text')e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;};
+var T=function(p,s,x,y,o){var t=S('text',{x:x,y:y,'font-size':12},p);t.textContent=s;if(o)for(var k in o)t.setAttribute(k,o[k]);return t;};
+var FIT=[],RO=window.ResizeObserver?new ResizeObserver(function(){FIT.forEach(fitText);}):null;
+function fitText(svg){var vb=svg.viewBox&&svg.viewBox.baseVal,w=svg.clientWidth;if(!vb||!w)return;var k=vb.width/w;
+  [].forEach.call(svg.querySelectorAll('text'),function(t){if(!t.dataset.fs)t.dataset.fs=parseFloat(t.getAttribute('font-size'))||12;t.setAttribute('font-size',Math.max(+t.dataset.fs,12*k).toFixed(1));});
+  if(FIT.indexOf(svg)<0){FIT.push(svg);if(RO)RO.observe(svg);}}
+
+/*LIB*/
+function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function gauss(r){var u=Math.max(r(),1e-12),v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function pnorm(x){var s=x<0?-1:1,z=Math.abs(x)/Math.SQRT2,t=1/(1+0.3275911*z),y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z);return 0.5*(1+s*y);}
+function qnorm(p){var lo=-8,hi=8;for(var i=0;i<42;i++){var m=(lo+hi)/2;if(pnorm(m)<p)lo=m;else hi=m;}return (lo+hi)/2;}
+function zeros(n){var m=[];for(var i=0;i<n;i++){m.push(new Array(n).fill(0));}return m;}
+function chol(A){var n=A.length,L=zeros(n);for(var i=0;i<n;i++){for(var j=0;j<=i;j++){var s=A[i][j];for(var k=0;k<j;k++)s-=L[i][k]*L[j][k];if(i===j){if(s<=1e-12)return null;L[i][i]=Math.sqrt(s);}else L[i][j]=s/L[j][j];}}return L;}
+function inv(A){var n=A.length,M=A.map(function(r,i){return r.concat(zeros(n)[i].map(function(_,j){return i===j?1:0;}));});
+  for(var i=0;i<n;i++){var p=i;for(var r=i+1;r<n;r++)if(Math.abs(M[r][i])>Math.abs(M[p][i]))p=r;var t=M[i];M[i]=M[p];M[p]=t;var d=M[i][i];for(var j=0;j<2*n;j++)M[i][j]/=d;
+    for(var r2=0;r2<n;r2++){if(r2===i)continue;var f=M[r2][i];if(f)for(var j2=0;j2<2*n;j2++)M[r2][j2]-=f*M[i][j2];}}
+  return M.map(function(r){return r.slice(n);});}
+function pctl(arr,q){var a=arr.slice().sort(function(x,y){return x-y;}),i=(a.length-1)*q,lo=Math.floor(i),hi=Math.ceil(i);return a[lo]+(a[hi]-a[lo])*(i-lo);}
+function mean(a){var s=0;for(var i=0;i<a.length;i++)s+=a[i];return s/a.length;}
+function sd(a){var m=mean(a),s=0;for(var i=0;i<a.length;i++)s+=(a[i]-m)*(a[i]-m);return Math.sqrt(s/(a.length-1));}
+
+/* ---- toy B: items that work differently ---- */
+var BN=1500,BA=[1.1,1.3,1.0,1.4,1.2,1.0,1.3,1.1],BB=[-1.4,-.9,-.4,0,.3,.7,1.1,1.5],BSHOW=3,BORDER=[3,4,5];
+var BD=(function(){var r=rng(77),o={z:[],u:[]};for(var i=0;i<BN;i++){o.z.push(gauss(r));var a=[];for(var j=0;j<8;j++)a.push(r());o.u.push(a);}return o;})();
+function pItem(th,a,b){return 1/(1+Math.exp(-a*(th-b)));}
+function runB(delta,shift,cnt,drop){var biased=BORDER.slice(0,cnt),isB=function(j){return biased.indexOf(j)>=0;};
+  var restItems=[];for(var j0=0;j0<8;j0++)if(j0!==BSHOW&&!isB(j0))restItems.push(j0);
+  var out={A:[],B:[],restA:[],restB:[],itA:[],itB:[],M:restItems.length};
+  for(var g=0;g<2;g++){for(var i=0;i<BN;i++){var th=BD.z[i]+(g?delta:0),tot=0,rest=0,it=0;
+      for(var j=0;j<8;j++){var b=BB[j]+((g&&isB(j))?shift:0),y=BD.u[i][j]<pItem(th,BA[j],b)?1:0;
+        if(j===BSHOW)it=y;if(!(drop&&isB(j)))tot+=y;if(restItems.indexOf(j)>=0)rest+=y;}
+      (g?out.B:out.A).push(tot);(g?out.restB:out.restA).push(rest);(g?out.itB:out.itA).push(it);}}
+  var all=out.A.concat(out.B),pooled=sd(all);out.gap=pooled?(mean(out.B)-mean(out.A))/pooled:0;return out;}
+
+/* ---------- UI: toy B ---------- */
+(function(){
+  var drop=false;
+  function go(){
+    var d=+$('#dd').value/100,cnt=+$('#dc').value,sh=+$('#di').value/100;
+    $('#oD').textContent=(d>0?'+':'')+d.toFixed(2);$('#oC').textContent=cnt;$('#oI').textContent=sh.toFixed(2);
+    var r=runB(d,sh,cnt,drop),base=runB(d,0,cnt,false);
+    $('#sF').textContent=base.gap.toFixed(2);$('#sG').textContent=r.gap.toFixed(2);
+    var svg=$('#chI');svg.textContent='';var X=function(t){return 40+(t+3)/6*266;},Y=function(p){return 196-p*170;};
+    S('line',{x1:40,y1:196,x2:306,y2:196,'stroke-width':2},svg).style.stroke='var(--ink)';S('line',{x1:40,y1:20,x2:40,y2:196,'stroke-width':2},svg).style.stroke='var(--ink)';
+    for(var t=-3;t<=3;t+=1.5){T(svg,String(t),X(t),214,{'text-anchor':'middle','font-weight':'700'});}
+    T(svg,'trait level →',306,230,{'text-anchor':'end','font-weight':'700'});T(svg,'chance of "yes"',46,14,{'font-weight':'700'});
+    function curve(shift,col,dash){var pts=[];for(var x=-3;x<=3.001;x+=.1)pts.push((pts.length?'L':'M')+X(x).toFixed(1)+' '+Y(pItem(x,BA[BSHOW],BB[BSHOW]+shift)).toFixed(1));var p=S('path',{d:pts.join(' '),fill:'none','stroke-width':4,'stroke-dasharray':dash||''},svg);p.style.stroke=col;}
+    curve(0,'var(--a)');curve(cnt>=1?sh:0,'var(--b)','8 5');
+    var s2=$('#chM');s2.textContent='';var M=r.M,XM=function(v){return 40+v/M*266;};
+    S('line',{x1:40,y1:196,x2:306,y2:196,'stroke-width':2},s2).style.stroke='var(--ink)';S('line',{x1:40,y1:20,x2:40,y2:196,'stroke-width':2},s2).style.stroke='var(--ink)';
+    for(var v=0;v<=M;v++)T(s2,String(v),XM(v),214,{'text-anchor':'middle','font-weight':'700'});
+    T(s2,'score on the fair items →',306,230,{'text-anchor':'end','font-weight':'700'});T(s2,'share saying "yes"',46,14,{'font-weight':'700'});
+    function matched(rest,it,col,dash){var pts=[],dots=[];for(var sc=0;sc<=M;sc++){var n=0,y=0;for(var i=0;i<rest.length;i++)if(rest[i]===sc){n++;y+=it[i];}if(n>=15){var q=y/n;pts.push((pts.length?'L':'M')+XM(sc).toFixed(1)+' '+Y(q).toFixed(1));dots.push([XM(sc),Y(q)]);}}
+      var p=S('path',{d:pts.join(' '),fill:'none','stroke-width':3.5,'stroke-dasharray':dash||''},s2);p.style.stroke=col;dots.forEach(function(dd){var c=S('circle',{cx:dd[0],cy:dd[1],r:4.5},s2);c.style.fill=col;});}
+    matched(r.restA,r.itA,'var(--a)');matched(r.restB,r.itB,'var(--b)','8 5');
+    fitText(svg);fitText(s2);
+    var box=$('#readB');box.textContent='';var none=cnt===0||sh<.05;
+    if(none){box.className='read ok';H('b',{text:'The items work the same way in both groups'},box);H('p',{text:'The gap in total scores ('+r.gap.toFixed(2)+') is just the true difference ('+d.toFixed(2)+') as the scale reports it. Total scores can be compared.'},box);}
+    else if(drop){box.className='read ok';H('b',{text:'Scoring without the harder items removes the distortion'},box);H('p',{text:'The gap is now '+r.gap.toFixed(2)+', the same as if every item were fair ('+base.gap.toFixed(2)+'). The cost is a shorter scale, so you would also check what those items were contributing.'},box);}
+    else{box.className='read warn';H('b',{text:Math.abs(d)<.05?'A gap that is not there':'The gap is not the true difference'},box);
+      H('p',{text:'The true difference is '+d.toFixed(2)+'. If every item were fair, the gap would be '+base.gap.toFixed(2)+'. With these items it is '+r.gap.toFixed(2)+', because '+cnt+(cnt===1?' item works':' items work')+' differently for Group B. Comparing the groups\' total scores would mislead you.'},box);}
+  }
+  ['#dd','#dc','#di'].forEach(function(id){$(id).addEventListener('input',go);});
+  $('#bDrop').addEventListener('click',function(){drop=!drop;$('#bDrop').setAttribute('aria-pressed',String(drop));go();});
+  go();
+})();
+
+})();
+</script>
+</body>
+</html>
