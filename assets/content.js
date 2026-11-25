@@ -14,7 +14,7 @@ window.PF = (function () {
           role: 'I built the deck and shaped the ideas for winning this client over.',
           plain: 'A pitch deck for a hiring-technology company. I started with the story, then built the slides around it, in a green-blue and brown-sugar palette that reads professional and warm.',
           nerd: 'Narrative arc, slide system and palette for a recruitment-technology pitch.', tag: 'pitch deck', url: WF + '/work/hello-hr', urlLabel: 'See the project' },
-        { id: 'jivisha', n: ['Jivisha', 'Foundation'], title: 'Jivisha Foundation', status: 'Since 2022',
+        { id: 'jivisha', n: ['Jivisha', 'Foundation'], title: 'Jivisha Foundation', status: '2022 to 2026',
           role: 'Creative design specialist.',
           plain: 'A student mental-health NGO has to look like a safe place before anyone reads a word. I used soft pastels and organic shapes for the campaigns and teaching material, which have reached more than 10,000 students through partner schools and colleges.',
           nerd: 'Identity system, campaigns and educational material.', tag: 'identity', url: WF + '/work/jivisha-foundation', urlLabel: 'See the project' },
@@ -112,7 +112,7 @@ window.PF = (function () {
   // One sentence per project, for the list view.
   var lines = {
     helloHR: 'A pitch deck for a hiring-technology company, built around its story.',
-    jivisha: 'Campaigns and teaching material for a student mental-health NGO, since 2022.',
+    jivisha: 'Campaigns and teaching material for a student mental-health NGO, 2022 to 2026.',
     lovebytes: 'A video game that tries to prevent dating violence among teenagers.',
     thesis: 'Why some young people seek mental health help and others do not, even when they want to.',
     substanceNet: 'How drug-use problems, low mood and anxiety connect, symptom by symptom.',
@@ -137,7 +137,7 @@ window.PF = (function () {
   var causes = [
     { key: 'edu', n: ['Ashoka', 'Psychology BSc'], title: 'Ashoka University', desc: 'BSc (Hons) Psychology with research, 2022 to 2026. Graduated summa cum laude. Dean\'s List for three semesters.', url: RESUME, urlLabel: 'See resume' },
     { key: 'train', n: ['Training', 'certs + courses'], title: 'Certifications and courses', desc: 'Design Thinking (BCcampus Open-Ed), Graphic Design (ALISON), a Diploma in Psychology (XSIQ, Australia), short courses in clinical psychology, and a summer clinical-psychology internship.', url: RESUME, urlLabel: 'See resume' },
-    { key: 'exp', n: ['Experience', 'design since 2020'], title: 'Design roles since 2020', desc: 'Jivisha Foundation (2022 to now), HelloHR, CampusArmy and Pankh. Branding, campaigns, pitch decks and teaching material.', url: RESUME, urlLabel: 'See resume' }
+    { key: 'exp', n: ['Experience', 'design since 2020'], title: 'Design roles since 2020', desc: 'Jivisha Foundation (2022 to 2026), HelloHR, CampusArmy and Pankh. Branding, campaigns, pitch decks and teaching material.', url: RESUME, urlLabel: 'See resume' }
   ];
 
   // [indicator id, the other factor it also loads on, label]
