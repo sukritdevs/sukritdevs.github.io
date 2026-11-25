@@ -49,3 +49,7 @@ node a11y.js                      # axe accessibility audit (light only, as the 
 ```
 
 Both scripts drive Microsoft Edge by default. Set `BROWSER_CHANNEL=chrome` to use Chrome. Screenshots go to `tests/shots/`.
+
+## Resume
+
+The resume is a page of its own at `resume/index.html` (A4, two pages, Archivo embedded; every Resume link on the site opens it, set once as `RESUME` in `assets/content.js`). Its PDF is `downloads/Sukrit Research Assistant+Teaching Resume.pdf`, linked from the page's Download PDF button. After editing the page, print it again to PDF (A4, margins none, background graphics on; the button bar does not print) and replace that file. The cover letter is not part of the site.

@@ -70,7 +70,7 @@
   items.forEach(function (it) { var a = h('a', { href: it[2] }, nav); h('span', { text: it[1] }, a); links[it[0]] = a; });
   var el = h('div', { 'class': 'else' }, nav);
   [['Design', PF.links.webflow], ['Resume', PF.links.resume], ['Contact', PF.links.contact]].forEach(function (x) {
-    var a = h('a', { href: x[1], target: '_blank', rel: 'noopener' }, el); h('span', { text: x[0] }, a); h('b', { text: '↗', 'aria-hidden': 'true' }, a);
+    var a = h('a', { href: /^(https?:|\/)/.test(x[1]) ? x[1] : base + x[1], target: '_blank', rel: 'noopener' }, el); h('span', { text: x[0] }, a); h('b', { text: '↗', 'aria-hidden': 'true' }, a);
     a.setAttribute('aria-label', x[0] + ' (opens in a new tab)');
   });
   document.body.insertBefore(frag, document.body.firstChild);

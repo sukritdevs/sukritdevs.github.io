@@ -1,7 +1,7 @@
 /* All words on the site live here. Rules: no results, no sample sizes. Unpublished work shows the question and the method only, in broad terms. */
 window.PF = (function () {
   var WF = 'https://sukrit-bhatnagar.webflow.io';
-  var RESUME = 'https://drive.google.com/file/d/15u1lStKXl4i5dh7VtCrX8WYE9dYWXqDZ/view?usp=sharing';
+  var RESUME = 'resume/'; /* the resume page in this site (resume/index.html), relative to the site root; assets/nav.js adds the folder prefix on toy pages */
   // Fill these in after the apps are deployed. While null, each tool says "live app coming soon".
   var APPS = { sempathy: null, cleome: null, distill: null };
   var SOURCE = { github: null };
